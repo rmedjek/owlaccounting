@@ -1,0 +1,15 @@
+﻿* {
+    font-family: 'lato', 'arial', sans-serif;
+}
+.login-text{
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.btn-primary {
+    background-color: #126178;
+}
+
+.btn-link {
+    color: #126178;
+}

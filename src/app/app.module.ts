@@ -8,11 +8,14 @@ import { AlertComponent } from './_directives';
 import { LoginComponent } from './login';
 import { HttpClientModule} from '@angular/common/http';
 import { AlertService, AuthenticationService } from './_services';
-import {HomeComponent} from './home';
+import { HomeComponent } from './home';
+import { ReactiveFormsModule } from '@angular/forms';
+import { AuthGuard } from './_guards';
 
 @NgModule({
   imports: [
     BrowserModule,
+    ReactiveFormsModule,
     HttpClientModule,
     routing,
 
@@ -26,6 +29,7 @@ import {HomeComponent} from './home';
   providers: [
     AlertService,
     AuthenticationService,
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })
