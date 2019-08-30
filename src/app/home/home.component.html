@@ -1,0 +1,153 @@
+﻿<h2>Home</h2>
+<!--<app-sidebar-menu></app-sidebar-menu>-->
+<!--<span *ngIf="chartData.length > 5">-->
+<!--<div class="row" xmlns="http://www.w3.org/1999/html">-->
+<!--  <div class="col-sm-6 offset-sm-3">-->
+<!--    <alert></alert>-->
+<!--    <br>-->
+<!--    <div class ="info-main" *ngIf="currentUser.role === '1'">-->
+<!--      <h2 class="header-title">Alerts</h2>-->
+<!--      <br>-->
+<!--        <div *ngFor="let systemAlertsForUsers of filterItemList(alerts)">-->
+<!--        <div class ="info-field" *ngIf="!systemAlertsForUsers.accountNumber">{{systemAlertsForUsers.alertDetail}}  &nbsp;-->
+<!--          <input type="checkbox" (change)="toggleCheckbox(systemAlertsForUsers)"></div>-->
+<!--          <br>-->
+<!--      <div class ="info-field" *ngIf="systemAlertsForUsers.accountNumber">Account # {{systemAlertsForUsers.accountNumber}}<br>  {{systemAlertsForUsers.alertDetail}}  &nbsp;-->
+<!--        <input type="checkbox" (change)="toggleCheckbox(systemAlertsForUsers)">-->
+<!--      </div>-->
+<!--        </div>-->
+<!--      <br>-->
+<!--    </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--<br *ngIf="currentUser.role === '1'">-->
+<!--<br *ngIf="currentUser.role === '1'">-->
+<!--<h1><u>Dashboard</u></h1>-->
+<!--<br>-->
+<!--<br>-->
+<!--<div class ="table-setter" *ngIf="showBarGraph">-->
+<!--    <div >-->
+<!--    <ul class="bar-graph" >-->
+<!--      <li class="bar-graph-axis">-->
+<!--        <div class="bar-graph-label">{{chartData[0] | number:'1.2'}}%</div>-->
+<!--        <div class="bar-graph-label">{{chartData[1] | number:'1.2'}}%</div>-->
+<!--        <div class="bar-graph-label">{{chartData[2] | number:'1.2'}}%</div>-->
+<!--        <div class="bar-graph-label">{{chartData[3] | number:'1.2'}}%</div>-->
+<!--        <div class="bar-graph-label">{{chartData[4] | number:'1.2'}}%</div>-->
+<!--        <div class="bar-graph-label">0%</div>-->
+<!--      </li>-->
+<!--      <li class="bar primary" id="currentRatio" style="height: 100%;" title="95">-->
+<!--        <div class="percent">{{chartData[0] | number:'1.2'}}<span>%</span></div>-->
+<!--        <div class="description">Current Ratio</div>-->
+<!--      </li>-->
+<!--      <li class="bar secondary" id="retunOnAssets" style="height: 77%;" title="90">-->
+<!--        <div class="percent">{{chartData[1] | number:'1.2'}}<span>%</span></div>-->
+<!--        <div class="description">Return on Assets Ratio</div>-->
+<!--      </li>-->
+<!--      <li class="bar success" id="returnOnEquity" style="height: 59%;" title="80">-->
+<!--        <div class="percent">{{chartData[2] | number:'1.2'}}<span>%</span></div>-->
+<!--        <div class="description">Return on Equity Ratio</div>-->
+<!--      </li>-->
+<!--      <li class="bar warning" id="assetTurnover" style="height: 40%;" title="75">-->
+<!--        <div class="percent">{{chartData[3] | number:'1.2'}}<span>%</span></div>-->
+<!--        <div class="description">Asset Turnover Ratio</div>-->
+<!--      </li>-->
+<!--      <li class="bar alert" id="quickRatio" style="height: 27%;" title="40">-->
+<!--        <div class="percent">{{chartData[4] | number:'1.2'}}<span>%</span></div>-->
+<!--        <div class="description">Quick Ratio</div>-->
+<!--      </li>-->
+<!--      <li class="bar alert" id="netProfitMargin" style="height: 10%;" title="40">-->
+<!--        <div class="percent">{{chartData[5] | number:'1.2'}}<span>%</span></div>-->
+<!--        <div class="description">Net Profit Margin</div>-->
+<!--      </li>-->
+<!--    </ul>-->
+<!--  </div>-->
+<!--</div>-->
+<!--      <span class="ratio-analysis">-->
+<!--        <h2>Ratio Analysis</h2>-->
+<!--    <table style="display: inline-block;">-->
+<!--      <tr>-->
+<!--        <th>Current Ratio</th>-->
+<!--      </tr>-->
+<!--      <tr>-->
+<!--        <td>-->
+<!--          {{currentRatio() | number:'1.2'}}%-->
+<!--          <img *ngIf="currentRatio() <= 0" src="./assets/red dot.png" style="width:20px;height:20px;margin-left:2px; margin-bottom: 2px;">-->
+<!--          <img *ngIf="currentRatio() > 0 && currentRatio() <=1" src="./assets/yellow dot.png" style="width:20px;height:20px;margin-left:2px; margin-bottom: 2px;">-->
+<!--          <img *ngIf="currentRatio() > 1" src="./assets/green dot.png" style="width:20px;height:20px;margin-left:2px; margin-bottom: 2px">-->
+<!--        </td>-->
+
+<!--      </tr>-->
+<!--    </table>-->
+<!--      &nbsp; &nbsp;-->
+<!--    <table style="float: right;">-->
+<!--      <tr>-->
+<!--        <th>Return On Assets</th>-->
+<!--      </tr>-->
+<!--      <tr>-->
+<!--        <td> {{returnOnAssetsRatio() | number:'1.2'}}%-->
+<!--          <img *ngIf="returnOnAssetsRatio() <= 0" src="./assets/red dot.png" style="width:20px;height:20px;margin-left:2px; margin-bottom: 2px;">-->
+<!--          <img *ngIf="returnOnAssetsRatio() > 0 && returnOnAssetsRatio() <=1" src="./assets/yellow dot.png" style="width:20px;height:20px;margin-left:2px; margin-bottom: 2px;">-->
+<!--          <img *ngIf="returnOnAssetsRatio() > 1" src="./assets/green dot.png" style="width:20px;height:20px;margin-left:2px; margin-bottom: 2px">-->
+<!--        </td>-->
+<!--      </tr>-->
+<!--    </table>-->
+<!--        <br>-->
+<!--        <br>-->
+<!--    <table style="display: inline-block;">-->
+<!--      <tr>-->
+<!--        <th>Return On Equity</th>-->
+<!--      </tr>-->
+<!--      <tr>-->
+<!--        <td> {{returnOnEquityRatio() | number:'1.2'}}%-->
+<!--          <img *ngIf="returnOnEquityRatio() <= 0" src="./assets/red dot.png" style="width:20px;height:20px;margin-left:2px; margin-bottom: 2px;">-->
+<!--          <img *ngIf="returnOnEquityRatio() > 0 && returnOnEquityRatio() <=1" src="./assets/yellow dot.png" style="width:20px;height:20px;margin-left:2px; margin-bottom: 2px;">-->
+<!--          <img *ngIf="returnOnEquityRatio() > 1" src="./assets/green dot.png" style="width:20px;height:20px;margin-left:2px; margin-bottom: 2px">-->
+<!--        </td>-->
+<!--      </tr>-->
+<!--    </table>-->
+<!--      &nbsp; &nbsp;-->
+<!--    <table style="float: right;">-->
+<!--      <tr>-->
+<!--        <th>Asset Turnover</th>-->
+<!--      </tr>-->
+<!--      <tr>-->
+<!--        <td> {{assetTurnoverRatio() | number:'1.2'}}%-->
+<!--          <img *ngIf="assetTurnoverRatio() <= 0" src="./assets/red dot.png" style="width:20px;height:20px;margin-left:2px; margin-bottom: 2px;">-->
+<!--          <img *ngIf="assetTurnoverRatio() > 0 && assetTurnoverRatio() <=1" src="./assets/yellow dot.png" style="width:20px;height:20px;margin-left:2px; margin-bottom: 2px;">-->
+<!--          <img *ngIf="assetTurnoverRatio() > 1" src="./assets/green dot.png" style="width:20px;height:20px;margin-left:2px; margin-bottom: 2px">-->
+<!--        </td>-->
+<!--      </tr>-->
+<!--    </table>-->
+<!--        <br>-->
+<!--        <br>-->
+
+<!--     <table style="display: inline-block">-->
+<!--      <tr>-->
+<!--        <th>Quick Ratio</th>-->
+<!--      </tr>-->
+<!--      <tr>-->
+<!--        <td> {{quickRatio() | number:'1.2'}}%-->
+<!--          <img *ngIf="quickRatio() <= 0" src="./assets/red dot.png" style="width:20px;height:20px;margin-left:2px; margin-bottom: 2px;">-->
+<!--          <img *ngIf="quickRatio() > 0 && quickRatio() <=1" src="./assets/yellow dot.png" style="width:20px;height:20px;margin-left:2px; margin-bottom: 2px;">-->
+<!--          <img *ngIf="quickRatio() > 1" src="./assets/green dot.png" style="width:20px;height:20px;margin-left:2px; margin-bottom: 2px">-->
+<!--      </tr>-->
+<!--    </table>-->
+<!--      &nbsp; &nbsp;-->
+<!--    <table style="float: right;">-->
+<!--      <tr>-->
+<!--        <th>Net Profit Margin</th>-->
+<!--      </tr>-->
+<!--      <tr>-->
+<!--        <td> {{netProfitMargin() | number:'1.2'}}%-->
+<!--          <img *ngIf="netProfitMargin() <= 0" src="./assets/red dot.png" style="width:20px;height:20px;margin-left:2px; margin-bottom: 2px;">-->
+<!--          <img *ngIf="netProfitMargin() > 0 && netProfitMargin() <=1" src="./assets/yellow dot.png" style="width:20px;height:20px;margin-left:2px; margin-bottom: 2px;">-->
+<!--          <img *ngIf="netProfitMargin() > 1" src="./assets/green dot.png" style="width:20px;height:20px;margin-left:2px; margin-bottom: 2px">-->
+<!--       </td>-->
+<!--      </tr>-->
+<!--    </table>-->
+
+<!--      </span>-->
+
+<!--</span>-->
+<!--<img *ngIf="chartData.length < 5" class="centered" src="/assets/loading.gif" />-->
