@@ -2,6 +2,7 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
+import * as $ from 'jquery';
 
 import { AlertService, AuthenticationService } from '../_services';
 
@@ -14,6 +15,7 @@ export class LoginComponent implements OnInit {
     submitted = false;
     returnUrl: string;
 
+
     constructor(
         private formBuilder: FormBuilder,
         private route: ActivatedRoute,
@@ -22,6 +24,14 @@ export class LoginComponent implements OnInit {
         private alertService: AlertService) {}
 
     ngOnInit() {
+        // tslint:disable-next-line:only-arrow-functions
+        $(document).ready(function() {
+            // tslint:disable-next-line:only-arrow-functions
+            $('.btn-link a').click(function() {
+                $('form').animate({height: 'toggle', opacity: 'toggle'}, 'slow');
+            });
+        });
+
         this.loginForm = this.formBuilder.group({
             username: ['', Validators.required],
             password: ['', Validators.required]
@@ -31,7 +41,7 @@ export class LoginComponent implements OnInit {
         this.authenticationService.logout();
 
         // get return url from route parameters or default to '/'
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+        this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
     }
 
     // convenience getter for easy access to form fields
