@@ -1,0 +1,4 @@
+﻿{
+    "connectionString": "mongodb://owlaccounting:Owlaccounting@ds231242.mlab.com:31242/owlaccounting",
+    "secret": "OwlAccounting08202019"
+}

@@ -1,13 +1,29 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="utf-8">
-  <title>OwlaccountingFrontend</title>
-  <base href="/">
+  <base href="/" />
+  <title>OwlAccounting</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+  <!-- bootstrap css -->
+  <link href="//netdna.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" />
+
+  <style>
+    a { cursor: pointer }
+    .centered{
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      margin-top: -100px ;
+      margin-left: -100px;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
-<body>
-  <app-root></app-root>
+<body >
+<app>
+  <img class="centered" src="/assets/loading.gif" />
+</app>
 </body>
 </html>
