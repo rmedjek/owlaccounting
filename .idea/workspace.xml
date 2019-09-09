@@ -5,36 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aa701218-1bbb-40db-b58b-b432367f1fc0" name="Default Changelist" comment="add connection to the db&#10;add sidebar-nav&#10;add the home screen&#10;work on styling the login and home screen">
-      <change afterPath="$PROJECT_DIR$/src/app/_services/user.service.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/register/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/register/register.component.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/register/register.component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/register/register.component.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/sidebar-menu/sidebar-menu.component.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/sidebar-menu/sidebar-menu.component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/sidebar-menu/sidebar-menu.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/_helpers/db.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/_helpers/db.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/_helpers/jwt.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/_helpers/jwt.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/users/user.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/users/user.service.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/_services/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/_services/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/app.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/app.component.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/app.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/app.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/app.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/app.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/app.routing.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/app.routing.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/home/home.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/home/home.component.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/home/home.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/home/home.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/home/home.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/home/home.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/login/login.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/login/login.component.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/login/login.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/login/login.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/login/login.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/login/login.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/account/index.controller.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/account/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app-content/app.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app-services/flash.service.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app-services/user.service.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/home/index.controller.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/home/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/index.html" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -57,7 +37,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/app" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
@@ -65,7 +45,7 @@
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="Errors" />
-    <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
+    <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -130,6 +110,7 @@
       <workItem from="1567573324342" duration="9763000" />
       <workItem from="1567885858774" duration="157000" />
       <workItem from="1567886039249" duration="33287000" />
+      <workItem from="1568071330577" duration="241000" />
     </task>
     <task id="LOCAL-00001" summary="add directive">
       <created>1566946693632</created>
