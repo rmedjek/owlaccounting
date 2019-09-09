@@ -3,8 +3,8 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const errorHandler = require('./helpers/error-handler');
-const jwt = require('./_helpers/jwt');
+const errorHandler = require('./backend/_helpers/error-handler.js');
+const jwt = require('./backend/_helpers/jwt');
 
 
 app.use((req, res, next) => {
@@ -24,7 +24,7 @@ app.use(cors());
 app.use(jwt());
 
 // API Routes
-app.use('/users', require('./users/users.controller'));
+app.use('/users', require('./backend/users/users.controller'));
 
 
 // global error handler
