@@ -1,19 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SCOPE_TYPE" value="3" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="aa701218-1bbb-40db-b58b-b432367f1fc0" name="Default Changelist" comment="add directive">
-      <change afterPath="$PROJECT_DIR$/src/app/_guards/auth.guard.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/_guards/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/app.routing.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/home/home.component.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/home/home.component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/home/home.component.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/home/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/_directives/alert.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/_directives/alert.component.html" afterDir="false" />
+    <list default="true" id="aa701218-1bbb-40db-b58b-b432367f1fc0" name="Default Changelist" comment="add connection to the db&#10;add sidebar-nav&#10;add the home screen&#10;work on styling the login and home screen">
+      <change afterPath="$PROJECT_DIR$/src/app/_services/user.service.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/register/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/register/register.component.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/register/register.component.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/register/register.component.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/sidebar-menu/sidebar-menu.component.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/sidebar-menu/sidebar-menu.component.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/sidebar-menu/sidebar-menu.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/_helpers/db.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/_helpers/db.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/_helpers/jwt.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/_helpers/jwt.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/users/user.service.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/users/user.service.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/_services/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/_services/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/app.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/app.component.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/app.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/app.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/app.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/app.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/app.component.spec.ts" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/app.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/environments/environment.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/environments/environment.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/app.routing.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/app.routing.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/home/home.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/home/home.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/home/home.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/home/home.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/home/home.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/home/home.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/login/login.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/login/login.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/login/login.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/login/login.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/login/login.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/login/login.component.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -34,6 +54,7 @@
   </component>
   <component name="ProjectId" id="1Q1lLxPufNLYoINekP6XiLE0Dvl" />
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/app" />
@@ -43,15 +64,20 @@
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="settings.editor.selected.configurable" value="Errors" />
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/src/app/register" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/app" />
-      <recent name="$PROJECT_DIR$/src/assets" />
+      <recent name="$PROJECT_DIR$/src/app/register" />
       <recent name="$PROJECT_DIR$/src/app/_services" />
-      <recent name="$PROJECT_DIR$/src/app/_directives" />
+      <recent name="$PROJECT_DIR$/backend" />
+      <recent name="$PROJECT_DIR$/src/assets" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -101,6 +127,9 @@
       <updated>1566945930665</updated>
       <workItem from="1566945931947" duration="14285000" />
       <workItem from="1567198363384" duration="741000" />
+      <workItem from="1567573324342" duration="9763000" />
+      <workItem from="1567885858774" duration="157000" />
+      <workItem from="1567886039249" duration="33287000" />
     </task>
     <task id="LOCAL-00001" summary="add directive">
       <created>1566946693632</created>
@@ -109,7 +138,21 @@
       <option name="project" value="LOCAL" />
       <updated>1566946693632</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="fix styling">
+      <created>1567574412349</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1567574412349</updated>
+    </task>
+    <task id="LOCAL-00003" summary="add back-end">
+      <created>1567886305791</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1567886305791</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -130,6 +173,10 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="add directive" />
-    <option name="LAST_COMMIT_MESSAGE" value="add directive" />
+    <MESSAGE value="change styling" />
+    <MESSAGE value="fix styling" />
+    <MESSAGE value="add back-end" />
+    <MESSAGE value="add connection to the db&#10;add sidebar-nav&#10;add the home screen&#10;work on styling the login and home screen" />
+    <option name="LAST_COMMIT_MESSAGE" value="add connection to the db&#10;add sidebar-nav&#10;add the home screen&#10;work on styling the login and home screen" />
   </component>
 </project>

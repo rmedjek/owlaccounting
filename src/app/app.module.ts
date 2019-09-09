@@ -12,7 +12,18 @@ import { HomeComponent } from './home';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard } from './_guards';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule, MatFormFieldModule } from '@angular/material';
+import {
+    MatButtonModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
+    MatSidenavModule,
+    MatToolbarModule
+} from '@angular/material';
+import { RegisterComponent } from './register';
+import { UserService } from './_services/user.service';
+import { SidebarMenuComponent } from './sidebar-menu/sidebar-menu.component';
 
 @NgModule({
     imports: [
@@ -22,18 +33,25 @@ import { MatButtonModule, MatFormFieldModule } from '@angular/material';
         routing,
         BrowserAnimationsModule,
         MatFormFieldModule,
-        MatButtonModule
-
+        MatButtonModule,
+        MatInputModule,
+        MatToolbarModule,
+        MatSidenavModule,
+        MatListModule,
+        MatIconModule
     ],
   declarations: [
     AppComponent,
     AlertComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    RegisterComponent,
+    SidebarMenuComponent
   ],
   providers: [
     AlertService,
     AuthenticationService,
+    UserService,
     AuthGuard
   ],
   bootstrap: [AppComponent]
