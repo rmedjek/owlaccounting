@@ -1,0 +1,34 @@
+<script src="../home/index.ts"></script>
+<div class="row">
+  <div class="col-sm-6 offset-sm-3">
+    <alert></alert>
+    <app-sidebar-menu></app-sidebar-menu>
+    <h2>Logs:</h2>
+    <form>
+      <input type="search" id="myInput" required class="search-box" (keyup)="loadLogsBySearch()" (keypress)="loadLogsBySearch()" placeholder="Search by name or username" title="Type in a name">
+      <button class="close-icon" (click)="resetInput()" type="reset"></button>
+    </form>
+    <table class="scroll">
+      <thead>
+      <tr>
+        <th style="width: 1%" (click)="sortByUser()"><a class="sort-by">User</a></th>
+        <th style="width: 30%;" (click)="sortByEvent()"><a class="sort-by">Events</a></th>
+        <th class="header-align" (click)="sortByDate()"> <a class="sort-by">Date/Time of Event</a></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let logTrack of logsOfData.reverse()">
+        <td>{{logTrack.createdBy}}</td>
+        <td>
+          <div style="min-width: 100px">{{logTrack.logDataInput}}</div>
+          <div *ngIf="logTrack.logInitial" class="sub-row"><b>Before: </b>{{logTrack.logInitial}}</div>
+          <div *ngIf="logTrack.logFinal" class="sub-row"><b>After: </b>{{logTrack.logFinal}}</div>
+        </td>
+        <td>{{logTrack.dateTimeOfEvent | date : "M/d/yy h:mm a"}} &nbsp;&nbsp;&nbsp;
+          <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

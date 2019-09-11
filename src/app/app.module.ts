@@ -7,9 +7,9 @@ import { routing } from './app.routing';
 import { AlertComponent } from './_directives';
 import { LoginComponent } from './login';
 import { HttpClientModule} from '@angular/common/http';
-import { AlertService, AuthenticationService } from './_services';
+import { AlertService, AuthenticationService, LogTrackService } from './_services';
 import { HomeComponent } from './home';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard } from './_guards';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
@@ -22,8 +22,12 @@ import {
     MatToolbarModule
 } from '@angular/material';
 import { RegisterComponent } from './register';
-import { UserService } from './_services/user.service';
+import { UserService } from './_services';
 import { SidebarMenuComponent } from './sidebar-menu/sidebar-menu.component';
+import { UserAccountsComponent } from './user-accounts/user-accounts.component';
+import { LogsPageComponent } from './logs-page/logs-page.component';
+import { CreateUserComponent } from './create-user/create-user.component';
+import { DropdownUserRolesComponent } from './dropdown-user-roles/dropdown-user-roles.component';
 
 @NgModule({
     imports: [
@@ -38,7 +42,8 @@ import { SidebarMenuComponent } from './sidebar-menu/sidebar-menu.component';
         MatToolbarModule,
         MatSidenavModule,
         MatListModule,
-        MatIconModule
+        MatIconModule,
+        FormsModule
     ],
   declarations: [
     AppComponent,
@@ -46,12 +51,17 @@ import { SidebarMenuComponent } from './sidebar-menu/sidebar-menu.component';
     LoginComponent,
     HomeComponent,
     RegisterComponent,
-    SidebarMenuComponent
+    SidebarMenuComponent,
+    UserAccountsComponent,
+    LogsPageComponent,
+    CreateUserComponent,
+    DropdownUserRolesComponent
   ],
   providers: [
     AlertService,
     AuthenticationService,
     UserService,
+    LogTrackService,
     AuthGuard
   ],
   bootstrap: [AppComponent]

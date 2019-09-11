@@ -12,6 +12,11 @@
       <h3>
         {{currentUser?.firstName}} {{currentUser?.lastName}}
       </h3>
+      <div class="roles">
+        <h3 *ngIf="currentUser?.role === '1'">Role: Admin</h3>
+        <h3 *ngIf="currentUser?.role === '2'">Role: Manager</h3>
+        <h3 *ngIf="currentUser?.role === '3'">Role: User</h3>
+      </div>
       <br>
       <a></a>
       <a [routerLink]="['/home']">Dashboard</a>

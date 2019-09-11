@@ -1,5 +1,6 @@
 const config = require('../config.json');
 const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 
 mongoose.connect(config.connectionString)
     .then(() => {
@@ -7,10 +8,9 @@ mongoose.connect(config.connectionString)
 }).catch(() => {
     console.log('Connection failed');
 });
-mongoose.Promise = global.Promise;
-
 
 module.exports = {
     User: require('../users/user.model'),
+    LogTrack: require('../logTrack/logTrack.model'),
 };
 
