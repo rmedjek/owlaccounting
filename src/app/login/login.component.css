@@ -1,5 +1,4 @@
-﻿@import url(https://fonts.googleapis.com/css?family=Roboto:300);
-.form-group {
+﻿.form-group {
     width: 100%;
 }
 
@@ -55,13 +54,12 @@
     padding: 15px;
     color: #FFFFFF;
     font-size: 14px;
-    -webkit-transition: all 0.3 ease;
-    transition: all 0.3 ease;
     cursor: pointer;
 }
 .form button:hover,.form button:active,.form button:focus {
     background: #43A047;
 }
+
 .form .btn-link {
     margin: 15px 0 0;
     color: #b3b3b3;

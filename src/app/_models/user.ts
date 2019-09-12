@@ -4,6 +4,7 @@
   password: string;
   firstName: string;
   lastName: string;
+  email: string;
   accountActive: boolean;
   role: string;
 }
