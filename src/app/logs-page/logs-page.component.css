@@ -1,4 +1,5 @@
 table  {
+  margin-top: 30px;
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
   border-collapse: collapse;
   width: 100%;
@@ -42,7 +43,7 @@ a.sort-by:after {
   margin-top: 1px;
 }
 
-.header-align{
+.header-align{  
   width: 4.35% !important;
 }
 
@@ -92,13 +93,14 @@ tbody td:last-child, thead th:last-child {
   padding: 10px;
 }
 .search-wrapper {
+  align: center;
   width: 500px;
   margin: auto;
   margin-top: 50px;
 }
 .search-box {
-  margin-bottom: 14px;
-  margin-top: 14px;
+  margin-top: 40px;
+  left: 10%;
   width: 80%;
   border: 1px solid #ccc;
   outline: 0;
@@ -139,9 +141,7 @@ tbody td:last-child, thead th:last-child {
 .search-box:not(:valid) ~ .close-icon {
   display: none;
 }
-.bottom-spacer-tab{
 
-}
 .sub-row{
   background-color: #b0e0ee;
 }
