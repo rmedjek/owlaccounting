@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { AlertService, UserService } from '../_services';
-import { User} from '../_models';
+import { User } from '../_models';
 
 @Component({
   selector: 'app-create-user',

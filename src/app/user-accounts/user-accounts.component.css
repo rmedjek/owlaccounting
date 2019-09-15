@@ -1,11 +1,11 @@
 .sidenav{
-
   text-align: center;
+  left:50%;
+  margin-left: 100px;
+  margin-right: auto;
   max-width: 1000px;
-  margin: auto;
-  margin-top: 10px;
-  width: 50%;
   float: none;
+box-sizing: border-box;
 }
 
 
@@ -18,7 +18,7 @@ th:hover {
   color: #5990a0;
 }
 
-a.sort-by {
+th a.sort-by {
   padding-right: 18px;
   position: relative;
 }
@@ -56,7 +56,6 @@ a.sort-by:after {
   margin-top: 50px;
 }
 .search-box {
-  margin-left: 10%;
   margin-bottom: 14px;
   margin-top: 14px;
   width: 80%;
