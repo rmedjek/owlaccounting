@@ -21,10 +21,9 @@ async function authenticate({ username, password }) {
             const {hash, ...userWithoutHash} = user.toObject();
             const token = jwt.sign({sub: user.id}, config.secret, { expiresIn: '1h' });
             return {
-                ...userWithoutHash,
-                token
+                ...userWithoutHash, token
             };
-        }else{
+        } else {
             throw 'Your account is pending approval.'
         }
     }
@@ -38,7 +37,7 @@ async function getById(id) {
     return await User.findById(id).select('-hash');
 }
 
-async function create(userParam) {
+async function create(userParam,) {
     // validate
     if (await User.findOne({ username: userParam.username })) {
         throw 'Username "' + userParam.username + '" is already taken';
@@ -74,6 +73,10 @@ async function update(id, userParam) {
     if (user.username !== userParam.username && await User.findOne({ username: userParam.username })) {
         throw 'Username "' + userParam.username + '" is already taken';
     }
+
+    // if (user.email !== userParam.email && await User.findOne({ email: userParam.email})) {
+    //     throw 'Email "' + userParam.email + '" is already in the system'
+    // }
 
     // hash password if it was entered
     if (userParam.password) {

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { LogTrackService } from '../_services';
-import { LogTrack, User } from '../_models';
+import { LogTrackService} from '../_services';
+import { logTrack, User} from '../_models';
 import {first} from 'rxjs/operators';
 
 @Component({
@@ -10,8 +10,8 @@ import {first} from 'rxjs/operators';
 })
 export class LogsPageComponent implements OnInit {
   currentUser: User;
-  logsOfData: LogTrack[] = [];
-  allLogOfData: LogTrack[] = [];
+  logsOfData: logTrack[] = [];
+  allLogOfData: logTrack[] = [];
   sortTracker = 0;
 
   constructor(private logTrackService: LogTrackService) {
@@ -31,19 +31,18 @@ export class LogsPageComponent implements OnInit {
 
   public loadLogsBySearch() {
     this.logsOfData = this.allLogOfData;
-    const search: string = (document.getElementById('myInput') as HTMLInputElement).value;
+    const search: string = (<HTMLInputElement>document.getElementById('myInput')).value;
     if (search.length === 0 || search.length === null) {
       this.logsOfData = this.allLogOfData;
     } else {
-      const result = this.logsOfData.filter(logOfData =>
-          (logOfData.logDataInput.includes(search) || logOfData.createdBy.includes(search)));
+      const result = this.logsOfData.filter(logOfData => (logOfData.logDataInput.includes(search) || logOfData.createdBy.includes(search)));
       this.logsOfData = result;
     }
   }
 
   public sortByUser() {
     if (this.sortTracker === 0) {
-      this.logsOfData.sort((x, y) => {
+      this.logsOfData.sort(function (x, y) {
         if (x.createdBy < y.createdBy) {
           return -1;
         }
@@ -54,7 +53,7 @@ export class LogsPageComponent implements OnInit {
       });
       this.sortTracker = 1;
     } else {
-      this.logsOfData.sort((x, y) => {
+      this.logsOfData.sort(function (x, y) {
         if (x.createdBy > y.createdBy) {
           return -1;
         }
@@ -69,7 +68,7 @@ export class LogsPageComponent implements OnInit {
 
   public sortByEvent() {
     if (this.sortTracker === 0) {
-      this.logsOfData.sort((x, y) => {
+      this.logsOfData.sort(function (x, y) {
         if (x.logDataInput < y.logDataInput) {
           return -1;
         }
@@ -80,7 +79,7 @@ export class LogsPageComponent implements OnInit {
       });
       this.sortTracker = 1;
     } else {
-      this.logsOfData.sort((x, y) => {
+      this.logsOfData.sort(function (x, y) {
         if (x.logDataInput > y.logDataInput) {
           return -1;
         }
@@ -95,7 +94,7 @@ export class LogsPageComponent implements OnInit {
 
   public sortByDate() {
     if (this.sortTracker === 0) {
-      this.logsOfData.sort((x, y) => {
+      this.logsOfData.sort(function (x, y) {
         if (x.dateTimeOfEvent < y.dateTimeOfEvent) {
           return -1;
         }
@@ -106,7 +105,7 @@ export class LogsPageComponent implements OnInit {
       });
       this.sortTracker = 1;
     } else {
-      this.logsOfData.sort((x, y) => {
+      this.logsOfData.sort(function (x, y) {
         if (x.dateTimeOfEvent > y.dateTimeOfEvent) {
           return -1;
         }

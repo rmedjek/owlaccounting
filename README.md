@@ -17,3 +17,10 @@ run `npm run start:server`
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+## Kill port
+`sudo kill -9 `sudo lsof -t -i:4000``
+
+
+regex
+^([a-zA-Z])(?=.*[^0-9][A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$

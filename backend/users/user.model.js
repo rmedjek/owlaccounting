@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const uniqueValidator = require("mongoose-unique-validator");
 const Schema = mongoose.Schema;
 
 const schema = new Schema({
@@ -6,11 +7,13 @@ const schema = new Schema({
     hash: { type: String, required: true },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-    email: { type: String, required: true },
+    email: { type: String,   required: true, unique: true },
     role: { type: String, required: true },
     accountActive: { type: Boolean, required: true },
     createdDate: { type: Date, default: Date.now }
 });
+
+schema.plugin(uniqueValidator);
 
 schema.set('toJSON', { virtuals: true });
 

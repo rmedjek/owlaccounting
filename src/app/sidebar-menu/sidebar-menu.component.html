@@ -9,11 +9,12 @@
                  [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
       <mat-nav-list>
         <img src="./assets/img_avatar.png" class="avatar-image">
-        <h3> {{currentUser?.firstName}} {{currentUser?.lastName}} </h3>
+          <h3> {{currentUser?.firstName}} {{currentUser?.lastName}} {{'username: '+ '(' + currentUser?.username + ')'}}</h3>
+
         <div class="roles">
-          <h3 *ngIf="currentUser?.role === '1'">Role: Admin</h3>
-          <h3 *ngIf="currentUser?.role === '2'">Role: Manager</h3>
-          <h3 *ngIf="currentUser?.role === '3'">Role: User</h3>
+          <p *ngIf="currentUser?.role === '1'">Role: Admin</p>
+          <p *ngIf="currentUser?.role === '2'">Role: Manager</p>
+          <p *ngIf="currentUser?.role === '3'">Role: User</p>
         </div>
         <br>
         <a></a>

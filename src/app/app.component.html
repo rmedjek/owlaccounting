@@ -1,19 +1,9 @@
-﻿<!-- nav -->
-<nav *ngIf="currentUser">
-    <div class="navbar-nav">
-<!--        <a class="nav-item nav-link" routerLink="/">Home</a>-->
-<!--        <a class="nav-item nav-link" (click)="logout()">Logout</a>-->
+﻿<!-- main app container -->
+<div class="jumbotron">
+    <div class="container">
+        <img src="./assets/logo.png"
+             alt="OwlAccountingLogo" style="width:200px;height:100px;margin-left:450px; margin-bottom: 30px;">
+        <router-outlet></router-outlet>
     </div>
-</nav>
-<router-outlet></router-outlet>
+</div>
 
-<!-- main app container -->
-<!--<div class="jumbotron">-->
-<!--    <div class="container">-->
-<!--        <div class="row">-->
-<!--            <div class="col-sm-6 offset-sm-3">-->
-<!--                <router-outlet></router-outlet>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->

@@ -11,6 +11,6 @@ mongoose.connect(config.connectionString)
 
 module.exports = {
     User: require('../users/user.model'),
-    LogTrack: require('../logTrack/logTrack.model'),
+    logTrack: require('../logTrack/logTrack.model'),
 };
 
