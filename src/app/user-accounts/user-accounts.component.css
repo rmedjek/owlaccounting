@@ -1,10 +1,10 @@
 .sidenav{
+  
   text-align: center;
-  left:50%;
-  margin-left: 100px;
-  margin-right: auto;
   max-width: 1000px;
-  float: none;
+  margin: auto;
+  margin-top: 10px;
+  width: 50%;
 
 }
 
@@ -49,6 +49,7 @@ a.sort-by:after {
   margin-top: 50px;
 }
 .search-box {
+  margin-left: 10%;
   margin-bottom: 14px;
   margin-top: 14px;
   width: 80%;
