@@ -12,6 +12,7 @@ body {
 .sidenav {
   position: fixed;
   left: 0;
+  margin-top: 64px;
   width: 200px;
   background-color: white;
   overflow-x: hidden;
