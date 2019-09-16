@@ -1,4 +1,4 @@
 ﻿{
-    "connectionString": "mongodb+srv://red:YIFnUECnXEyTMOCF@cluster0-ubxvj.mongodb.net/owlaccounting?retryWrites=true&w=majority",
+    "connectionString": "mongodb+srv://red:YIFnUECnXEyTMOCF@cluster0-ubxvj.mongodb.net/owlaccounting",
     "secret": "OwlAccountingSecret09072019"
 }

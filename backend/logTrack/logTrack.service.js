@@ -1,5 +1,5 @@
 ﻿const db = require('../_helpers/db');
-const LogTrack = db.LogTrack;
+const logTrack = db.logTrack;
 
 
 module.exports = {
@@ -8,11 +8,11 @@ module.exports = {
 };
 
 async function getAll() {
-    return await LogTrack.find({});
+    return await logTrack.find({});
 }
 
 async function logData(userParam) {
-    const logTrackdata = new LogTrack(userParam);
+    const logTrackdata = new logTrack(userParam);
     logTrackdata.logDataInput = userParam.logDataInput;
     await logTrackdata.save();
 }

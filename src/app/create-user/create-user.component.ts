@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { AlertService, UserService } from '../_services';
-import { User} from '../_models';
+import { User } from '../_models';
 
 @Component({
   selector: 'app-create-user',
@@ -30,6 +30,7 @@ export class CreateUserComponent implements OnInit {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       username: ['', Validators.required],
+      email: ['', Validators.required, Validators.email],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }

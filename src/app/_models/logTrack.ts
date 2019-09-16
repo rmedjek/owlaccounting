@@ -1,4 +1,4 @@
-export class LogTrack {
+export class logTrack {
   logDataInput: string;
   logInitial: string;
   logFinal: string;

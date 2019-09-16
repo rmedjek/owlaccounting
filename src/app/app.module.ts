@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { routing } from './app.routing';
+import { AppRoutingModule } from './app.routing';
 
 import { AlertComponent } from './_directives';
 import { LoginComponent } from './login';
@@ -13,7 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard } from './_guards';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
-    MatButtonModule,
+    MatButtonModule, MatCardModule, MatExpansionModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
@@ -28,22 +28,25 @@ import { UserAccountsComponent } from './user-accounts/user-accounts.component';
 import { LogsPageComponent } from './logs-page/logs-page.component';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { DropdownUserRolesComponent } from './dropdown-user-roles/dropdown-user-roles.component';
+import { TolowerCaseDirective } from './_directives/tolowercase.directive';
 
 @NgModule({
     imports: [
         BrowserModule,
-        ReactiveFormsModule,
         HttpClientModule,
-        routing,
+        AppRoutingModule,
+        ReactiveFormsModule,
+        FormsModule,
         BrowserAnimationsModule,
         MatFormFieldModule,
         MatButtonModule,
+        MatExpansionModule,
         MatInputModule,
+        MatCardModule,
         MatToolbarModule,
         MatSidenavModule,
         MatListModule,
-        MatIconModule,
-        FormsModule
+        MatIconModule
     ],
   declarations: [
     AppComponent,
@@ -55,7 +58,8 @@ import { DropdownUserRolesComponent } from './dropdown-user-roles/dropdown-user-
     UserAccountsComponent,
     LogsPageComponent,
     CreateUserComponent,
-    DropdownUserRolesComponent
+    DropdownUserRolesComponent,
+    TolowerCaseDirective
   ],
   providers: [
     AlertService,

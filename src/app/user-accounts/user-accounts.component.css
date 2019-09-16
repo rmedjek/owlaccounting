@@ -5,7 +5,13 @@
   margin-right: auto;
   max-width: 1000px;
   float: none;
+box-sizing: border-box;
+}
 
+
+.btn-basic {
+  display: block;
+  margin: auto;
 }
 
 th:hover {
@@ -42,6 +48,7 @@ a.sort-by:after {
 .search-box,.close-icon,.search-wrapper {
   position: relative;
   padding: 10px;
+
 }
 .search-wrapper {
   width: 500px;
@@ -54,7 +61,8 @@ a.sort-by:after {
   width: 80%;
   border: 1px solid #ccc;
   outline: 0;
-  border-radius: 15px;
+  position: center;
+
 }
 .search-box:focus {
   box-shadow: 0 0 15px 5px #b0e0ee;
