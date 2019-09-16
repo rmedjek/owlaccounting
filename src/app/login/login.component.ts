@@ -22,14 +22,6 @@ export class LoginComponent implements OnInit {
         private alertService: AlertService) {}
 
     ngOnInit() {
-        // // tslint:disable-next-line:only-arrow-functions
-        // $(document).ready(function() {
-        //     // tslint:disable-next-line:only-arrow-functions
-        //     $('.btn-link a').click(function() {
-        //         $('form').animate({height: 'toggle', opacity: 'toggle'}, 'slow');
-        //     });
-        // });
-
         this.loginForm = this.formBuilder.group({
             username: ['', Validators.required],
             password: ['', Validators.required]

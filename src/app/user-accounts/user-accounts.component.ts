@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
 
-import { LogTrack, User } from '../_models';
+import { logTrack, User } from '../_models';
 import { UserService } from '../_services';
 import { throwError } from 'rxjs';
-import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-chart-of-user-accounts',
@@ -12,7 +11,6 @@ import { FormGroup } from '@angular/forms';
   styleUrls: ['./user-accounts.component.css']
 })
 export class UserAccountsComponent implements OnInit {
-  infoForm: FormGroup;
   currentUser: User;
   users: User[] = [];
   allUsers: User[] = [];
@@ -37,7 +35,7 @@ export class UserAccountsComponent implements OnInit {
   deactivateUser(user: User, currentUser: User) {
     if (currentUser.role === '1') {
       user.accountActive = false;
-      const newLog = new LogTrack();
+      const newLog = new logTrack;
       newLog.logDataInput = 'Deactivated user ' + user.username;
       newLog.logInitial =  user.username + ': Active';
       newLog.logFinal =  user.username + ': Deactivate';
@@ -50,7 +48,7 @@ export class UserAccountsComponent implements OnInit {
   activateUser(user: User, currentUser: User) {
     if (currentUser.role === '1') {
       user.accountActive = true;
-      const newLog = new LogTrack();
+      const newLog = new logTrack;
       newLog.logDataInput = 'Activated user ' + user.username;
       newLog.logInitial =  user.username + ': Deactivate';
       newLog.logFinal =  user.username + ': Active';
@@ -65,7 +63,7 @@ export class UserAccountsComponent implements OnInit {
       const passwordInput = prompt('Enter New Password:');
       if (passwordInput !== null && passwordInput !== '') {
          if (passwordInput.length > 6) {
-           const newLog = new LogTrack();
+           const newLog = new logTrack;
            newLog.logDataInput = 'Changed the password of user: ' + user.username;
            newLog.logInitial =  user.username + ' password: *******';
            newLog.logFinal =  user.username + ' password: *******';
@@ -236,7 +234,7 @@ export class UserAccountsComponent implements OnInit {
 
     switch (typeOfChange) {
       case 'fName': {
-        const newLog = new LogTrack();
+        const newLog = new logTrack;
         newLog.logDataInput = 'Changed the first name of user: ' + userId.username + ' to ' + this.editField;
         newLog.logInitial =  userId.username + ' first Name: ' + userId.firstName;
         newLog.logFinal =  userId.username + ' first Name: ' + this.editField;
@@ -249,7 +247,7 @@ export class UserAccountsComponent implements OnInit {
       }
       case 'lName': {
 
-        const newLog = new LogTrack();
+        const newLog = new logTrack;
         newLog.logDataInput = 'Changed the last name of user: ' + userId.username + ' to ' + this.editField;
         newLog.logInitial =  userId.username + ' last Name: ' + userId.lastName;
         newLog.logFinal =  userId.username + ' last Name: ' + this.editField;

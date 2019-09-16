@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { throwError, forkJoin } from 'rxjs';
 
 import { environment } from '../../environments/environment';
-import { LogTrack, User } from '../_models';
+import { logTrack, User } from '../_models';
 import { LogTrackService } from './logTrack.service';
 
 
@@ -30,7 +30,7 @@ export class UserService {
             user.accountActive = false;
             user.role = '3';
 
-            const newLog = new LogTrack();
+            const newLog = new logTrack;
             newLog.logDataInput = 'Created a new user ' + user.username;
             newLog.logInitial =  '';
             newLog.logFinal =  user.username;
@@ -43,7 +43,7 @@ export class UserService {
         }
     }
 
-    update(user: User, currentUser: User, message: LogTrack) {
+    update(user: User, currentUser: User, message: logTrack) {
         if (currentUser.role === '1') {
             const messageLog = this.logService.logData(message, currentUser.username);
             const updateData = this.http.put(`${environment.apiUrl}/users/` + user.id, user);

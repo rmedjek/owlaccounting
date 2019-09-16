@@ -2,9 +2,8 @@
     <div class="col-sm-6 offset-sm-3">
         <alert></alert>
         <app-sidebar-menu></app-sidebar-menu>
-        <h2>User Accounts</h2>
-        <div>
-            <a [routerLink]="['/createUser']" *ngIf="currentUser.role === '1'">New User</a>
+        <div class="user-account">
+           <button class="btn btn-basic"><a [routerLink]="['/createUser']" *ngIf="currentUser.role === '1'">New User</a></button>
             <form>
                 <input type="search" id="myInput" required class="search-box"
                        (keyup)="loadUsersBySearch()" (keypress)="loadUsersBySearch()"
