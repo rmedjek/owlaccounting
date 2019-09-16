@@ -18,7 +18,7 @@ th:hover {
   color: #5990a0;
 }
 
-th a.sort-by {
+a.sort-by {
   padding-right: 18px;
   position: relative;
 }
