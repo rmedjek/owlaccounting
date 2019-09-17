@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app.routing';
 
 import { AlertComponent } from './_directives';
 import { LoginComponent } from './login';
-import { HttpClientModule} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AlertService, AuthenticationService, LogTrackService } from './_services';
 import { HomeComponent } from './home';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -29,6 +29,7 @@ import { LogsPageComponent } from './logs-page/logs-page.component';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { DropdownUserRolesComponent } from './dropdown-user-roles/dropdown-user-roles.component';
 import { TolowerCaseDirective } from './_directives/tolowercase.directive';
+import {ErrorInterceptor, JwtInterceptor} from './_helpers';
 
 @NgModule({
     imports: [
@@ -66,7 +67,9 @@ import { TolowerCaseDirective } from './_directives/tolowercase.directive';
     AuthenticationService,
     UserService,
     LogTrackService,
-    AuthGuard
+    AuthGuard,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })
