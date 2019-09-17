@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
 
-import { logTrack, User } from '../_models';
+import { LogTrack, User } from '../_models';
 import { UserService } from '../_services';
 import { throwError } from 'rxjs';
 
@@ -35,7 +35,7 @@ export class UserAccountsComponent implements OnInit {
   deactivateUser(user: User, currentUser: User) {
     if (currentUser.role === '1') {
       user.accountActive = false;
-      const newLog = new logTrack;
+      const newLog = new LogTrack();
       newLog.logDataInput = 'Deactivated user ' + user.username;
       newLog.logInitial =  user.username + ': Active';
       newLog.logFinal =  user.username + ': Deactivate';
@@ -48,7 +48,7 @@ export class UserAccountsComponent implements OnInit {
   activateUser(user: User, currentUser: User) {
     if (currentUser.role === '1') {
       user.accountActive = true;
-      const newLog = new logTrack;
+      const newLog = new LogTrack();
       newLog.logDataInput = 'Activated user ' + user.username;
       newLog.logInitial =  user.username + ': Deactivate';
       newLog.logFinal =  user.username + ': Active';
@@ -63,7 +63,7 @@ export class UserAccountsComponent implements OnInit {
       const passwordInput = prompt('Enter New Password:');
       if (passwordInput !== null && passwordInput !== '') {
          if (passwordInput.length > 6) {
-           const newLog = new logTrack;
+           const newLog = new LogTrack();
            newLog.logDataInput = 'Changed the password of user: ' + user.username;
            newLog.logInitial =  user.username + ' password: *******';
            newLog.logFinal =  user.username + ' password: *******';
@@ -95,7 +95,8 @@ export class UserAccountsComponent implements OnInit {
       this.users = this.allUsers;
     } else {
       this.users = this.users.filter(
-          users => users.username.includes(search) || users.firstName.includes(search) || users.lastName.includes(search));
+          users => users.username.includes(search) || users.firstName.includes(search) || users.lastName.includes(search) ||
+              users.email.includes(search));
     }
   }
 
@@ -234,7 +235,7 @@ export class UserAccountsComponent implements OnInit {
 
     switch (typeOfChange) {
       case 'fName': {
-        const newLog = new logTrack;
+        const newLog = new LogTrack();
         newLog.logDataInput = 'Changed the first name of user: ' + userId.username + ' to ' + this.editField;
         newLog.logInitial =  userId.username + ' first Name: ' + userId.firstName;
         newLog.logFinal =  userId.username + ' first Name: ' + this.editField;
@@ -247,7 +248,7 @@ export class UserAccountsComponent implements OnInit {
       }
       case 'lName': {
 
-        const newLog = new logTrack;
+        const newLog = new LogTrack();
         newLog.logDataInput = 'Changed the last name of user: ' + userId.username + ' to ' + this.editField;
         newLog.logInitial =  userId.username + ' last Name: ' + userId.lastName;
         newLog.logFinal =  userId.username + ' last Name: ' + this.editField;

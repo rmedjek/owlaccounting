@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import { first } from 'rxjs/operators';
 
-import { logTrack, User} from '../_models';
+import { LogTrack, User} from '../_models';
 import { UserService } from '../_services';
 
 @Component({
@@ -21,7 +21,7 @@ export class DropdownUserRolesComponent implements OnInit {
 
   onOptionSelect(selected: string, user: User) {
     if (this.currentUser.role === '1') {
-      const newLog = new logTrack;
+      const newLog = new LogTrack();
       newLog.logDataInput = 'Changed the status of user ' + user.username + ' to ' + this.userRole(selected);
       newLog.logInitial =  user.username + ' status: ' +  this.userRole(user.role);
       newLog.logFinal =  user.username + ' status: ' + this.userRole(selected);
