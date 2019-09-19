@@ -30,6 +30,7 @@ import { CreateUserComponent } from './create-user/create-user.component';
 import { DropdownUserRolesComponent } from './dropdown-user-roles/dropdown-user-roles.component';
 import { TolowerCaseDirective } from './_directives/tolowercase.directive';
 import {ErrorInterceptor, JwtInterceptor} from './_helpers';
+import { ResetpasswordComponent } from './resetpassword/resetpassword.component';
 
 @NgModule({
     imports: [
@@ -60,7 +61,8 @@ import {ErrorInterceptor, JwtInterceptor} from './_helpers';
     LogsPageComponent,
     CreateUserComponent,
     DropdownUserRolesComponent,
-    TolowerCaseDirective
+    TolowerCaseDirective,
+    ResetpasswordComponent
   ],
   providers: [
     AlertService,
