@@ -10,7 +10,8 @@ module.exports = {
     getById,
     create,
     update,
-    delete: _delete
+    delete: _delete,
+    passwordExpired
 };
 
 async function authenticate({ username, password }) {
@@ -46,6 +47,7 @@ async function create(userParam,) {
     const user = new User(userParam);
     user.role = "3";
     user.accountActive = false;
+    user.passwordExpired = false;
     // hash password
     if (userParam.password) {
         user.hash = await hashPassword(userParam);
@@ -90,4 +92,15 @@ async function update(id, userParam) {
 
 async function _delete(id) {
     await User.findByIdAndRemove(id);
+}
+
+async function passwordExpired(id) {
+    Date.prototype.addDays = function(days) {
+        var date = new Date(this.valueOf());
+        date.setDate(date.getDate() + days);    
+    
+         alert(date.addDays(180));
+        if (daysBeforeExpire > 180)
+            user.passwordExpired = true;
+    }
 }

@@ -5,7 +5,11 @@
   margin-right: auto;
   max-width: 1000px;
   float: none;
-box-sizing: border-box;
+  box-sizing: border-box;
+  height:610px;
+  width:80%;
+  border:1px solid #ccc;
+  overflow:auto;
 }
 
 
@@ -48,6 +52,7 @@ a.sort-by:after {
 .search-box,.close-icon,.search-wrapper {
   position: relative;
   padding: 10px;
+  margin-left: 10%;
 
 }
 .search-wrapper {

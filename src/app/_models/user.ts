@@ -6,5 +6,6 @@
   lastName: string;
   email: string;
   accountActive: boolean;
+  passwordExpired: boolean;
   role: string;
 }
