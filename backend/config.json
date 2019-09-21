@@ -1,4 +1,8 @@
 ﻿{
     "connectionString": "mongodb+srv://red:YIFnUECnXEyTMOCF@cluster0-ubxvj.mongodb.net/owlaccounting",
-    "secret": "OwlAccountingSecret09072019"
+    "secret": "OwlAccountingSecret09072019",
+    "username": "tara.blick@ethereal.email",
+    "password": "3D8SJpYaeeRBUuNvqH",
+    "host":    "smtp.ethereal.email",
+    "port": 587
 }

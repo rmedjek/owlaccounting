@@ -10,7 +10,8 @@ module.exports = {
     getById,
     create,
     update,
-    delete: _delete
+    delete: _delete,
+    getJWTToken
 };
 
 async function authenticate({ username, password }) {
@@ -29,6 +30,10 @@ async function authenticate({ username, password }) {
     }
 }
 
+function getJWTToken(payload) {
+    return jwt.sign(payload, config.secret, {expiresIn: '1d',});
+}
+
 async function getAll() {
     return await User.find().select('-hash');
 }
@@ -37,7 +42,7 @@ async function getById(id) {
     return await User.findById(id).select('-hash');
 }
 
-async function create(userParam,) {
+async function create(userParam) {
     // validate
     if (await User.findOne({ username: userParam.username })) {
         throw 'Username "' + userParam.username + '" is already taken';
@@ -91,3 +96,17 @@ async function update(id, userParam) {
 async function _delete(id) {
     await User.findByIdAndRemove(id);
 }
+
+// function validateForgotSchema(body) {
+//     const schema = Joi.object().key({
+//         email: Joi.string()
+//             .email()
+//             .required(),
+//     });
+//     const {error, value} = Joi.validate(body, schema);
+//     if (error && error.details) {
+//         return {error};
+//     }
+//     return {value};
+// }
+

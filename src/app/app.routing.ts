@@ -7,7 +7,7 @@ import { RegisterComponent } from './register';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { UserAccountsComponent } from './user-accounts/user-accounts.component';
 import { LogsPageComponent } from './logs-page/logs-page.component';
-import { ResetpasswordComponent } from './resetpassword/resetpassword.component';
+import { ForgotPasswordComponent } from './login/forgot-password/forgot-password.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -15,8 +15,8 @@ const appRoutes: Routes = [
     { path: 'register', component: RegisterComponent },
     { path: 'userAccounts', component: UserAccountsComponent },
     { path: 'createUser', component: CreateUserComponent },
-    { path: 'logsPage', component: LogsPageComponent},
-    { path: 'resetpassword', component: ResetpasswordComponent},
+    { path: 'logsPage', component: LogsPageComponent },
+    { path: 'forgotpassword', component: ForgotPasswordComponent },
 
     // otherwise redirect to home
     { path: '**', redirectTo: '' }

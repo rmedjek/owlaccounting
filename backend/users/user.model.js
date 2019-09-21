@@ -10,7 +10,8 @@ const schema = new Schema({
     email: { type: String,   required: true, unique: true },
     role: { type: String, required: true },
     accountActive: { type: Boolean, required: true },
-    createdDate: { type: Date, default: Date.now }
+    createdDate: { type: Date, default: Date.now },
+    resetToken: { type: String, required: false }
 });
 
 schema.plugin(uniqueValidator);

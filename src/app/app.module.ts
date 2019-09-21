@@ -17,7 +17,7 @@ import {
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
-    MatListModule,
+    MatListModule, MatProgressSpinnerModule,
     MatSidenavModule,
     MatToolbarModule
 } from '@angular/material';
@@ -30,7 +30,7 @@ import { CreateUserComponent } from './create-user/create-user.component';
 import { DropdownUserRolesComponent } from './dropdown-user-roles/dropdown-user-roles.component';
 import { TolowerCaseDirective } from './_directives/tolowercase.directive';
 import {ErrorInterceptor, JwtInterceptor} from './_helpers';
-import { ResetpasswordComponent } from './resetpassword/resetpassword.component';
+import { ForgotPasswordComponent } from './login/forgot-password/forgot-password.component';
 
 @NgModule({
     imports: [
@@ -48,7 +48,8 @@ import { ResetpasswordComponent } from './resetpassword/resetpassword.component'
         MatToolbarModule,
         MatSidenavModule,
         MatListModule,
-        MatIconModule
+        MatIconModule,
+        MatProgressSpinnerModule
     ],
   declarations: [
     AppComponent,
@@ -62,7 +63,7 @@ import { ResetpasswordComponent } from './resetpassword/resetpassword.component'
     CreateUserComponent,
     DropdownUserRolesComponent,
     TolowerCaseDirective,
-    ResetpasswordComponent
+    ForgotPasswordComponent
   ],
   providers: [
     AlertService,

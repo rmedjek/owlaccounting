@@ -1,11 +1,10 @@
 ﻿import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { throwError, forkJoin } from 'rxjs';
+import {throwError, forkJoin, Observable} from 'rxjs';
 
 import { environment } from '../../environments/environment';
 import { LogTrack, User } from '../_models';
 import { LogTrackService } from './logTrack.service';
-
 
 @Injectable()
 export class UserService {
@@ -55,6 +54,10 @@ export class UserService {
 
     delete(id: number) {
         return this.http.delete(`${environment.apiUrl}/users/` + id);
+    }
+
+    forgotPassword(data: { email: string }): Observable<{ message: string }> {
+        return this.http.post<{ message: string }>(`${environment.apiUrl}/users/forgotpassword`, data);
     }
 }
 
