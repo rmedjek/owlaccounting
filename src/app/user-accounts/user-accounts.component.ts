@@ -95,8 +95,7 @@ export class UserAccountsComponent implements OnInit {
       this.users = this.allUsers;
     } else {
       this.users = this.users.filter(
-          users => users.username.includes(search) || users.firstName.includes(search) || users.lastName.includes(search) ||
-              users.email.includes(search));
+          users => users.username.includes(search) || users.firstName.includes(search) || users.lastName.includes(search));
     }
   }
 
