@@ -5,7 +5,7 @@ const config = require('../config');
 module.exports = sendEmail;
 
 function sendEmail (options) {
-    new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         const transpoter = nodemailer.createTransport({
             host: config.host,
             port: config.port,
@@ -18,12 +18,14 @@ function sendEmail (options) {
             wordwrap: 130,
         });
         const mailOptions = {
-            from: '"Owl Accounting 👻👻" <noreplay@owlaccounting.com>',
+            from: '"Owl Accounting 👻👻👻" <noreplay@owlaccounting.com>',
             to: options.email,
             subject: options.subject,
             text,
             html: options.html,
         };
+        console.log('MailOptions: ' + Object.assign({}, mailOptions));
+
         transpoter.sendMail(mailOptions, (error, info) => {
             if (error) {
                 return reject(error);

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {AlertService, UserService} from '../../_services';
-import {first} from 'rxjs/operators';
+import { UserService} from '../../_services';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-reset-password',
@@ -15,8 +15,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private userService: UserService,
-    private alertService: AlertService) { }
+    private userService: UserService) { }
 
   ngOnInit() {
     this.initForm();

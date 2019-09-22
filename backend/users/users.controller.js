@@ -61,19 +61,28 @@ function _delete(req, res, next) {
         .catch(err => next(err));
 }
 
-async function forgotPassword(req, res, userParam) {
+async function forgotPassword(req, res, value) {
     try {
      //   const { value, error } = userService.validateForgotSchema(req.body);
      //    if (error && error.details) {
      //        return res.sendStatus(400).json(error);
      //    }
-        const user = await User.findOne({ email: userParam.email });
-        console.log('User: ' + user);
+        const criteria = {
+            $or: [
+                { 'google.email':  value.email },
+                { 'github.email':  value.email },
+                { 'twitter.email': value.email },
+                { 'local.email':   value.email },
+            ],
+        };
+        const user = await User.findOne(criteria);
+        console.log('User: ' + user.email);
         if (!user) {
-            return res.sendStatus(404).json({ err: 'could not find user' });
+            const error = 'could not find user';
+            res.status(404).json( { error });
+            return ;
         }
         const token = userService.getJWTToken({ id: user._id });
-        console.log(token);
         const resetLink = `
        <h4> Please click on the link to reset the password </h4>
        <a href ='${config.apiUrl}/reset-password/${token}'>Reset Password</a>`;
@@ -82,7 +91,7 @@ async function forgotPassword(req, res, userParam) {
         const results = await sendEmail({
             html: resetLink,
             subject: 'Forgot Password',
-            to: sanitizedUser.email,
+            email: sanitizedUser.email,
         });
         return res.json(results);
     } catch (err) {

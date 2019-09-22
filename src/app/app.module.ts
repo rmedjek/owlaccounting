@@ -49,7 +49,7 @@ import { ForgotPasswordComponent } from './login/forgot-password/forgot-password
         MatSidenavModule,
         MatListModule,
         MatIconModule,
-        MatProgressSpinnerModule
+        MatProgressSpinnerModule,
     ],
   declarations: [
     AppComponent,
