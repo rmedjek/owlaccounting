@@ -17,15 +17,21 @@ module.exports = {
 async function authenticate({ username, password }) {
     const user = await User.findOne({ username });
 
+    passwordExpired(user); //checks password for expiration upon authenication
+
     if (user && bcrypt.compareSync(password, user.hash)) {
-        if(user.accountActive === true) {
-            const {hash, ...userWithoutHash} = user.toObject();
-            const token = jwt.sign({sub: user.id}, config.secret, { expiresIn: '1h' });
-            return {
-                ...userWithoutHash, token
-            };
+        if(user.passwordExpired === false){
+            if(user.accountActive === true) {
+                const {hash, ...userWithoutHash} = user.toObject();
+                const token = jwt.sign({sub: user.id}, config.secret, { expiresIn: '1h' });
+                return {
+                    ...userWithoutHash, token
+                };
+            } else {
+                throw 'Your account is pending approval.'
+            }
         } else {
-            throw 'Your account is pending approval.'
+            throw 'Your password has expired.'
         }
     }
 }
@@ -94,13 +100,16 @@ async function _delete(id) {
     await User.findByIdAndRemove(id);
 }
 
-async function passwordExpired(id) {
-    Date.prototype.addDays = function(days) {
-        var date = new Date(this.valueOf());
-        date.setDate(date.getDate() + days);    
+async function passwordExpired(user) {
+    var duration = 180; //In Days
+    var creationDate = user.passwordCreationDate;
+    var date = new Date();
+    var expire =  creationDate + (duration * 24 * 60 * 60 * 1000); //time in milliseconds
     
-         alert(date.addDays(180));
-        if (daysBeforeExpire > 180)
+        if (expire < date){
             user.passwordExpired = true;
+            throw "Your password has expired, please contact your system administrator ";
+        }
     }
-}
+
+
