@@ -69,6 +69,9 @@ export class UserAccountsComponent implements OnInit {
            newLog.logFinal =  user.username + ' password: *******';
            user.password = passwordInput.toString();
            user.passwordCreationDate = new Date();
+           if (user.passwordExpired == true){
+            user.passwordExpired = false;
+           }
            this.userService.update(user, currentUser, newLog).pipe(first()).subscribe(() => {
              this.loadAllUsers();
            });
