@@ -7,5 +7,6 @@
   email: string;
   accountActive: boolean;
   passwordExpired: boolean;
+  passwordCreationDate: Date;
   role: string;
 }
