@@ -62,12 +62,13 @@ export class UserAccountsComponent implements OnInit {
     if (this.currentUser.role === '1') {
       const passwordInput = prompt('Enter New Password:');
       if (passwordInput !== null && passwordInput !== '') {
-         if (passwordInput.length > 6) {
+         if (passwordInput.length > 8) {
            const newLog = new LogTrack();
            newLog.logDataInput = 'Changed the password of user: ' + user.username;
            newLog.logInitial =  user.username + ' password: *******';
            newLog.logFinal =  user.username + ' password: *******';
            user.password = passwordInput.toString();
+           user.passwordCreationDate = new Date();
            this.userService.update(user, currentUser, newLog).pipe(first()).subscribe(() => {
              this.loadAllUsers();
            });
