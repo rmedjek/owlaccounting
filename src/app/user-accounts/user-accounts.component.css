@@ -1,13 +1,11 @@
 .sidenav{
   text-align: center;
   left:50%;
-  margin-left: 100px;
   margin-right: auto;
-  max-width: 1000px;
   float: none;
   box-sizing: border-box;
   height:610px;
-  width:80%;
+  width:%;
   border:1px solid #ccc;
   overflow:auto;
 }

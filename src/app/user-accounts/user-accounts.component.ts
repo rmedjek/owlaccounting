@@ -58,6 +58,32 @@ export class UserAccountsComponent implements OnInit {
     }
   }
 
+  passwordExpired(user: User, currentUser: User) {
+    if (currentUser.role === '1') {
+      user.passwordExpired = true;
+      const newLog = new LogTrack();
+      newLog.logDataInput = 'Password Expired ' + user.username;
+      newLog.logInitial =  user.username + ': Deactivate';
+      newLog.logFinal =  user.username + ': Active';
+      this.userService.update(user, currentUser, newLog).pipe(first()).subscribe(() => {
+        this.loadAllUsers();
+      });
+    }
+  }
+
+  passwordNotExpired(user: User, currentUser: User) {
+    if (currentUser.role === '1') {
+      user.passwordExpired = false;
+      const newLog = new LogTrack();
+      newLog.logDataInput = 'Password Expired ' + user.username;
+      newLog.logInitial =  user.username + ': Deactivate';
+      newLog.logFinal =  user.username + ': Active';
+      this.userService.update(user, currentUser, newLog).pipe(first()).subscribe(() => {
+        this.loadAllUsers();
+      });
+    }
+  }
+
   resetPassword(user: User, currentUser: User) {
     if (this.currentUser.role === '1') {
       const passwordInput = prompt('Enter New Password:');
@@ -223,6 +249,16 @@ export class UserAccountsComponent implements OnInit {
       this.sortTracker = 1;
     } else {
       this.users.sort((x, y) => Number(y.accountActive) - Number(x.accountActive));
+      this.sortTracker = 0;
+    }
+  }
+
+  public sortByPasswordExpired() {
+    if (this.sortTracker === 0) {
+      this.users.sort((x, y) => Number(x.passwordExpired) - Number(y.passwordExpired));
+      this.sortTracker = 1;
+    } else {
+      this.users.sort((x, y) => Number(y.passwordExpired) - Number(x.passwordExpired));
       this.sortTracker = 0;
     }
   }
