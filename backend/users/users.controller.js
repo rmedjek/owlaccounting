@@ -75,6 +75,7 @@ async function forgotPassword(req, res, value) {
                 { 'local.email':   value.email },
             ],
         };
+        console.log('Criteria ' + JSON.stringify(criteria));
         const user = await User.findOne(criteria);
         console.log('User: ' + user.email);
         if (!user) {
@@ -83,16 +84,18 @@ async function forgotPassword(req, res, value) {
             return ;
         }
         const token = userService.getJWTToken({ id: user._id });
-        const resetLink = `
-       <h4> Please click on the link to reset the password </h4>
-       <a href ='${config.apiUrl}/reset-password/${token}'>Reset Password</a>`;
-
+        console.log('token ' + token);
+        const resetLink = `<h4> Please click on the link to reset the password </h4>
+                            <a href ='${config.apiUrl}/reset-password/${token}'>Reset Password</a>`;
+        console.log('reset link' + resetLink);
         const sanitizedUser = userService.getById(user.id);
+        console.log('sanitized ' + JSON.stringify(sanitizedUser));
         const results = await sendEmail({
             html: resetLink,
             subject: 'Forgot Password',
             email: sanitizedUser.email,
         });
+        console.log('results '+ res.json(results));
         return res.json(results);
     } catch (err) {
         console.log(err);

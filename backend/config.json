@@ -1,6 +1,7 @@
 ﻿{
     "connectionString": "mongodb+srv://red:YIFnUECnXEyTMOCF@cluster0-ubxvj.mongodb.net/owlaccounting",
     "secret": "OwlAccountingSecret09072019",
+    "apiUrl": "http://localhost:4000",
     "username": "tara.blick@ethereal.email",
     "password": "3D8SJpYaeeRBUuNvqH",
     "host":    "smtp.ethereal.email",

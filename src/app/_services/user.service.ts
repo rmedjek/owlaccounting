@@ -56,7 +56,10 @@ export class UserService {
         return this.http.delete(`${environment.apiUrl}/users/` + id);
     }
 
-    forgotPassword(data: { email: string }): Observable<{ message: string }> {
+    forgotPassword(data: { email: string }) {
+        this.http.post(`${environment.apiUrl}/users/forgotpassword`, data).subscribe(dataa => {
+            console.log('Frontend service: ' + JSON.stringify(dataa));
+        });
         return this.http.post<{ message: string }>(`${environment.apiUrl}/users/forgotpassword`, data);
     }
 }

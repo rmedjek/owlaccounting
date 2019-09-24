@@ -29,6 +29,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
+   // this.isResultsLoading = true
 
     if (this.resetForm.invalid) {
       return;
@@ -37,7 +38,7 @@ export class ForgotPasswordComponent implements OnInit {
     this.userService.forgotPassword(this.resetForm.value)
         .pipe(first())
         .subscribe(data => {
-          console.error('Here ' + data);
+          console.error('forgotPassword subscribe ' + JSON.stringify(data));
         }, error => {
           console.log(error);
         });

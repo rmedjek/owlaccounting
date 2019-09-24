@@ -8,12 +8,15 @@ function sendEmail (options) {
     return new Promise((resolve, reject) => {
         const transpoter = nodemailer.createTransport({
             host: config.host,
+            debug: true,
             port: config.port,
             auth: {
                 user: config.username,
                 pass: config.password,
             },
         });
+
+        console.log('transporter ' + transpoter)
         const text = htmlToText.fromString(options.html, {
             wordwrap: 130,
         });
@@ -24,7 +27,7 @@ function sendEmail (options) {
             text,
             html: options.html,
         };
-        console.log('MailOptions: ' + Object.assign({}, mailOptions));
+        console.log('MailOptions: ' + JSON.stringify(mailOptions));
 
         transpoter.sendMail(mailOptions, (error, info) => {
             if (error) {
