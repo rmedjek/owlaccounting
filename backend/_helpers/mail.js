@@ -8,7 +8,6 @@ function sendEmail (options) {
     return new Promise((resolve, reject) => {
         const transpoter = nodemailer.createTransport({
             host: config.host,
-            debug: true,
             port: config.port,
             auth: {
                 user: config.username,
@@ -22,7 +21,7 @@ function sendEmail (options) {
         });
         const mailOptions = {
             from: '"Owl Accounting 👻👻👻" <noreplay@owlaccounting.com>',
-            to: options.email,
+            to: 'test@email.com',
             subject: options.subject,
             text,
             html: options.html,

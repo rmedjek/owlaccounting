@@ -17,6 +17,7 @@ const appRoutes: Routes = [
     { path: 'createUser', component: CreateUserComponent },
     { path: 'logsPage', component: LogsPageComponent },
     { path: 'forgotpassword', component: ForgotPasswordComponent },
+    { path: 'reset-password/:token', component: ForgotPasswordComponent },
 
     // otherwise redirect to home
     { path: '**', redirectTo: '' }

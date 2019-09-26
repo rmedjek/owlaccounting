@@ -2,6 +2,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const db = require('../_helpers/db');
+const Joi = require('@hapi/joi');
 const User = db.User;
 
 module.exports = {
@@ -11,13 +12,14 @@ module.exports = {
     create,
     update,
     delete: _delete,
-    getJWTToken
+    getJWTToken,
+    getEncryptedPassword
 };
 
 async function authenticate({ username, password }) {
     const user = await User.findOne({ username });
 
-    if (user && bcrypt.compareSync(password, user.hash)) {
+    if (user && await bcrypt.compareSync(password, user.hash)) {
         if(user.accountActive === true) {
             const {hash, ...userWithoutHash} = user.toObject();
             const token = jwt.sign({sub: user.id}, config.secret, { expiresIn: '1h' });
@@ -30,8 +32,8 @@ async function authenticate({ username, password }) {
     }
 }
 
-function getJWTToken(payload) {
-    return jwt.sign(payload, config.secret, {expiresIn: '1d',});
+async function getJWTToken(user) {
+    return jwt.sign({sub: user.id}, config.secret, { expiresIn: '1h' });
 }
 
 async function getAll() {
@@ -59,14 +61,18 @@ async function create(userParam) {
     await user.save();
 }
 
+async function getEncryptedPassword(password) {
+    const salt = await bcrypt.genSalt();
+    return await bcrypt.hash(password, salt);
+}
+
 async function hashPassword(User) {
     const { password }  = User;
-    const passwordHash = await new Promise((resolve, reject) => {
+    return await new Promise((resolve, reject) => {
         bcrypt.hash(password, 10)
             .then((res) => resolve(res))
             .catch((err) => reject(err))
     });
-    return passwordHash;
 }
 
 async function update(id, userParam) {
@@ -110,3 +116,17 @@ async function _delete(id) {
 //     return {value};
 // }
 
+// function validateSignupSchema(body) {
+//     const schema = Joi.object({
+//         email: Joi.string()
+//             .email()
+//             .required(),
+//         password: Joi.string().required(),
+//         name: Joi.string().required(),
+//     });
+//     const { error, value } = Joi.validate(body, schema);
+//     if (error && error.details) {
+//         return { error };
+//     }
+//     return { value };
+// }

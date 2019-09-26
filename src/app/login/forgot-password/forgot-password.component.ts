@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService} from '../../_services';
 import { first } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-reset-password',
@@ -15,7 +16,8 @@ export class ForgotPasswordComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private userService: UserService) { }
+    private userService: UserService,
+    private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.initForm();
@@ -29,7 +31,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-   // this.isResultsLoading = true
+    this.isResultsLoading = true;
 
     if (this.resetForm.invalid) {
       return;
@@ -39,9 +41,22 @@ export class ForgotPasswordComponent implements OnInit {
         .pipe(first())
         .subscribe(data => {
           console.error('forgotPassword subscribe ' + JSON.stringify(data));
+          this.snackBar.open(data.message, 'success', {
+            duration: 3000
+          });
         }, error => {
-          console.log(error);
+          this.errorHandler(error, 'Something went wrong');
+        }, () => {
+          this.isResultsLoading = false;
         });
+  }
+
+  private errorHandler(error, message) {
+    this.isResultsLoading = false;
+    console.error(error);
+    this.snackBar.open(message, 'Error', {
+      duration: 2000
+    });
   }
 }
 

@@ -4,8 +4,9 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const errorHandler = require('./backend/_helpers/error-handler');
+const passport = require('passport');
 const jwt = require('./backend/_helpers/jwt');
-
+const setGlobalMiddleware = require('./backend/_middlewares/global-middleware');
 
 app.use((req, res, next) => {
     res.append('Access-Control-Allow-Origin' , 'http://localhost:4200');
@@ -20,8 +21,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 
+// register global middleware
+setGlobalMiddleware(app);
+
 // use JWT auth to secure the api
-app.use(jwt());
+//app.use(jwt());
 
 // API Routes
 app.use('/users', require('./backend/users/users.controller'));

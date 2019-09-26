@@ -1,5 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {throwError, forkJoin, Observable} from 'rxjs';
 
 import { environment } from '../../environments/environment';
@@ -61,6 +61,16 @@ export class UserService {
             console.log('Frontend service: ' + JSON.stringify(dataa));
         });
         return this.http.post<{ message: string }>(`${environment.apiUrl}/users/forgotpassword`, data);
+    }
+
+    resetPassword(body) {
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type' : 'application/json',
+                 Authorization: `bearer ${ body.token }`
+            })
+        };
+        return this.http.put(`${environment.apiUrl}/users/reset-password`, { password: body.password }, httpOptions);
     }
 }
 
