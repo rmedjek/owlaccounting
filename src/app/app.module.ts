@@ -13,13 +13,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard } from './_guards';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
-    MatButtonModule, MatCardModule, MatExpansionModule,
+    MatButtonModule, MatCardModule, MatDatepickerModule, MatExpansionModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
-    MatListModule, MatMenuModule, MatPaginatorModule, MatProgressSpinnerModule,
+    MatListModule, MatMenuModule, MatNativeDateModule, MatPaginatorModule, MatProgressSpinnerModule,
     MatSidenavModule, MatSortModule, MatTableModule,
-    MatToolbarModule
+    MatToolbarModule, MatTooltipModule
 } from '@angular/material';
 import { RegisterComponent } from './register';
 import { UserService } from './_services';
@@ -33,9 +33,8 @@ import {ErrorInterceptor, JwtInterceptor} from './_helpers';
 import { ChartOfAccountsService } from './_services/chart-of-accounts.service';
 import { ChartOfAccountsComponent } from './chart-of-accounts/chart-of-accounts.component';
 import { AccountTypeSelectorComponent } from './chart-of-accounts/account-type-selector/account-type-selector.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { CreateNewAccountComponent } from './chart-of-accounts/create-new-account/create-new-account.component';
-import { TwoDigitDecimaNumberDirective } from './_directives/decimalPlaces.directive';
 
 @NgModule({
     imports: [CommonModule,
@@ -58,7 +57,10 @@ import { TwoDigitDecimaNumberDirective } from './_directives/decimalPlaces.direc
         MatProgressSpinnerModule,
         MatSortModule,
         MatMenuModule,
-        MatPaginatorModule
+        MatPaginatorModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatTooltipModule
     ],
   declarations: [
     AppComponent,
@@ -74,8 +76,7 @@ import { TwoDigitDecimaNumberDirective } from './_directives/decimalPlaces.direc
     TolowerCaseDirective,
     ChartOfAccountsComponent,
     AccountTypeSelectorComponent,
-    CreateNewAccountComponent,
-    TwoDigitDecimaNumberDirective
+    CreateNewAccountComponent
   ],
   providers: [
     AuthGuard,
@@ -84,6 +85,8 @@ import { TwoDigitDecimaNumberDirective } from './_directives/decimalPlaces.direc
     UserService,
     LogTrackService,
     ChartOfAccountsService,
+    CurrencyPipe,
+    MatDatepickerModule,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],

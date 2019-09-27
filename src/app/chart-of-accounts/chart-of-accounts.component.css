@@ -3,6 +3,7 @@
 }
 .title {
   text-align: center;
+  float: right;
 }
 
 .table {

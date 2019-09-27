@@ -3,10 +3,17 @@
     <app-sidebar-menu></app-sidebar-menu>
     <div *ngIf="accountBalanceError" class="alert-danger">Account Balance must be zero</div>
     <br>
-    <h2 class="title">Chart of Accounts</h2>
+    <mat-form-field class="mat-calendar">
+      <input matInput [matDatepicker]="picker" placeholder="Calendar">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker touchUi #picker></mat-datepicker>
+    </mat-form-field>
     <div>
       <div class="menu-bar">
-        <button mat-button [routerLink]="['/createNewAccount']" *ngIf="currentUser.role === '1'">New Account</button>
+        <button mat-button
+                matTooltip="Create a new account record"
+                [routerLink]="['/createNewAccount']"
+                *ngIf="currentUser.role === '1'">New Account</button>
       </div>
       <form>
 
@@ -50,12 +57,16 @@
       <td><app-account-type-selector [account]="chartOfAccounts"></app-account-type-selector></td>
       <td contenteditable="true" (blur)="changeValue(chartOfAccounts, 'subtype', $event)">{{chartOfAccounts.accountSubType}} </td>
       <td contenteditable="true" (blur)="changeValue(chartOfAccounts, 'normalSide', $event)">{{chartOfAccounts.normalSide}} </td>
-      <td contenteditable="true" (blur)="changeValue(chartOfAccounts, 'initBalance', $event)">{{chartOfAccounts.accountInitBalance}}</td>
-      <td contenteditable="true" (blur)="changeValue(chartOfAccounts, 'balance', $event)">{{chartOfAccounts.accountBalance | number:'1.2'}} </td>
+      <td contenteditable="true" (blur)="changeValue(chartOfAccounts, 'initBalance', $event)">
+        {{chartOfAccounts.accountInitBalance | currency: 'USD': true: '1.2-2'}}</td>
+      <td contenteditable="true" (blur)="changeValue(chartOfAccounts, 'balance', $event)">
+        {{chartOfAccounts.accountBalance | currency: 'USD': true: '1.2-2'}} </td>
       <td >{{chartOfAccounts.createdBy}} </td>
       <td >{{chartOfAccounts.createdDate |date:'MM/dd/yyyy h:mma'}} </td>
-      <td contenteditable="true" (blur)="changeValue(chartOfAccounts, 'debit', $event)">{{chartOfAccounts.debit}} </td>
-      <td contenteditable="true" (blur)="changeValue(chartOfAccounts, 'credit', $event)">{{chartOfAccounts.credit}} </td>
+      <td contenteditable="true" (blur)="changeValue(chartOfAccounts, 'debit', $event)">
+        {{chartOfAccounts.debit | currency: 'USD': true: '1.2-2'}} </td>
+      <td contenteditable="true" (blur)="changeValue(chartOfAccounts, 'credit', $event)">
+        {{chartOfAccounts.credit | currency: 'USD': true: '1.2-2'}} </td>
       <td >{{accountActiveStatus(chartOfAccounts.accountActive)}}</td>
       <td contenteditable="true" (blur)="changeValue(chartOfAccounts, 'statement', $event)">{{chartOfAccounts.statement}} </td>
       <td contenteditable="true" (blur)="changeValue(chartOfAccounts, 'comment', $event)">{{chartOfAccounts.comment}} </td>
