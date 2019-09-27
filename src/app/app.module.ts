@@ -17,8 +17,8 @@ import {
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
-    MatListModule,
-    MatSidenavModule,
+    MatListModule, MatMenuModule, MatPaginatorModule, MatProgressSpinnerModule,
+    MatSidenavModule, MatSortModule, MatTableModule,
     MatToolbarModule
 } from '@angular/material';
 import { RegisterComponent } from './register';
@@ -30,9 +30,15 @@ import { CreateUserComponent } from './create-user/create-user.component';
 import { DropdownUserRolesComponent } from './dropdown-user-roles/dropdown-user-roles.component';
 import { TolowerCaseDirective } from './_directives/tolowercase.directive';
 import {ErrorInterceptor, JwtInterceptor} from './_helpers';
+import { ChartOfAccountsService } from './_services/chart-of-accounts.service';
+import { ChartOfAccountsComponent } from './chart-of-accounts/chart-of-accounts.component';
+import { AccountTypeSelectorComponent } from './chart-of-accounts/account-type-selector/account-type-selector.component';
+import { CommonModule } from '@angular/common';
+import { CreateNewAccountComponent } from './chart-of-accounts/create-new-account/create-new-account.component';
+import { TwoDigitDecimaNumberDirective } from './_directives/decimalPlaces.directive';
 
 @NgModule({
-    imports: [
+    imports: [CommonModule,
         BrowserModule,
         HttpClientModule,
         AppRoutingModule,
@@ -47,7 +53,12 @@ import {ErrorInterceptor, JwtInterceptor} from './_helpers';
         MatToolbarModule,
         MatSidenavModule,
         MatListModule,
-        MatIconModule
+        MatIconModule,
+        MatTableModule,
+        MatProgressSpinnerModule,
+        MatSortModule,
+        MatMenuModule,
+        MatPaginatorModule
     ],
   declarations: [
     AppComponent,
@@ -60,14 +71,19 @@ import {ErrorInterceptor, JwtInterceptor} from './_helpers';
     LogsPageComponent,
     CreateUserComponent,
     DropdownUserRolesComponent,
-    TolowerCaseDirective
+    TolowerCaseDirective,
+    ChartOfAccountsComponent,
+    AccountTypeSelectorComponent,
+    CreateNewAccountComponent,
+    TwoDigitDecimaNumberDirective
   ],
   providers: [
+    AuthGuard,
     AlertService,
     AuthenticationService,
     UserService,
     LogTrackService,
-    AuthGuard,
+    ChartOfAccountsService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],

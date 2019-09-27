@@ -1,0 +1,90 @@
+<div class="row">
+  <div class="col-sm-6 offset-sm-3">
+    <app-sidebar-menu></app-sidebar-menu>
+    <div *ngIf="accountBalanceError" class="alert-danger">Account Balance must be zero</div>
+    <br>
+    <h2 class="title">Chart of Accounts</h2>
+    <div>
+      <div class="menu-bar">
+        <button mat-button [routerLink]="['/createNewAccount']" *ngIf="currentUser.role === '1'">New Account</button>
+      </div>
+      <form>
+
+        <input type="search" id="myInput" required class="search-box" (keyup)="loadUsersBySearch()"
+               (keypress)="loadUsersBySearch()" placeholder="Search by name or username" title="Type in a name">
+        <button class="close-icon" (click)="resetInput()" type="reset"></button>
+
+      </form>
+    </div>
+  </div>
+</div>
+<div class="sidenav">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th (click)="sortByAccountnumber()"><a>account#</a> <a class="sort-by"></a></th>
+      <th (click)="sortByOrder()"><a>order</a> <a class="sort-by"></a></th>
+      <th (click)="sortByAccountName()"><a>name</a> <a class="sort-by"></a></th>
+      <th> <a>description</a> <a class="sort-by"></a></th>
+      <th (click)="sortByAccountType()"><a>type</a> <a class="sort-by"></a></th>
+      <th (click)="sortByAccountSubType()"><a>subtype</a> <a class="sort-by"></a></th>
+      <th> <a>normalSide</a> <a class="sort-by"></a></th>
+      <th (click)="sortByAccountBalance()"><a>balance</a> <a class="sort-by"></a></th>
+      <th><a>init balance</a> <a class="sort-by"></a></th>
+      <th (click)="sortByAccountCreatedBy()"><a>createdBy</a> <a class="sort-by"></a></th>
+      <th (click)="sortByAccountCreatedOn()"><a>createdOn</a> <a class="sort-by"></a></th>
+      <th><a>debit</a> <a class="sort-by"></a></th>
+      <th><a>credit</a> <a class="sort-by"></a></th>
+      <th (click)="sortByAccountStatus()"><a>active</a> <a class="sort-by"></a></th>
+      <th><a>statement</a> <a class="sort-by"></a></th>
+      <th><a>comment</a> <a class="sort-by"></a></th>
+      <th *ngIf="isAdmin(currentUser)" (click)="sortByAccountStatus()"><a>Deactivate/Activate</a> <a class="sort-by"></a></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let chartOfAccounts of accountList.reverse();" [hidden]="currentUser.role !== '1'">
+      <td >{{chartOfAccounts.accountNumber}} </td>
+      <td contenteditable="true" (blur)="changeValue(chartOfAccounts, 'order', $event)">{{chartOfAccounts.order}} </td>
+      <td contenteditable="true" (blur)="changeValue(chartOfAccounts, 'name', $event)">{{chartOfAccounts.accountName}} </td>
+      <td contenteditable="true" (blur)="changeValue(chartOfAccounts, 'desc', $event)">{{chartOfAccounts.accountDesc}} </td>
+      <td><app-account-type-selector [account]="chartOfAccounts"></app-account-type-selector></td>
+      <td contenteditable="true" (blur)="changeValue(chartOfAccounts, 'subtype', $event)">{{chartOfAccounts.accountSubType}} </td>
+      <td contenteditable="true" (blur)="changeValue(chartOfAccounts, 'normalSide', $event)">{{chartOfAccounts.normalSide}} </td>
+      <td contenteditable="true" (blur)="changeValue(chartOfAccounts, 'initBalance', $event)">{{chartOfAccounts.accountInitBalance}}</td>
+      <td contenteditable="true" (blur)="changeValue(chartOfAccounts, 'balance', $event)">{{chartOfAccounts.accountBalance | number:'1.2'}} </td>
+      <td >{{chartOfAccounts.createdBy}} </td>
+      <td >{{chartOfAccounts.createdDate |date:'MM/dd/yyyy h:mma'}} </td>
+      <td contenteditable="true" (blur)="changeValue(chartOfAccounts, 'debit', $event)">{{chartOfAccounts.debit}} </td>
+      <td contenteditable="true" (blur)="changeValue(chartOfAccounts, 'credit', $event)">{{chartOfAccounts.credit}} </td>
+      <td >{{accountActiveStatus(chartOfAccounts.accountActive)}}</td>
+      <td contenteditable="true" (blur)="changeValue(chartOfAccounts, 'statement', $event)">{{chartOfAccounts.statement}} </td>
+      <td contenteditable="true" (blur)="changeValue(chartOfAccounts, 'comment', $event)">{{chartOfAccounts.comment}} </td>
+      <td [hidden]="!chartOfAccounts.accountActive"><a (click)="deactivateAccount(chartOfAccounts)" class="text-danger">Deactivate</a></td>
+      <td [hidden]="chartOfAccounts.accountActive"><a (click)="activateAccount(chartOfAccounts)" class="text-danger">Activate</a></td>
+    </tr>
+    </tbody>
+
+    <tbody>
+    <tr *ngFor="let chartOfAccounts of accountList" [hidden]="currentUser.role === '1'">
+      <td >{{chartOfAccounts.accountNumber}} </td>
+      <td>{{chartOfAccounts.accountName}}</td>
+      <td >{{chartOfAccounts.accountDesc}} </td>
+      <td >{{chartOfAccounts.accountType}} </td>
+      <td >{{chartOfAccounts.accountSubType}} </td>
+      <td>{{chartOfAccounts.normalSide}}</td>
+      <td>{{chartOfAccounts.accountInitBalance | number: '1.2'}}</td>
+      <td >{{chartOfAccounts.accountBalance | number:'1.2'}} </td>
+      <td>{{chartOfAccounts.order | number: '1.2'}}</td>
+      <td >{{chartOfAccounts.createdBy}} </td>
+      <td >{{chartOfAccounts.createdDate |date:'MM/dd/yyyy h:mma'}} </td>
+      <td>{{chartOfAccounts.debit | number: '1.2'}}</td>
+      <td>{{chartOfAccounts.credit | number: '1.2'}}</td>
+      <td >{{accountActiveStatus(chartOfAccounts.accountActive)}}</td>
+      <td>{{chartOfAccounts.statement}}</td>
+      <td>{{chartOfAccounts.comment}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+

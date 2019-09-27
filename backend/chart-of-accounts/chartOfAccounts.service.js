@@ -1,6 +1,6 @@
 ﻿const db = require('../_helpers/db');
 const ChartOfAccountsService = db.chartOfAccounts;
-const Account = db.chartOfAccounts;
+const ChartOfAccounts = db.chartOfAccounts;
 
 module.exports = {
     getAll,
@@ -13,25 +13,31 @@ async function getAll() {
 }
 
 async function createAccount(userParam) {
-    const Account = new ChartOfAccountsService();
-    Account.accountNumber = userParam.accountNumber;
-    Account.accountName = userParam.accountName;
-    Account.accountType = userParam.accountType;
-    Account.accountSubType = userParam.accountSubType;
-    Account.accountBalance = userParam.accountBalance;
-    Account.accountTerm = userParam.accountTerm;
-    Account.createdBy = userParam.createdBy;
-    Account.createdDate = userParam.createdDate;
-    Account.accountDesc = userParam.accountDesc;
-    Account.accountInitBalance = userParam.accountInitBalance;
-    Account.accountActive = true;
-    await Account.save();
+    const chartOfAccounts = new ChartOfAccountsService();
+    chartOfAccounts.accountNumber = userParam.accountNumber;
+    chartOfAccounts.accountName = userParam.accountName;
+    chartOfAccounts.accountDesc = userParam.accountDesc;
+    chartOfAccounts.normalSide = userParam.normalSide;
+    chartOfAccounts.accountType = userParam.accountType;
+    chartOfAccounts.accountSubType = userParam.accountSubType;
+    chartOfAccounts.accountBalance = userParam.accountBalance;
+    chartOfAccounts.accountInitBalance = userParam.accountInitBalance;
+    chartOfAccounts.accountTerm = userParam.accountTerm;
+    chartOfAccounts.createdBy = userParam.createdBy;
+    chartOfAccounts.createdDate = userParam.createdDate;
+    chartOfAccounts.debit = userParam.debit;
+    chartOfAccounts.credit = userParam.credit;
+    chartOfAccounts.order = userParam.order;
+    chartOfAccounts.comment = userParam.comment;
+    chartOfAccounts.statement = userParam.statement;
+    chartOfAccounts.accountActive = true;
+    await chartOfAccounts.save();
 }
 
 async function update(id, userParam) {
-    const account = await Account.findById(id);
+    const account = await ChartOfAccounts.findById(id);
     // validate
-    if (!account) throw 'Account not found';
+    if (!account) throw 'ChartOfAccountsService not found';
 
     // copy userParam properties to user
     Object.assign(account, userParam);

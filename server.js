@@ -26,6 +26,8 @@ app.use(jwt());
 // API Routes
 app.use('/users', require('./backend/users/users.controller'));
 app.use('/logTrack', require('./backend/logTrack/logTrack.controller'));
+app.use('/accounts', require('./backend/chart-of-accounts/chartOfAccounts.controller'));
+
 
 
 // global error handler
