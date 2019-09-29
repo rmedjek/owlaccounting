@@ -20,6 +20,7 @@ async function authenticate({ username, password }) {
         if(user.accountActive === true) {
             const {hash, ...userWithoutHash} = user.toObject();
             const token = jwt.sign({sub: user.id}, config.secret, { expiresIn: '1h' });
+            console.log(token);
             return {
                 ...userWithoutHash, token
             };
@@ -56,12 +57,11 @@ async function create(userParam,) {
 
 async function hashPassword(User) {
     const { password }  = User;
-    const passwordHash = await new Promise((resolve, reject) => {
+    return await new Promise((resolve, reject) => {
         bcrypt.hash(password, 10)
             .then((res) => resolve(res))
             .catch((err) => reject(err))
     });
-    return passwordHash;
 }
 
 async function update(id, userParam) {

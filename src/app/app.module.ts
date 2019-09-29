@@ -13,13 +13,29 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard } from './_guards';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
-    MatButtonModule, MatCardModule, MatExpansionModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatCardModule,
+    MatDatepickerModule,
+    MatExpansionModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
+    MatMenuModule,
+    MatNativeDateModule,
+    MatPaginatorModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatRadioModule,
+    MatSelectModule,
     MatSidenavModule,
-    MatToolbarModule
+    MatSlideToggleModule,
+    MatSnackBarModule,
+    MatSortModule,
+    MatTableModule,
+    MatToolbarModule,
+    MatTooltipModule
 } from '@angular/material';
 import { RegisterComponent } from './register';
 import { UserService } from './_services';
@@ -29,7 +45,16 @@ import { LogsPageComponent } from './logs-page/logs-page.component';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { DropdownUserRolesComponent } from './dropdown-user-roles/dropdown-user-roles.component';
 import { TolowerCaseDirective } from './_directives/tolowercase.directive';
-import {ErrorInterceptor, JwtInterceptor} from './_helpers';
+import { ErrorInterceptor, JwtInterceptor } from './_helpers';
+import { ChartOfAccountsService } from './_services/chart-of-accounts.service';
+import { ChartOfAccountsComponent } from './chart-of-accounts/chart-of-accounts.component';
+import { AccountTypeSelectorComponent } from './chart-of-accounts/account-type-selector/account-type-selector.component';
+import { CreateNewAccountComponent } from './chart-of-accounts/create-new-account/create-new-account.component';
+import { AccountViewComponent } from './chart-of-accounts/account-view/account-view.component';
+import { RouterModule } from '@angular/router';
+import { JwtService } from './_services/jwt.service';
+import { EditAccountResolverService } from './_services/edit-account-resolver-service';
+
 
 @NgModule({
     imports: [
@@ -47,7 +72,22 @@ import {ErrorInterceptor, JwtInterceptor} from './_helpers';
         MatToolbarModule,
         MatSidenavModule,
         MatListModule,
-        MatIconModule
+        MatIconModule,
+        MatTableModule,
+        MatProgressSpinnerModule,
+        MatProgressBarModule,
+        MatSortModule,
+        MatMenuModule,
+        MatPaginatorModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatTooltipModule,
+        MatRadioModule,
+        MatSelectModule,
+        MatSnackBarModule,
+        MatSlideToggleModule,
+        MatButtonToggleModule,
+        RouterModule
     ],
   declarations: [
     AppComponent,
@@ -60,14 +100,22 @@ import {ErrorInterceptor, JwtInterceptor} from './_helpers';
     LogsPageComponent,
     CreateUserComponent,
     DropdownUserRolesComponent,
-    TolowerCaseDirective
+    TolowerCaseDirective,
+    ChartOfAccountsComponent,
+    AccountTypeSelectorComponent,
+    CreateNewAccountComponent,
+    AccountViewComponent
   ],
   providers: [
+    AuthGuard,
     AlertService,
     AuthenticationService,
     UserService,
     LogTrackService,
-    AuthGuard,
+    ChartOfAccountsService,
+    MatDatepickerModule,
+    JwtService,
+    EditAccountResolverService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],

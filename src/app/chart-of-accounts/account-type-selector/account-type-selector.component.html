@@ -1,0 +1,7 @@
+<select class="custom-select" style="width:auto;" (change)="onOptionSelect($event.target.value, account)">
+  <option value="Asset" [selected]="account.accountType === 'Asset'">Asset</option>
+  <option value="Expense" [selected]="account.accountType === 'Expense'">Expense</option>
+  <option value="Liability" [selected]="account.accountType === 'Liability'">Liability</option>
+  <option value="Equity" [selected]="account.accountType === 'Equity'">Equity</option>
+  <option value="Revenue" [selected]="account.accountType === 'Revenue'">Revenue</option>
+</select>
