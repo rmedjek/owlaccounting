@@ -1,48 +1,141 @@
-import { Component, OnInit } from '@angular/core';
-import { first } from 'rxjs/operators';
+import { AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { catchError, first, map, startWith, switchMap } from 'rxjs/operators';
 
 import { ChartOfAccounts } from '../_models/chartOfAccounts';
 import { ChartOfAccountsService } from '../_services/chart-of-accounts.service';
 import { LogTrack, User } from '../_models';
 import { Router } from '@angular/router';
+import { MatPaginator, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material';
+import { merge, of } from 'rxjs';
 
 @Component({
   selector: 'app-chart-of-accounts',
   templateUrl: './chart-of-accounts.component.html',
   styleUrls: ['./chart-of-accounts.component.css']
 })
-export class ChartOfAccountsComponent implements OnInit {
+export class ChartOfAccountsComponent implements OnInit, AfterViewInit, AfterViewChecked {
   currentUser: User;
-  accountList: ChartOfAccounts[] = [];
   editField: string;
   allAccounts: ChartOfAccounts[] = [];
   sortTracker = 0;
+  resultsLength = 0;
   accountBalanceError = false;
+  isResultsLoading = false;
+  displayedColumns = ['accountNumber', 'accountOrder', 'accountName', 'accountDesc', 'accountType', 'accountSubType', 'normalSide',
+    'accountBalance', 'accountInitBalance', 'createdBy', 'createdDate', 'debit', 'credit', 'statement',
+    'comment', 'accountActive', 'activation', 'action'];
+  dataSource = new MatTableDataSource<ChartOfAccounts>();
 
-  constructor(private chartOfAccountsService: ChartOfAccountsService,  private router: Router) {
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: false}) sort: MatSort;
+
+  constructor(private chartOfAccountsService: ChartOfAccountsService,
+              private router: Router,
+              public snackBar: MatSnackBar,
+              private ref: ChangeDetectorRef) {
+     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
   ngOnInit() {
-    this.loadAllAccounts();
+    if (!this.isAdmin(this.currentUser)) {
+      this.displayedColumns = ['accountNumber', 'accountOrder', 'accountName', 'accountDesc', 'accountType', 'accountSubType', 'normalSide',
+        'accountBalance', 'accountInitBalance', 'createdBy', 'createdDate', 'debit', 'credit', 'statement', 'comment'];
+    }
   }
 
-  private loadAllAccounts() {
-    this.chartOfAccountsService.getAllAccounts().pipe(first()).subscribe(account => {
-      this.accountList = account;
-      this.allAccounts = account;
+  filterText(filterValue: string) {
+    this.isResultsLoading = true;
+    filterValue = filterValue.trim();
+    this.paginator.pageIndex = 0;
+    this.chartOfAccountsService.getAllAccounts({
+      page: this.paginator.pageIndex,
+      perPage: this.paginator.pageSize,
+      sortField: this.sort.active,
+      sortDir: this.sort.direction,
+      filter: filterValue
+    })
+        .subscribe(data => {
+          this.dataSource.data = data.docs;
+          this.resultsLength = data.total;
+          this.isResultsLoading = false;
+        }, err => this.errorHandler(err, 'Failed to filter accounts'));
+  }
+
+  ngAfterViewInit() {
+    // Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
+    this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+    merge(this.paginator.page, this.sort.sortChange).pipe(
+        startWith({}),
+        switchMap(() => {
+          this.isResultsLoading = true;
+          return this.chartOfAccountsService.getAllAccounts({
+            page: this.paginator.pageIndex,
+            perPage: this.paginator.pageSize,
+            sortField: this.sort.active,
+            sortDir: this.sort.direction,
+            filter: ''
+          });
+        }),
+        map(data => {
+          this.isResultsLoading = false;
+          this.resultsLength = data.total;
+          return data.docs;
+        }),
+        catchError(() => {
+          this.isResultsLoading = false;
+          this.errorHandler('Failed to fetch accounts', 'Error');
+          return of([]);
+        })
+    )
+    .subscribe(data => {
+      this.dataSource.data = data;
     });
   }
 
-  public loadUsersBySearch() {
-    this.accountList = this.allAccounts;
-    const search: string = (document.getElementById('myInput') as HTMLInputElement).value;
-    if (search.length === 0 || search.length === null) {
-      this.accountList = this.allAccounts;
-    } else {
-      this.accountList = this.accountList.filter(users => users.accountName.includes(search) || users.accountSubType.includes(search) ||
-          users.accountType.includes(search));
-    }
+  ngAfterViewChecked() {
+    // Called after every check of the component's view. Applies to components only.
+    // Add 'implements AfterViewChecked' to the class.
+    this.ref.detectChanges();
+  }
+
+  private loadAllAccounts() {
+    return this.chartOfAccountsService.getAllAccounts({
+      page: this.paginator.pageIndex,
+      perPage: this.paginator.pageSize,
+      sortField: this.sort.active,
+      sortDir: this.sort.direction,
+      filter: ''
+    })
+     .subscribe(data => {
+       this.dataSource.data = data.docs;
+       this.allAccounts = data.docs;
+       this.resultsLength = data.total;
+    });
+  }
+
+  editBtnHandler(id) {
+    this.router.navigate(['chartOfAccounts', id]);
+  }
+
+  private errorHandler(error, message) {
+    this.isResultsLoading = false;
+    this.snackBar.open(message, 'Error', {
+      duration: 2000
+    });
+  }
+
+  deleteBtnHandler(id) {
+    this.chartOfAccountsService.delete(id)
+        .pipe(first())
+        .subscribe(data => {
+          const invId = this.allAccounts.findIndex(account => account._id === id);
+          const deleteAccount = this.allAccounts[invId];
+          this.allAccounts.splice(invId, 1);
+          this.dataSource.data = [...this.dataSource.data];
+          this.snackBar.open('Accounts deleted', 'Success', {
+            duration: 2000
+          });
+        }, err => this.errorHandler(err,    'Failed to delete account'));
   }
 
   public isAdmin(user: User) {
@@ -64,6 +157,7 @@ export class ChartOfAccountsComponent implements OnInit {
         });
       } else {
         this.accountBalanceError = true;
+        this.snackBar.open('account must be zero', 'failure', {duration: 2000});
         setTimeout(() => {
           this.accountBalanceError = false;
         }, 6000);
@@ -85,323 +179,4 @@ export class ChartOfAccountsComponent implements OnInit {
       });
     }
   }
-
-  public resetInput() {
-    this.loadAllAccounts();
-  }
-
-  public accountActiveStatus(status: boolean) {
-    if (status) {
-      return 'True';
-    } else {
-      return 'False';
-    }
-  }
-
-  changeValue(accountId: ChartOfAccounts, property: string, event: any) {
-
-    const newLog = new LogTrack();
-    newLog.logDataInput = 'Changed the ' + property + ' of account number: ' + accountId.accountNumber;
-    newLog.logInitial = 'Account number: ' + accountId.accountNumber;
-
-    this.serviceCallUpdateBasedOnAttribute(property, event, accountId, newLog);
-
-  }
-
-  public serviceCallUpdateBasedOnAttribute(typeOfChange: string, event: any, accountNumber: ChartOfAccounts, message: LogTrack) {
-    this.editField = event.target.textContent;
-    const updatedAccount = new ChartOfAccounts();
-    updatedAccount.id = accountNumber.id;
-
-    switch (typeOfChange) {
-      case 'name': {
-        message.logInitial = message.logInitial + ' name: ' + accountNumber.accountName;
-        message.logFinal = 'Account name: ' + this.editField;
-        updatedAccount.accountName = this.editField;
-        this.chartOfAccountsService.updateAccount(updatedAccount, message).pipe(first()).subscribe(() => {
-          this.loadAllAccounts();
-        });
-        break;
-      }
-      case 'term': {
-        message.logInitial = message.logInitial + ' term: ' + accountNumber.accountTerm;
-        message.logFinal = 'Account term: ' + this.editField;
-        updatedAccount.accountTerm = this.editField;
-        this.chartOfAccountsService.updateAccount(updatedAccount, message).pipe(first()).subscribe(() => {
-          this.loadAllAccounts();
-        });
-        break;
-      }
-      case 'type': {
-        message.logInitial = message.logInitial + ' type: ' + accountNumber.accountType;
-        message.logFinal = 'Account type: ' + this.editField;
-        updatedAccount.accountType = this.editField;
-        this.chartOfAccountsService.updateAccount(updatedAccount, message).pipe(first()).subscribe(() => {
-          this.loadAllAccounts();
-        });
-        break;
-      }
-      case 'subtype': {
-        message.logInitial = message.logInitial + ' sub-type: ' + accountNumber.accountSubType;
-        message.logFinal = 'Account sub-type: ' + this.editField;
-        updatedAccount.accountSubType = this.editField;
-        this.chartOfAccountsService.updateAccount(updatedAccount, message).pipe(first()).subscribe(() => {
-          this.loadAllAccounts();
-        });
-        break;
-      }
-      case 'balance': {
-        message.logInitial = message.logInitial + ' balance: ' + accountNumber.accountBalance;
-        message.logFinal = 'Account balance: ' + this.editField;
-        updatedAccount.accountBalance = parseFloat(this.editField.replace(',', '.').replace(' ', ''));
-        this.chartOfAccountsService.updateAccount(updatedAccount, message).pipe(first()).subscribe(() => {
-          this.loadAllAccounts();
-        });
-        break;
-      }
-      default: {
-        break;
-      }
-    }
-  }
-
-  public sortByAccountnumber() {
-    if (this.sortTracker === 0) {
-      this.accountList.sort( (x, y) => {
-        if (x.accountNumber < y.accountNumber) {
-          return -1;
-        }
-        if (x.accountNumber > y.accountNumber) {
-          return 1;
-        }
-        return 0;
-      });
-      this.sortTracker = 1;
-    } else {
-      this.accountList.sort((x, y) => {
-        if (x.accountNumber > y.accountNumber) {
-          return -1;
-        }
-        if (x.accountNumber < y.accountNumber) {
-          return 1;
-        }
-        return 0;
-      });
-      this.sortTracker = 0;
-    }
-  }
-
-public sortByAccountName() {
-  if (this.sortTracker === 0) {
-    this.accountList.sort((x, y) => {
-      if (x.accountName < y.accountName) {
-        return -1;
-      }
-      if (x.accountName > y.accountName) {
-        return 1;
-      }
-      return 0;
-    });
-    this.sortTracker = 1;
-  } else {
-    this.accountList.sort((x, y) => {
-      if (x.accountName > y.accountName) {
-        return -1;
-      }
-      if (x.accountName < y.accountName) {
-        return 1;
-      }
-      return 0;
-    });
-    this.sortTracker = 0;
-  }
-}
-
-  public sortByAccountSubType() {
-    if (this.sortTracker === 0) {
-      this.accountList.sort((x, y) => {
-        if (x.accountSubType < y.accountSubType) {
-          return -1;
-        }
-        if (x.accountSubType > y.accountSubType) {
-          return 1;
-        }
-        return 0;
-      });
-      this.sortTracker = 1;
-    } else {
-      this.accountList.sort((x, y) => {
-        if (x.accountSubType > y.accountSubType) {
-          return -1;
-        }
-        if (x.accountSubType < y.accountSubType) {
-          return 1;
-        }
-        return 0;
-      });
-      this.sortTracker = 0;
-    }
-  }
-
-  public sortByAccountType() {
-    if (this.sortTracker === 0) {
-      this.accountList.sort((x, y) => {
-        if (x.accountType < y.accountType) {
-          return -1;
-        }
-        if (x.accountType > y.accountType) {
-          return 1;
-        }
-        return 0;
-      });
-      this.sortTracker = 1;
-    } else {
-      this.accountList.sort((x, y) => {
-        if (x.accountType > y.accountType) {
-          return -1;
-        }
-        if (x.accountType < y.accountType) {
-          return 1;
-        }
-        return 0;
-      });
-      this.sortTracker = 0;
-    }
-  }
-
-  public sortByAccountBalance() {
-    if (this.sortTracker === 0) {
-      this.accountList.sort((x, y) => {
-        if (x.accountBalance < y.accountBalance) {
-          return -1;
-        }
-        if (x.accountBalance > y.accountBalance) {
-          return 1;
-        }
-        return 0;
-      });
-      this.sortTracker = 1;
-    } else {
-      this.accountList.sort((x, y) => {
-        if (x.accountBalance > y.accountBalance) {
-          return -1;
-        }
-        if (x.accountBalance < y.accountBalance) {
-          return 1;
-        }
-        return 0;
-      });
-      this.sortTracker = 0;
-    }
-  }
-
-  public sortByAccountCreatedBy() {
-    if (this.sortTracker === 0) {
-      this.accountList.sort((x, y) => {
-        if (x.createdBy < y.createdBy) {
-          return -1;
-        }
-        if (x.createdBy > y.createdBy) {
-          return 1;
-        }
-        return 0;
-      });
-      this.sortTracker = 1;
-    } else {
-      this.accountList.sort((x, y) => {
-        if (x.createdBy > y.createdBy) {
-          return -1;
-        }
-        if (x.createdBy < y.createdBy) {
-          return 1;
-        }
-        return 0;
-      });
-      this.sortTracker = 0;
-    }
-  }
-
-  public sortByAccountCreatedOn() {
-    if (this.sortTracker === 0) {
-      this.accountList.sort((x, y) => {
-        if (x.createdDate < y.createdDate) {
-          return -1;
-        }
-        if (x.createdDate > y.createdDate) {
-          return 1;
-        }
-        return 0;
-      });
-      this.sortTracker = 1;
-    } else {
-      this.accountList.sort((x, y) => {
-        if (x.createdDate > y.createdDate) {
-          return -1;
-        }
-        if (x.createdDate < y.createdDate) {
-          return 1;
-        }
-        return 0;
-      });
-      this.sortTracker = 0;
-    }
-  }
-
-  public sortByAccountStatus() {
-    if (this.sortTracker === 0) {
-      this.accountList.sort((x, y) => {
-        if (x.accountActive < y.accountActive) {
-          return -1;
-        }
-        if (x.accountActive > y.accountActive) {
-          return 1;
-        }
-        return 0;
-      });
-      this.sortTracker = 1;
-    } else {
-      this.accountList.sort((x, y) => {
-        if (x.accountActive > y.accountActive) {
-          return -1;
-        }
-        if (x.accountActive < y.accountActive) {
-          return 1;
-        }
-        return 0;
-      });
-      this.sortTracker = 0;
-    }
-  }
-
-  public sortByOrder() {
-    if (this.sortTracker === 0) {
-      this.accountList.sort((x, y) => {
-        if (x.order < y.order) {
-          return -1;
-        }
-        if (x.order > y.order) {
-          return 1;
-        }
-        return 0;
-      });
-      this.sortTracker = 1;
-    } else {
-      this.accountList.sort((x, y) => {
-        if (x.order > y.order) {
-          return -1;
-        }
-        if (x.order < y.order) {
-          return 1;
-        }
-        return 0;
-      });
-      this.sortTracker = 0;
-    }
-  }
-
-  // setTTableSortEntry(tTableSortAccount: string, accountNumber: number) {
-  //   localStorage.setItem('accountSortBy', JSON.stringify(tTableSortAccount));
-  //   localStorage.setItem('accountNumber', JSON.stringify(accountNumber));
-  //   this.router.navigate(['/ttable']);
-  // }
 }

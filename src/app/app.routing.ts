@@ -8,6 +8,8 @@ import { UserAccountsComponent } from './user-accounts/user-accounts.component';
 import { LogsPageComponent } from './logs-page/logs-page.component';
 import { ChartOfAccountsComponent } from './chart-of-accounts/chart-of-accounts.component';
 import { CreateNewAccountComponent } from './chart-of-accounts/create-new-account/create-new-account.component';
+import { AccountViewComponent } from './chart-of-accounts/account-view/account-view.component';
+import { EditAccountResolverService } from './_services/edit-account-resolver-service';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -18,7 +20,11 @@ const appRoutes: Routes = [
     { path: 'logsPage', component: LogsPageComponent},
     { path: 'chartOfAccounts', component: ChartOfAccountsComponent},
     { path: 'createNewAccount', component: CreateNewAccountComponent},
-
+    { path: 'chartOfAccounts/:id', component: CreateNewAccountComponent, canActivate: [AuthGuard], resolve: {
+        account: EditAccountResolverService
+    }},
+    { path: 'chartOfAccounts/:id/view', component: AccountViewComponent, canActivate: [AuthGuard], resolve: {
+        account: EditAccountResolverService}},
 
     // otherwise redirect to home
     { path: '**', redirectTo: '' }

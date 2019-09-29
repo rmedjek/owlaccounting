@@ -1,5 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
@@ -35,5 +35,18 @@ export class AuthenticationService {
     logout() {
         // remove user from local storage to logDataInput user out
         localStorage.removeItem('currentUser');
+    }
+
+    isAuthenticated(token): Observable<boolean> {
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                Authorization: `bearer ${token}`
+            })
+        };
+        return this.http.get<boolean>(
+            `${environment.apiUrl}/auth/authenticate`,
+            httpOptions
+        );
     }
 }

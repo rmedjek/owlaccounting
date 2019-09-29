@@ -13,13 +13,29 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard } from './_guards';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
-    MatButtonModule, MatCardModule, MatExpansionModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatCardModule,
+    MatDatepickerModule,
+    MatExpansionModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
-    MatListModule, MatMenuModule, MatPaginatorModule, MatProgressSpinnerModule,
-    MatSidenavModule, MatSortModule, MatTableModule,
-    MatToolbarModule
+    MatListModule,
+    MatMenuModule,
+    MatNativeDateModule,
+    MatPaginatorModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatRadioModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatSlideToggleModule,
+    MatSnackBarModule,
+    MatSortModule,
+    MatTableModule,
+    MatToolbarModule,
+    MatTooltipModule
 } from '@angular/material';
 import { RegisterComponent } from './register';
 import { UserService } from './_services';
@@ -29,16 +45,19 @@ import { LogsPageComponent } from './logs-page/logs-page.component';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { DropdownUserRolesComponent } from './dropdown-user-roles/dropdown-user-roles.component';
 import { TolowerCaseDirective } from './_directives/tolowercase.directive';
-import {ErrorInterceptor, JwtInterceptor} from './_helpers';
+import { ErrorInterceptor, JwtInterceptor } from './_helpers';
 import { ChartOfAccountsService } from './_services/chart-of-accounts.service';
 import { ChartOfAccountsComponent } from './chart-of-accounts/chart-of-accounts.component';
 import { AccountTypeSelectorComponent } from './chart-of-accounts/account-type-selector/account-type-selector.component';
-import { CommonModule } from '@angular/common';
 import { CreateNewAccountComponent } from './chart-of-accounts/create-new-account/create-new-account.component';
-import { TwoDigitDecimaNumberDirective } from './_directives/decimalPlaces.directive';
+import { AccountViewComponent } from './chart-of-accounts/account-view/account-view.component';
+import { RouterModule } from '@angular/router';
+import { JwtService } from './_services/jwt.service';
+import { EditAccountResolverService } from './_services/edit-account-resolver-service';
+
 
 @NgModule({
-    imports: [CommonModule,
+    imports: [
         BrowserModule,
         HttpClientModule,
         AppRoutingModule,
@@ -56,9 +75,19 @@ import { TwoDigitDecimaNumberDirective } from './_directives/decimalPlaces.direc
         MatIconModule,
         MatTableModule,
         MatProgressSpinnerModule,
+        MatProgressBarModule,
         MatSortModule,
         MatMenuModule,
-        MatPaginatorModule
+        MatPaginatorModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatTooltipModule,
+        MatRadioModule,
+        MatSelectModule,
+        MatSnackBarModule,
+        MatSlideToggleModule,
+        MatButtonToggleModule,
+        RouterModule
     ],
   declarations: [
     AppComponent,
@@ -75,7 +104,7 @@ import { TwoDigitDecimaNumberDirective } from './_directives/decimalPlaces.direc
     ChartOfAccountsComponent,
     AccountTypeSelectorComponent,
     CreateNewAccountComponent,
-    TwoDigitDecimaNumberDirective
+    AccountViewComponent
   ],
   providers: [
     AuthGuard,
@@ -84,6 +113,9 @@ import { TwoDigitDecimaNumberDirective } from './_directives/decimalPlaces.direc
     UserService,
     LogTrackService,
     ChartOfAccountsService,
+    MatDatepickerModule,
+    JwtService,
+    EditAccountResolverService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],

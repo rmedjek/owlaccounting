@@ -1,5 +1,5 @@
 ﻿export class ChartOfAccounts {
-  id: string;
+  _id: string;
   accountNumber: number;
   accountName: string;
   accountDesc: string;
@@ -9,7 +9,7 @@
   accountTerm: string;
   accountBalance: number;
   accountInitBalance: number;
-  order: number;
+  accountOrder: number;
   createdBy: string;
   createdDate: Date;
   debit: number;
@@ -17,4 +17,12 @@
   accountActive: boolean;
   statement: string;
   comment: string;
+}
+
+export class AccountPaginationResponse {
+  docs: ChartOfAccounts[];
+  total: number;
+  pages: number;
+  page: number;
+  limit: number;
 }

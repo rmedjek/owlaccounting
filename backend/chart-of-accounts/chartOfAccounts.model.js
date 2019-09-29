@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const mongoosePaginate = require('mongoose-paginate');
 
 const schema = new Schema({
     accountName: { type: String, required: true },
@@ -16,11 +17,11 @@ const schema = new Schema({
     createdDate: { type: Date, default: Date.now },
     createdBy: { type: String },
     accountActive: { type: Boolean, required: true },
-    order: { type: Number, unique: true },
+    accountOrder: { type: Number, unique: true },
     statement: { type: String, required: false},
     comment: { type: String, required: false}
 });
 
 schema.set('toJSON', { virtuals: true });
-
+schema.plugin(mongoosePaginate);
 module.exports = mongoose.model('ChartOfAccounts', schema);

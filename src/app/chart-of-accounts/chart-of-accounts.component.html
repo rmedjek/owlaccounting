@@ -1,188 +1,147 @@
-<mat-toolbar>
-
-  <div class="menu-bar">
-    <button mat-button>
-      New Invoice
-    </button>
-  </div>
-</mat-toolbar>
+<div class="page-container">
+  <app-sidebar-menu></app-sidebar-menu>
+  <br>
+    <mat-form-field>
+        <input matInput [matDatepicker]="picker" placeholder="Choose a date">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field color="accent">
+        <input matInput (keyup)="filterText($event.target.value)" placeholder="Filter" />
+    </mat-form-field>
+    <div class="menu-bar">
+        <button mat-button
+                matTooltip="Create a new account record"
+                [routerLink]="['/createNewAccount']"
+                *ngIf="currentUser.role === '1'">Add Account</button>
+    </div>
+</div>
 <div class="table-container mat-elevation-z8">
   <div class="mat-elevation-z8">
-    <div class="loading-shade">
-      <mat-spinner color="accent"></mat-spinner>
-    </div>
+      <div class="loading-shade" *ngIf="isResultsLoading">
+          <mat-spinner color="accent" *ngIf="isResultsLoading"></mat-spinner>
+      </div>
   </div>
-  <mat-table #table [dataSource]="accountList" matSort>
+  <mat-table #table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
-    <!--- Note that these columns can be defined in any order.
-            The actual rendered columns are set as a property on the row definition" -->
+      <ng-container matColumnDef="accountNumber">
+        <mat-header-cell mat-sort-header *matHeaderCellDef >Account Number</mat-header-cell>
+        <mat-cell *matCellDef="let chartOfAccounts"> {{chartOfAccounts.accountNumber}} </mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="item">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Item </mat-header-cell>
-      <mat-cell *matCellDef="let invoice"> {{invoice.item}} </mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="accountOrder">
+        <mat-header-cell mat-sort-header *matHeaderCellDef >Order</mat-header-cell>
+        <mat-cell *matCellDef="let chartOfAccounts"> {{chartOfAccounts.accountOrder}} </mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="date">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Date </mat-header-cell>
-      <mat-cell *matCellDef="let invoice"> {{invoice.date | date}} </mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="accountName">
+        <mat-header-cell mat-sort-header *matHeaderCellDef>Account Name</mat-header-cell>
+        <mat-cell *matCellDef="let chartOfAccounts"> {{chartOfAccounts.accountName}} </mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="due">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Due </mat-header-cell>
-      <mat-cell *matCellDef="let invoice"> {{invoice.due | date}} </mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="accountDesc">
+        <mat-header-cell mat-sort-header *matHeaderCellDef > Account Description</mat-header-cell>
+        <mat-cell *matCellDef="let chartOfAccounts"> {{chartOfAccounts.accountDesc}} </mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="qty">
-      <mat-header-cell *matHeaderCellDef> Qty </mat-header-cell>
-      <mat-cell *matCellDef="let invoice"> {{invoice.qty}} </mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="accountType">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Account Type</mat-header-cell>
+        <mat-cell *matCellDef="let chartOfAccounts"> {{chartOfAccounts.accountType}} </mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="rate">
-      <mat-header-cell *matHeaderCellDef> Rate </mat-header-cell>
-      <mat-cell *matCellDef="let invoice"> {{invoice.rate}} </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="tax">
-      <mat-header-cell *matHeaderCellDef> Tax </mat-header-cell>
-      <mat-cell *matCellDef="let invoice"> {{invoice.tax}} </mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="accountSubType">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Account SubType</mat-header-cell>
+        <mat-cell *matCellDef="let chartOfAccounts"> {{chartOfAccounts.accountSubType}} </mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="action">
-      <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
-      <mat-cell *matCellDef="let invoice">
-        <button mat-icon-button [matMenuTriggerFor]="menu">
-          <mat-icon>more_vert</mat-icon>
-        </button>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="editBtnHandler(invoice._id)">
-            <mat-icon>edit</mat-icon>
-            <span>Edit</span>
+      <ng-container matColumnDef="normalSide">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Normal side</mat-header-cell>
+        <mat-cell *matCellDef="let chartOfAccounts"> {{chartOfAccounts.normalSide}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="accountBalance">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Account balance</mat-header-cell>
+        <mat-cell *matCellDef="let chartOfAccounts"> {{chartOfAccounts.accountBalance | currency: 'USD': "symbol": '1.2-2'}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="accountInitBalance">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Initial Balance</mat-header-cell>
+        <mat-cell *matCellDef="let chartOfAccounts"> {{chartOfAccounts.accountInitBalance | currency: 'USD': "symbol": '1.2-2'}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="createdBy">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Created By</mat-header-cell>
+        <mat-cell *matCellDef="let chartOfAccounts"> {{chartOfAccounts.createdBy}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="createdDate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Created On</mat-header-cell>
+        <mat-cell *matCellDef="let chartOfAccounts"> {{chartOfAccounts.createdDate | date: 'dd/MM/yyyy'}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="debit">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Debit</mat-header-cell>
+        <mat-cell *matCellDef="let chartOfAccounts"> {{chartOfAccounts.debit | currency: 'USD': "symbol": '1.2-2'}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="credit">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Credit</mat-header-cell>
+        <mat-cell *matCellDef="let chartOfAccounts"> {{chartOfAccounts.credit | currency: 'USD': "symbol": '1.2-2'}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="statement">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Statement</mat-header-cell>
+        <mat-cell *matCellDef="let chartOfAccounts"> {{chartOfAccounts.statement}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="comment">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Comment</mat-header-cell>
+        <mat-cell *matCellDef="let chartOfAccounts"> {{chartOfAccounts.comment}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="accountActive">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Active</mat-header-cell>
+          <mat-cell *matCellDef="let chartOfAccounts"> {{chartOfAccounts.accountActive}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="activation">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Activate/Deactivate</mat-header-cell>
+          <mat-cell *matCellDef="let chartOfAccounts">
+              <a matTooltip="deactivate" *ngIf="chartOfAccounts.accountActive" (click)="deactivateAccount(chartOfAccounts)" class="text-danger">Deactivate</a>
+              <a matTooltip="activate" *ngIf="!chartOfAccounts.accountActive" (click)="activateAccount(chartOfAccounts)" class="text-danger">Activate</a>
+          </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+        <mat-cell *matCellDef="let account">
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
           </button>
-          <button mat-menu-item (click)="deleteBtnHandler(invoice._id)">
-            <mat-icon>delete</mat-icon>
-            <span>Delete</span>
-          </button>
-        </mat-menu>
-      </mat-cell>
-    </ng-container>
+          <mat-menu #menu="matMenu">
+              <button matTooltip="view account details" mat-menu-item [routerLink]="[account.id, 'view']">
+                  <mat-icon>pageview</mat-icon>
+                  <span>View</span>
+              </button>
+            <button matTooltip="edit the account" mat-menu-item (click)="editBtnHandler(account._id)">
+              <mat-icon>edit</mat-icon>
+              <span>Edit</span>
+            </button>
+            <button matTooltip="delete the account" mat-menu-item (click)="deleteBtnHandler(account._id)">
+              <mat-icon>delete</mat-icon>
+              <span>Delete</span>
+            </button>
+          </mat-menu>
+        </mat-cell>
+      </ng-container>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-  </mat-table>
-  <mat-paginator #paginator [length]="resultsLength" [showFirstLastButtons]="true" [pageSize]="10" [pageSizeOptions]="[5, 10, 20]">
-  </mat-paginator>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--<div class="row">-->
-<!--  <div class="col-sm-6 offset-sm-3">-->
-<!--    <app-sidebar-menu></app-sidebar-menu>-->
-<!--    <div *ngIf="accountBalanceError" class="alert-danger">Account Balance must be zero</div>-->
-<!--    <br>-->
-<!--    <h2 class="title">Chart of Accounts</h2>-->
-<!--    <div>-->
-<!--      <div class="menu-bar">-->
-<!--        <button mat-button [routerLink]="['/createNewAccount']" *ngIf="currentUser.role === '1'">New Account</button>-->
-<!--      </div>-->
-<!--      <form>-->
-
-<!--        <input type="search" id="myInput" required class="search-box" (keyup)="loadUsersBySearch()"-->
-<!--               (keypress)="loadUsersBySearch()" placeholder="Search by name or username" title="Type in a name">-->
-<!--        <button class="close-icon" (click)="resetInput()" type="reset"></button>-->
-
-<!--      </form>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
-<!--<div class="sidenav">-->
-<!--  <table class="table table-striped">-->
-<!--    <thead>-->
-<!--    <tr>-->
-<!--      <th (click)="sortByAccountnumber()"><a>account#</a> <a class="sort-by"></a></th>-->
-<!--      <th (click)="sortByOrder()"><a>order</a> <a class="sort-by"></a></th>-->
-<!--      <th (click)="sortByAccountName()"><a>name</a> <a class="sort-by"></a></th>-->
-<!--      <th> <a>description</a> <a class="sort-by"></a></th>-->
-<!--      <th (click)="sortByAccountType()"><a>type</a> <a class="sort-by"></a></th>-->
-<!--      <th (click)="sortByAccountSubType()"><a>subtype</a> <a class="sort-by"></a></th>-->
-<!--      <th> <a>normalSide</a> <a class="sort-by"></a></th>-->
-<!--      <th (click)="sortByAccountBalance()"><a>balance</a> <a class="sort-by"></a></th>-->
-<!--      <th><a>init balance</a> <a class="sort-by"></a></th>-->
-<!--      <th (click)="sortByAccountCreatedBy()"><a>createdBy</a> <a class="sort-by"></a></th>-->
-<!--      <th (click)="sortByAccountCreatedOn()"><a>createdOn</a> <a class="sort-by"></a></th>-->
-<!--      <th><a>debit</a> <a class="sort-by"></a></th>-->
-<!--      <th><a>credit</a> <a class="sort-by"></a></th>-->
-<!--      <th (click)="sortByAccountStatus()"><a>active</a> <a class="sort-by"></a></th>-->
-<!--      <th><a>statement</a> <a class="sort-by"></a></th>-->
-<!--      <th><a>comment</a> <a class="sort-by"></a></th>-->
-<!--      <th *ngIf="isAdmin(currentUser)" (click)="sortByAccountStatus()"><a>Deactivate/Activate</a> <a class="sort-by"></a></th>-->
-<!--    </tr>-->
-<!--    </thead>-->
-<!--    <tbody>-->
-<!--    <tr *ngFor="let chartOfAccounts of accountList.reverse();" [hidden]="currentUser.role !== '1'">-->
-<!--      <td >{{chartOfAccounts.accountNumber}} </td>-->
-<!--      <td contenteditable="true" (blur)="changeValue(chartOfAccounts, 'order', $event)">{{chartOfAccounts.order}} </td>-->
-<!--      <td contenteditable="true" (blur)="changeValue(chartOfAccounts, 'name', $event)">{{chartOfAccounts.accountName}} </td>-->
-<!--      <td contenteditable="true" (blur)="changeValue(chartOfAccounts, 'desc', $event)">{{chartOfAccounts.accountDesc}} </td>-->
-<!--      <td><app-account-type-selector [account]="chartOfAccounts"></app-account-type-selector></td>-->
-<!--      <td contenteditable="true" (blur)="changeValue(chartOfAccounts, 'subtype', $event)">{{chartOfAccounts.accountSubType}} </td>-->
-<!--      <td contenteditable="true" (blur)="changeValue(chartOfAccounts, 'normalSide', $event)">{{chartOfAccounts.normalSide}} </td>-->
-<!--      <td contenteditable="true" (blur)="changeValue(chartOfAccounts, 'initBalance', $event)">{{chartOfAccounts.accountInitBalance}}</td>-->
-<!--      <td contenteditable="true" (blur)="changeValue(chartOfAccounts, 'balance', $event)">{{chartOfAccounts.accountBalance | number:'1.2'}} </td>-->
-<!--      <td >{{chartOfAccounts.createdBy}} </td>-->
-<!--      <td >{{chartOfAccounts.createdDate |date:'MM/dd/yyyy h:mma'}} </td>-->
-<!--      <td contenteditable="true" (blur)="changeValue(chartOfAccounts, 'debit', $event)">{{chartOfAccounts.debit}} </td>-->
-<!--      <td contenteditable="true" (blur)="changeValue(chartOfAccounts, 'credit', $event)">{{chartOfAccounts.credit}} </td>-->
-<!--      <td >{{accountActiveStatus(chartOfAccounts.accountActive)}}</td>-->
-<!--      <td contenteditable="true" (blur)="changeValue(chartOfAccounts, 'statement', $event)">{{chartOfAccounts.statement}} </td>-->
-<!--      <td contenteditable="true" (blur)="changeValue(chartOfAccounts, 'comment', $event)">{{chartOfAccounts.comment}} </td>-->
-<!--      <td [hidden]="!chartOfAccounts.accountActive"><a (click)="deactivateAccount(chartOfAccounts)" class="text-danger">Deactivate</a></td>-->
-<!--      <td [hidden]="chartOfAccounts.accountActive"><a (click)="activateAccount(chartOfAccounts)" class="text-danger">Activate</a></td>-->
-<!--    </tr>-->
-<!--    </tbody>-->
-
-<!--    <tbody>-->
-<!--    <tr *ngFor="let chartOfAccounts of accountList" [hidden]="currentUser.role === '1'">-->
-<!--      <td >{{chartOfAccounts.accountNumber}} </td>-->
-<!--      <td>{{chartOfAccounts.accountName}}</td>-->
-<!--      <td >{{chartOfAccounts.accountDesc}} </td>-->
-<!--      <td >{{chartOfAccounts.accountType}} </td>-->
-<!--      <td >{{chartOfAccounts.accountSubType}} </td>-->
-<!--      <td>{{chartOfAccounts.normalSide}}</td>-->
-<!--      <td>{{chartOfAccounts.accountInitBalance | number: '1.2'}}</td>-->
-<!--      <td >{{chartOfAccounts.accountBalance | number:'1.2'}} </td>-->
-<!--      <td>{{chartOfAccounts.order | number: '1.2'}}</td>-->
-<!--      <td >{{chartOfAccounts.createdBy}} </td>-->
-<!--      <td >{{chartOfAccounts.createdDate |date:'MM/dd/yyyy h:mma'}} </td>-->
-<!--      <td>{{chartOfAccounts.debit | number: '1.2'}}</td>-->
-<!--      <td>{{chartOfAccounts.credit | number: '1.2'}}</td>-->
-<!--      <td >{{accountActiveStatus(chartOfAccounts.accountActive)}}</td>-->
-<!--      <td>{{chartOfAccounts.statement}}</td>-->
-<!--      <td>{{chartOfAccounts.comment}}</td>-->
-<!--    </tr>-->
-<!--    </tbody>-->
-<!--  </table>-->
-<!--</div>-->
-
-
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <mat-paginator #paginator
+                   [length]="resultsLength"
+                   [showFirstLastButtons]="true"
+                   [pageSize]="10"
+                   [pageSizeOptions]="[5, 10, 20]">
+    </mat-paginator>
+  </div>

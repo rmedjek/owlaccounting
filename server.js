@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const errorHandler = require('./backend/_helpers/error-handler');
 const jwt = require('./backend/_helpers/jwt');
+const pdf = require('express-pdf');
 
 
 app.use((req, res, next) => {
@@ -19,6 +20,7 @@ app.use((req, res, next) => {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
+app.use(pdf);
 
 // use JWT auth to secure the api
 app.use(jwt());
