@@ -57,9 +57,9 @@ th {
   width: 15%;
 }
 table.scroll {
-  /* width: 100%; */ /* Optional */
-  /* border-collapse: collapse; */
-  border-spacing: 0;
+   width: 100%;
+   border-collapse: collapse;
+  border-spacing: 30px;
   border: 2px solid black;
 }
 

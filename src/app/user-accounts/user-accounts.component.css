@@ -5,8 +5,8 @@
   float: none;
   box-sizing: border-box;
   height:610px;
-  border:1px solid #ccc;
-  overflow:auto;
+  width:80%;
+
 }
 
 

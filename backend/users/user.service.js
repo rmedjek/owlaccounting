@@ -64,12 +64,11 @@ async function create(userParam,) {
 
 async function hashPassword(User) {
     const { password }  = User;
-    const passwordHash = await new Promise((resolve, reject) => {
+    return await new Promise((resolve, reject) => {
         bcrypt.hash(password, 10)
             .then((res) => resolve(res))
             .catch((err) => reject(err))
     });
-    return passwordHash;
 }
 
 async function update(id, userParam) {
