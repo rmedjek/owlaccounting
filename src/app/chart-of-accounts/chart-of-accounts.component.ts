@@ -23,7 +23,7 @@ export class ChartOfAccountsComponent implements OnInit, AfterViewInit, AfterVie
   isResultsLoading = false;
   displayedColumns = ['accountNumber', 'accountOrder', 'accountName', 'accountDesc', 'accountType', 'accountSubType', 'normalSide',
     'accountBalance', 'accountInitBalance', 'createdBy', 'createdDate', 'debit', 'credit', 'statement',
-    'comment', 'accountActive', 'activation', 'action'];
+    'comment', 'activation', 'action'];
   dataSource = new MatTableDataSource<ChartOfAccounts>();
 
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
@@ -37,13 +37,15 @@ export class ChartOfAccountsComponent implements OnInit, AfterViewInit, AfterVie
   }
 
   ngOnInit() {
-    if (!this.isAdmin(this.currentUser)) {
+      if (!this.isAdmin(this.currentUser)) {
       this.displayedColumns = ['accountNumber', 'accountOrder', 'accountName', 'accountDesc', 'accountType', 'accountSubType', 'normalSide',
         'accountBalance', 'accountInitBalance', 'createdBy', 'createdDate', 'debit', 'credit', 'statement', 'comment'];
     }
   }
 
   filterText(filterValue: string) {
+   // debugger;
+    console.log('fvalue ' + filterValue);
     this.isResultsLoading = true;
     filterValue = filterValue.trim();
     this.paginator.pageIndex = 0;
@@ -114,7 +116,7 @@ export class ChartOfAccountsComponent implements OnInit, AfterViewInit, AfterVie
   }
 
   editBtnHandler(id) {
-    this.router.navigate(['chartOfAccounts', id]);
+    this.router.navigate(['accounts', id]);
   }
 
   private errorHandler(error, message) {

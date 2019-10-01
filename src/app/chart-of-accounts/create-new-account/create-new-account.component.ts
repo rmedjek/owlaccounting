@@ -115,7 +115,7 @@ export class CreateNewAccountComponent implements OnInit {
               this.snackBar.open('Account updated', 'Success', {
                 duration: 2000
               });
-              this.router.navigate(['chartOfAccounts']);
+              this.router.navigate(['accounts']);
               },
                     err => this.errorHandler(err, 'Failed to update account'));
       }
@@ -128,7 +128,7 @@ export class CreateNewAccountComponent implements OnInit {
                 });
                 this.accountForm.reset();
                 // this.alertService.success('Account Created', true);
-                this.router.navigate(['/chartOfAccounts']);
+                this.router.navigate(['/accounts']);
               },
               error => {
                 // this.alertService.error(error);

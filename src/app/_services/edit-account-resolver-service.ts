@@ -23,7 +23,7 @@ export class EditAccountResolverService implements Resolve<ChartOfAccounts> {
                 if (account) {
                     return account;
                 } else {
-                    this.router.navigate(['chartOfAccounts']);
+                    this.router.navigate(['accounts']);
                     return null;
                 }
             })

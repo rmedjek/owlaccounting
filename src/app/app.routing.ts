@@ -18,12 +18,12 @@ const appRoutes: Routes = [
     { path: 'userAccounts', component: UserAccountsComponent },
     { path: 'createUser', component: CreateUserComponent },
     { path: 'logsPage', component: LogsPageComponent},
-    { path: 'chartOfAccounts', component: ChartOfAccountsComponent},
+    { path: 'accounts', component: ChartOfAccountsComponent},
     { path: 'createNewAccount', component: CreateNewAccountComponent},
-    { path: 'chartOfAccounts/:id', component: CreateNewAccountComponent, canActivate: [AuthGuard], resolve: {
+    { path: 'accounts/:id', component: CreateNewAccountComponent, canActivate: [AuthGuard], resolve: {
         account: EditAccountResolverService
     }},
-    { path: 'chartOfAccounts/:id/view', component: AccountViewComponent, canActivate: [AuthGuard], resolve: {
+    { path: 'accounts/:id/view', component: AccountViewComponent, canActivate: [AuthGuard], resolve: {
         account: EditAccountResolverService}},
 
     // otherwise redirect to home

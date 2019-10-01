@@ -19,7 +19,7 @@
         <br>
         <a></a>
         <a [routerLink]="['/home']">Dashboard</a>
-        <a [routerLink]="['/chartOfAccounts']">Chart Of Accounts</a>
+        <a [routerLink]="['/accounts']">Chart Of Accounts</a>
         <a *ngIf="currentUser?.role === '1'" [routerLink]="['/userAccounts']">User Accounts</a>
         <a [routerLink]="['/logsPage']">Logs</a>
         <div class="logout-option"><a [routerLink]="['/login']">Logout</a></div>

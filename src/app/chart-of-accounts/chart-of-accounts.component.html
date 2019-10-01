@@ -2,7 +2,7 @@
   <app-sidebar-menu></app-sidebar-menu>
   <br>
     <mat-form-field>
-        <input matInput [matDatepicker]="picker" placeholder="Choose a date">
+        <input matInput [matDatepicker]="picker" placeholder="Calendar">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
@@ -22,7 +22,7 @@
           <mat-spinner color="accent" *ngIf="isResultsLoading"></mat-spinner>
       </div>
   </div>
-  <mat-table #table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+  <mat-table #table [dataSource]="dataSource" matSort>
 
       <ng-container matColumnDef="accountNumber">
         <mat-header-cell mat-sort-header *matHeaderCellDef >Account Number</mat-header-cell>
@@ -99,11 +99,6 @@
         <mat-cell *matCellDef="let chartOfAccounts"> {{chartOfAccounts.comment}} </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="accountActive">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>Active</mat-header-cell>
-          <mat-cell *matCellDef="let chartOfAccounts"> {{chartOfAccounts.accountActive}} </mat-cell>
-      </ng-container>
-
       <ng-container matColumnDef="activation">
           <mat-header-cell *matHeaderCellDef mat-sort-header>Activate/Deactivate</mat-header-cell>
           <mat-cell *matCellDef="let chartOfAccounts">
@@ -142,6 +137,6 @@
                    [length]="resultsLength"
                    [showFirstLastButtons]="true"
                    [pageSize]="10"
-                   [pageSizeOptions]="[5, 10, 20]">
+                   [pageSizeOptions]="[5, 10, 20, 40, 60]">
     </mat-paginator>
   </div>

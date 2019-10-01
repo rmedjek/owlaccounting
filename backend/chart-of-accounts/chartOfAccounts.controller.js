@@ -31,7 +31,6 @@ function getAll(req, res, next) {
         sort: {
             [sortField]: sortDir,
         }
-       // populate: 'client',
     };
     const query = {};
     if (filter) {
@@ -91,7 +90,7 @@ async function download(req, res) {
         const templateBody = chartOfAccountService.getTemplateBody(account, user);
         const html = chartOfAccountService.getAccountTemplate(templateBody);
         await res.pdfFromHTML({
-            filename: `${account.item}.pdf`,
+            filename: `${account.accountName}.pdf`,
             htmlContent: html,
         });
     } catch (err) {
