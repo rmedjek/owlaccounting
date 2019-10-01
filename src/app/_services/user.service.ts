@@ -21,6 +21,7 @@ export class UserService {
 
     register(user: User) {
       user.accountActive = false;
+      user.passwordExpired = false;
       user.role = '3';
       return this.http.post(`${environment.apiUrl}/users/register`, user);
     }

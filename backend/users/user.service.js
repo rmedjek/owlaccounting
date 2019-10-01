@@ -10,22 +10,28 @@ module.exports = {
     getById,
     create,
     update,
-    delete: _delete
+    delete: _delete,
+    passwordExpired
 };
 
 async function authenticate({ username, password }) {
     const user = await User.findOne({ username });
 
+    passwordExpired(user); //checks password for expiration upon authenication
+
     if (user && bcrypt.compareSync(password, user.hash)) {
-        if(user.accountActive === true) {
-            const {hash, ...userWithoutHash} = user.toObject();
-            const token = jwt.sign({sub: user.id}, config.secret, { expiresIn: '1h' });
-            console.log(token);
-            return {
-                ...userWithoutHash, token
-            };
+        if(user.passwordExpired === false){
+            if(user.accountActive === true) {
+                const {hash, ...userWithoutHash} = user.toObject();
+                const token = jwt.sign({sub: user.id}, config.secret, { expiresIn: '1h' });
+                return {
+                    ...userWithoutHash, token
+                };
+            } else {
+                throw 'Your account is pending approval.'
+            }
         } else {
-            throw 'Your account is pending approval.'
+            throw 'Your password has expired.'
         }
     }
 }
@@ -47,6 +53,7 @@ async function create(userParam,) {
     const user = new User(userParam);
     user.role = "3";
     user.accountActive = false;
+    user.passwordExpired = false;
     // hash password
     if (userParam.password) {
         user.hash = await hashPassword(userParam);
@@ -91,3 +98,17 @@ async function update(id, userParam) {
 async function _delete(id) {
     await User.findByIdAndRemove(id);
 }
+
+async function passwordExpired(user) {
+    var duration = 180; //In Days
+    var creationDate = user.passwordCreationDate;
+    var date = new Date();
+    var expire =  creationDate + (duration * 24 * 60 * 60 * 1000); //time in milliseconds
+    
+        if (expire < date){
+            user.passwordExpired = true;
+            throw "Your password has expired, please contact your system administrator ";
+        }
+    }
+
+

@@ -10,6 +10,8 @@ const schema = new Schema({
     email: { type: String,   required: true, unique: true },
     role: { type: String, required: true },
     accountActive: { type: Boolean, required: true },
+    passwordExpired: { type: Boolean, required: true},
+    passwordCreationDate: {type: Date, default: Date.now},
     createdDate: { type: Date, default: Date.now }
 });
 
