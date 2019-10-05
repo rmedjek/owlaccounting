@@ -26,9 +26,11 @@ app.use(pdf);
 app.use(jwt());
 
 // API Routes
-app.use('/users', require('./backend/users/users.controller'));
-app.use('/logTrack', require('./backend/logTrack/logTrack.controller'));
+app.use('/users',    require('./backend/users/users.controller'));
+app.use('/logTrack', require('./backend/log-track/logTrack.controller'));
 app.use('/accounts', require('./backend/chart-of-accounts/chartOfAccounts.controller'));
+app.use('/journals', require('./backend/journal-entries/journalEntries.controller'));
+
 
 
 
