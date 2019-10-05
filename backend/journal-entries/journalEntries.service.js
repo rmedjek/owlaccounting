@@ -1,5 +1,5 @@
-﻿const db = require('_helpers/db');
-const JournalEntries = db.journalEntries;
+﻿const db = require('../_helpers/db');
+const JournalEntries = db.JournalEntries;
 
 
 module.exports = {
