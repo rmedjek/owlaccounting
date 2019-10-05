@@ -13,6 +13,6 @@ module.exports = {
     User: require('../users/user.model'),
     logTrack: require('../logTrack/logTrack.model'),
     chartOfAccounts: require('../chart-of-accounts/chartOfAccounts.model'),
-    journalEntries: require('../journal-entries/journalEntries.model')
+    JournalEntries: require('../journal-entries/journalEntries.model')
 };
 
