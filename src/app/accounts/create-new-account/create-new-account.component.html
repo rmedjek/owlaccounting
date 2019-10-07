@@ -1,7 +1,7 @@
 <mat-card>
 <!--  {{this.registerForm.value | json}}-->
 <app-sidebar-menu></app-sidebar-menu>
-  <h5>Add/Edit Account</h5>
+  <h5>Add Account</h5>
   <form class="form-container" [formGroup]="accountForm" novalidate (ngSubmit)="onSubmit()">
     <mat-form-field color="accent" >
       <input matInput placeholder="Account Number"

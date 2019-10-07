@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
 
 import { AlertComponent } from './_directives';
-import { LoginComponent } from './login';
+import { LoginComponent } from './auth/login';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AlertService, AuthenticationService, LogTrackService } from './_services';
 import { HomeComponent } from './home';
@@ -37,23 +37,25 @@ import {
     MatToolbarModule,
     MatTooltipModule
 } from '@angular/material';
-import { RegisterComponent } from './register';
+import { RegisterComponent } from './auth/register';
 import { UserService } from './_services';
 import { SidebarMenuComponent } from './sidebar-menu/sidebar-menu.component';
-import { UserAccountsComponent } from './user-accounts/user-accounts.component';
+import { UserAccountsComponent } from './users/user-accounts/user-accounts.component';
 import { LogsPageComponent } from './logs-page/logs-page.component';
-import { CreateUserComponent } from './create-user/create-user.component';
-import { DropdownUserRolesComponent } from './dropdown-user-roles/dropdown-user-roles.component';
+import { CreateUserComponent } from './users/create-user/create-user.component';
+import { DropdownUserRolesComponent } from './users/dropdown-user-roles/dropdown-user-roles.component';
 import { TolowerCaseDirective } from './_directives/tolowercase.directive';
 import { ErrorInterceptor, JwtInterceptor } from './_helpers';
 import { ChartOfAccountsService } from './_services/chart-of-accounts.service';
-import { ChartOfAccountsComponent } from './chart-of-accounts/chart-of-accounts.component';
-import { AccountTypeSelectorComponent } from './chart-of-accounts/account-type-selector/account-type-selector.component';
-import { CreateNewAccountComponent } from './chart-of-accounts/create-new-account/create-new-account.component';
-import { AccountViewComponent } from './chart-of-accounts/account-view/account-view.component';
+import { ChartOfAccountsComponent } from './accounts/chart-of-accounts.component';
+import { AccountTypeSelectorComponent } from './accounts/account-type-selector/account-type-selector.component';
+import { CreateNewAccountComponent } from './accounts/create-new-account/create-new-account.component';
+import { AccountViewComponent } from './accounts/account-view/account-view.component';
 import { RouterModule } from '@angular/router';
 import { JwtService } from './_services/jwt.service';
 import { EditAccountResolverService } from './_services/edit-account-resolver-service';
+import { UpdateAccountComponent } from './accounts/update-account/update-account.component';
+import { JournalizeComponent } from './journalize/journalize.component';
 
 
 @NgModule({
@@ -104,7 +106,9 @@ import { EditAccountResolverService } from './_services/edit-account-resolver-se
     ChartOfAccountsComponent,
     AccountTypeSelectorComponent,
     CreateNewAccountComponent,
-    AccountViewComponent
+    AccountViewComponent,
+    UpdateAccountComponent,
+    JournalizeComponent
   ],
   providers: [
     AuthGuard,

@@ -7,6 +7,8 @@ import { LogTrack, User } from '../_models';
 import { Router } from '@angular/router';
 import { MatPaginator, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material';
 import { merge, of } from 'rxjs';
+import { DatePipe } from '@angular/common';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-chart-of-accounts',
@@ -15,9 +17,7 @@ import { merge, of } from 'rxjs';
 })
 export class ChartOfAccountsComponent implements OnInit, AfterViewInit, AfterViewChecked {
   currentUser: User;
-  editField: string;
   allAccounts: ChartOfAccounts[] = [];
-  sortTracker = 0;
   resultsLength = 0;
   accountBalanceError = false;
   isResultsLoading = false;
@@ -25,15 +25,36 @@ export class ChartOfAccountsComponent implements OnInit, AfterViewInit, AfterVie
     'accountBalance', 'accountInitBalance', 'createdBy', 'createdDate', 'debit', 'credit', 'statement',
     'comment', 'activation', 'action'];
   dataSource = new MatTableDataSource<ChartOfAccounts>();
+  pipe: DatePipe;
 
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: false}) sort: MatSort;
+
+
+  filterForm = new FormGroup({
+    fromDate: new FormControl(),
+    toDate: new FormControl(),
+  });
+
+  get fromDate() { return this.filterForm.get('fromDate').value; }
+  get toDate() { return this.filterForm.get('toDate').value; }
 
   constructor(private chartOfAccountsService: ChartOfAccountsService,
               private router: Router,
               public snackBar: MatSnackBar,
               private ref: ChangeDetectorRef) {
-     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.pipe = new DatePipe('en');
+    this.dataSource.filterPredicate = (data, filter) => {
+      if (this.fromDate && this.toDate) {
+        return data.createdDate >= this.fromDate && data.createdDate <= this.toDate;
+      }
+      return true;
+    };
+  }
+
+  applyFilter() {
+    this.dataSource.filter = '' + Math.random();
   }
 
   ngOnInit() {
@@ -42,6 +63,7 @@ export class ChartOfAccountsComponent implements OnInit, AfterViewInit, AfterVie
         'accountBalance', 'accountInitBalance', 'createdBy', 'createdDate', 'debit', 'credit', 'statement', 'comment'];
     }
   }
+
 
   filterText(filterValue: string) {
    // debugger;
@@ -116,7 +138,7 @@ export class ChartOfAccountsComponent implements OnInit, AfterViewInit, AfterVie
   }
 
   editBtnHandler(id) {
-    this.router.navigate(['accounts', id]);
+    this.router.navigate(['accounts/edit', id]);
   }
 
   private errorHandler(error, message) {

@@ -1,15 +1,16 @@
 ﻿import { Routes, RouterModule } from '@angular/router';
-import { LoginComponent } from './login';
+import { LoginComponent } from './auth/login';
 import { HomeComponent } from './home';
 import { AuthGuard } from './_guards';
-import { RegisterComponent } from './register';
-import { CreateUserComponent } from './create-user/create-user.component';
-import { UserAccountsComponent } from './user-accounts/user-accounts.component';
+import { RegisterComponent } from './auth/register';
+import { CreateUserComponent } from './users/create-user/create-user.component';
+import { UserAccountsComponent } from './users/user-accounts/user-accounts.component';
 import { LogsPageComponent } from './logs-page/logs-page.component';
-import { ChartOfAccountsComponent } from './chart-of-accounts/chart-of-accounts.component';
-import { CreateNewAccountComponent } from './chart-of-accounts/create-new-account/create-new-account.component';
-import { AccountViewComponent } from './chart-of-accounts/account-view/account-view.component';
+import { ChartOfAccountsComponent } from './accounts/chart-of-accounts.component';
+import { CreateNewAccountComponent } from './accounts/create-new-account/create-new-account.component';
+import { AccountViewComponent } from './accounts/account-view/account-view.component';
 import { EditAccountResolverService } from './_services/edit-account-resolver-service';
+import { UpdateAccountComponent } from './accounts/update-account/update-account.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -21,8 +22,9 @@ const appRoutes: Routes = [
     { path: 'accounts', component: ChartOfAccountsComponent},
     { path: 'createNewAccount', component: CreateNewAccountComponent},
     { path: 'accounts/:id', component: CreateNewAccountComponent, canActivate: [AuthGuard], resolve: {
-        account: EditAccountResolverService
-    }},
+        account: EditAccountResolverService }},
+    { path: 'accounts/edit/:id', component: UpdateAccountComponent, canActivate: [AuthGuard], resolve: {
+            account: EditAccountResolverService }},
     { path: 'accounts/:id/view', component: AccountViewComponent, canActivate: [AuthGuard], resolve: {
         account: EditAccountResolverService}},
 

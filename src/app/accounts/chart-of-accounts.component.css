@@ -2,6 +2,19 @@
   scroll-behavior: unset;
 }
 
+/*for date picker range*/
+/*.date-block__list {*/
+/*  float: right;*/
+/*}*/
+
+/*.date-block__list1 {*/
+/*  float: right;*/
+/*}*/
+
+/*.primary {*/
+/*  float: right;*/
+/*}*/
+
 .menu-bar {
   position: absolute;
   top: 260px;
@@ -43,4 +56,11 @@ mat-cell{
 mat-header-cell {
   display:flex;
   justify-content:center;
+}
+
+.mat-header-row {
+  position: sticky;
+  top: 0;
+  background-color: inherit;
+  z-index: 2;
 }

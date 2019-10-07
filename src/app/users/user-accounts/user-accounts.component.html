@@ -25,7 +25,7 @@
             <th (click)="sortByAccountDeactivate()"><a class="sort-by">Account Active</a></th>
             <th *ngIf="isAdmin(currentUser)" (click)="sortByAccountDeactivate()"><a class="sort-by">Deactivate/Activate</a></th>
             <th *ngIf="currentUser.role === '1'"><a class="sort-by">Password</a ></th>
-            <th *ngIf="isAdmin(currentUser)" (click)="sortByPasswordExpired()"><a class="sort-by">Password Expired</a></th>
+<!--            <th *ngIf="isAdmin(currentUser)" (click)="sortByPasswordExpired()"><a class="sort-by">Password Expired</a></th>-->
         </tr>
         </thead>
         <tbody>
@@ -43,7 +43,7 @@
             <td>{{user.lastName}}</td>
             <td>{{userRole(user.role)}}</td>
             <td>{{user.accountActive}}</td>
-            <td>{{user.passwordExpired}}</td>
+<!--            <td>{{user.passwordExpired}}</td>-->
         </tr>
 
         <tr *ngFor="let user of users; let i = index" [hidden]="currentUser.role !== '1'">
@@ -55,7 +55,7 @@
             <td *ngIf="user.accountActive"><a (click)="deactivateUser(user, currentUser)" class="text-danger">Deactivate</a></td>
             <td *ngIf="!user.accountActive"><a (click)="activateUser(user, currentUser)" class="text-danger">Activate</a></td>
             <td *ngIf="currentUser.role === '1'"><a class="text-danger" (click)="resetPassword(user, currentUser)">Reset</a></td>
-            <td>{{user.passwordExpired}}</td>
+<!--            <td>{{user.passwordExpired}}</td>-->
         </tr>
         </tbody>
     </table>

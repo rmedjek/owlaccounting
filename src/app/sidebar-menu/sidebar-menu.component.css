@@ -7,6 +7,7 @@ body {
   left: 0;
   top: 0;
   width: 100%;
+  z-index: 2;
 }
 
 .sidenav {
@@ -15,7 +16,7 @@ body {
   left: 0;
   left: 0;
   margin-top: 64px;
-  width: 200px;
+  width: 240px;
   background-color: white;
   overflow-x: hidden;
   padding-top: 20px;

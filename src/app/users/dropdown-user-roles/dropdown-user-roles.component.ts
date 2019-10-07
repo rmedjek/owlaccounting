@@ -1,8 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import { first } from 'rxjs/operators';
 
-import { LogTrack, User} from '../_models';
-import { UserService } from '../_services';
+import { LogTrack, User} from '../../_models';
+import { UserService } from '../../_services';
 
 @Component({
   selector: 'app-dropdown-user-roles',

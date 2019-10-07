@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
 
-import { LogTrack, User } from '../_models';
-import { UserService } from '../_services';
+import { LogTrack, User } from '../../_models';
+import { UserService } from '../../_services';
 import { throwError } from 'rxjs';
 
 @Component({
@@ -58,31 +58,31 @@ export class UserAccountsComponent implements OnInit {
     }
   }
 
-  passwordExpired(user: User, currentUser: User) {
-    if (currentUser.role === '1') {
-      user.passwordExpired = true;
-      const newLog = new LogTrack();
-      newLog.logDataInput = 'Password Expired ' + user.username;
-      newLog.logInitial =  user.username + ': Deactivate';
-      newLog.logFinal =  user.username + ': Active';
-      this.userService.update(user, currentUser, newLog).pipe(first()).subscribe(() => {
-        this.loadAllUsers();
-      });
-    }
-  }
-
-  passwordNotExpired(user: User, currentUser: User) {
-    if (currentUser.role === '1') {
-      user.passwordExpired = false;
-      const newLog = new LogTrack();
-      newLog.logDataInput = 'Password Expired ' + user.username;
-      newLog.logInitial =  user.username + ': Deactivate';
-      newLog.logFinal =  user.username + ': Active';
-      this.userService.update(user, currentUser, newLog).pipe(first()).subscribe(() => {
-        this.loadAllUsers();
-      });
-    }
-  }
+  // passwordExpired(user: User, currentUser: User) {
+  //   if (currentUser.role === '1') {
+  //     user.passwordExpired = true;
+  //     const newLog = new LogTrack();
+  //     newLog.logDataInput = 'Password Expired ' + user.username;
+  //     newLog.logInitial =  user.username + ': Deactivate';
+  //     newLog.logFinal =  user.username + ': Active';
+  //     this.userService.update(user, currentUser, newLog).pipe(first()).subscribe(() => {
+  //       this.loadAllUsers();
+  //     });
+  //   }
+  // }
+  //
+  // passwordNotExpired(user: User, currentUser: User) {
+  //   if (currentUser.role === '1') {
+  //     user.passwordExpired = false;
+  //     const newLog = new LogTrack();
+  //     newLog.logDataInput = 'Password Expired ' + user.username;
+  //     newLog.logInitial =  user.username + ': Deactivate';
+  //     newLog.logFinal =  user.username + ': Active';
+  //     this.userService.update(user, currentUser, newLog).pipe(first()).subscribe(() => {
+  //       this.loadAllUsers();
+  //     });
+  //   }
+  // }
 
   resetPassword(user: User, currentUser: User) {
     if (this.currentUser.role === '1') {
@@ -95,9 +95,9 @@ export class UserAccountsComponent implements OnInit {
            newLog.logFinal =  user.username + ' password: *******';
            user.password = passwordInput.toString();
            user.passwordCreationDate = new Date();
-           if (user.passwordExpired == true){
-            user.passwordExpired = false;
-           }
+           // if (user.passwordExpired === true) {
+           //  user.passwordExpired = false;
+           // }
            this.userService.update(user, currentUser, newLog).pipe(first()).subscribe(() => {
              this.loadAllUsers();
            });
@@ -252,15 +252,15 @@ export class UserAccountsComponent implements OnInit {
     }
   }
 
-  public sortByPasswordExpired() {
-    if (this.sortTracker === 0) {
-      this.users.sort((x, y) => Number(x.passwordExpired) - Number(y.passwordExpired));
-      this.sortTracker = 1;
-    } else {
-      this.users.sort((x, y) => Number(y.passwordExpired) - Number(x.passwordExpired));
-      this.sortTracker = 0;
-    }
-  }
+  // public sortByPasswordExpired() {
+  //   if (this.sortTracker === 0) {
+  //     this.users.sort((x, y) => Number(x.passwordExpired) - Number(y.passwordExpired));
+  //     this.sortTracker = 1;
+  //   } else {
+  //     this.users.sort((x, y) => Number(y.passwordExpired) - Number(x.passwordExpired));
+  //     this.sortTracker = 0;
+  //   }
+  // }
 
   changeValue(userId: User, property: string, event: any) {
     this.serviceCallUpdateBasedOnAttribute(property, event, userId);

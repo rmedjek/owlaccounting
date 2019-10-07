@@ -56,8 +56,12 @@ export class ChartOfAccountsService {
     return this.http.get<ChartOfAccounts>(`${environment.apiUrl}/accounts/${id}`);
   }
 
-  updateAccountById(id: string, body: ChartOfAccounts): Observable<ChartOfAccounts> {
-    return this.http.put<ChartOfAccounts>(`${environment.apiUrl}/accounts/${id}`, body);
+  updateAccountById(id: string, body: ChartOfAccounts, message: LogTrack) {
+    if (this.currentUser.role === '1' || this.currentUser.role === '2') {
+      const messageLog = this.logTrackService.logData(message, this.currentUser.username);
+      const updatedAccount = this.http.put(`${environment.apiUrl}/accounts/${id}`, body);
+      return forkJoin([messageLog, updatedAccount]);
+    }
   }
 
   downloadAccount(id: string) {
