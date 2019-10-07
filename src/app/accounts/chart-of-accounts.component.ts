@@ -71,7 +71,7 @@ export class ChartOfAccountsComponent implements OnInit, AfterViewInit, AfterVie
     this.isResultsLoading = true;
     filterValue = filterValue.trim();
     this.paginator.pageIndex = 0;
-    this.chartOfAccountsService.getAllAccounts({
+    this.chartOfAccountsService.getAllFilteredAndSortedAccounts({
       page: this.paginator.pageIndex,
       perPage: this.paginator.pageSize,
       sortField: this.sort.active,
@@ -92,7 +92,7 @@ export class ChartOfAccountsComponent implements OnInit, AfterViewInit, AfterVie
         startWith({}),
         switchMap(() => {
           this.isResultsLoading = true;
-          return this.chartOfAccountsService.getAllAccounts({
+          return this.chartOfAccountsService.getAllFilteredAndSortedAccounts({
             page: this.paginator.pageIndex,
             perPage: this.paginator.pageSize,
             sortField: this.sort.active,
@@ -123,7 +123,7 @@ export class ChartOfAccountsComponent implements OnInit, AfterViewInit, AfterVie
   }
 
   private loadAllAccounts() {
-    return this.chartOfAccountsService.getAllAccounts({
+    return this.chartOfAccountsService.getAllFilteredAndSortedAccounts({
       page: this.paginator.pageIndex,
       perPage: this.paginator.pageSize,
       sortField: this.sort.active,

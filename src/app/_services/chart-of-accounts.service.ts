@@ -14,7 +14,7 @@ export class ChartOfAccountsService {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
-  getAllAccounts({ page, perPage, sortField, sortDir, filter }): Observable<AccountPaginationResponse> {
+  getAllFilteredAndSortedAccounts({ page, perPage, sortField, sortDir, filter }): Observable<AccountPaginationResponse> {
     let queryString = `${environment.apiUrl}/accounts?page=${page + 1}&perPage=${perPage}`;
     if (sortField && sortDir) {
       queryString = `${queryString}&sortField=${sortField}&sortDir=${sortDir}`;
@@ -23,6 +23,10 @@ export class ChartOfAccountsService {
       queryString = `${queryString}&filter=${filter}`;
     }
     return this.http.get<AccountPaginationResponse>(queryString);
+  }
+
+  getAll() {
+    return this.http.get<ChartOfAccounts[]>(`${environment.apiUrl}/accounts`);
   }
 
   createAccount(account: ChartOfAccounts, currentUser: User) {
