@@ -36,11 +36,11 @@
 
 mat-cell{
   display:flex !important;
-  justify-content:center!important;
+  justify-content:right!important;
 
 }
 
 mat-header-cell {
   display:flex;
-  justify-content:center;
+  justify-content:right;
 }
