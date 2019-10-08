@@ -1,0 +1,181 @@
+<div class="row">
+    <div class="col-sm-6 offset-sm-3">
+        <alert></alert>
+        <app-sidebar-menu></app-sidebar-menu>
+        <!--error messages were here-->
+        <form *ngIf="approvedOrDeclinedEntries">
+            <input type="search" id="myInput" required class="search-box" (keyup)="approvedOrPendingSearch()" (keypress)="approvedOrPendingSearch()" placeholder="Search for specific entry" title="Type in a name">
+            <button class="close-icon" (click)="resetInput()" type="reset"></button>
+        </form>
+
+        <form *ngIf="!approvedOrDeclinedEntries">
+            <input type="search" id="myInput" required class="search-box" (keyup)="pendingSearch()" (keypress)="pendingSearch()" placeholder="Search for specific entry" title="Type in a name">
+            <button class="close-icon" (click)="resetInput()" type="reset"></button>
+        </form>
+
+        <div class="my-header">
+            <button class="button" (click)="onEntryButton()">New Entry</button>
+            <button class="button" (click)="updateAccountButton()">Update/Add Account</button>
+            <select  style="left: 0;" style="width:auto;" (change)="onOptionSelect($event.target.value)">
+                <option>-- None --</option>
+                <option value="pending">Pending</option>
+                <option value="approved" >Approved</option>
+                <option value="declined" >Declined</option>
+            </select>
+        </div>
+        <div *ngIf="emptyDate" class="alert-danger">Date must be entered</div>
+    </div>
+
+    <div class="sidenav1" *ngIf="updateAccountForm">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Account Number</th>
+                <th>Reason/Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <input type="number" id="accountNumberField" class="account-input">
+                </td>
+                <td>
+                    <input [attr.maxlength]="200" id="ReasonForUpdate" ng-model="myInput" [placeholder]="'Description'">
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button class="button" (click)="onCancelClick()">Cancel</button>
+                    <button class="button" (click)="onUpdateFormClick()">Submit</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="sidenav" *ngIf="!newJournalEntryHidden">
+        <form>
+            <table id="journalTable" class="table table-striped">
+                <thead>
+                <tr>
+                    <th>New Journal Entry</th>
+                    <th>Account</th>
+                    <th>Debit</th>
+                    <th>Credit</th>
+                </tr>
+                </thead>
+                <tr>
+                    <td>
+                        <!--<div class="input-group">-->
+                        <!--<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>-->
+                        <!--<input id="date" type="date" class="form-control" name="date">-->
+                        <!--</div>-->
+
+                        {{Date | date:'MM/dd/yyyy h:mm:ssa'}}
+
+                    </td>
+                    <td>
+                        <select class="custom-select" style="width:auto;" id="debitAccountName">
+                            <option [hidden]="!chartOfAccounts.accountActive" *ngFor="let chartOfAccounts of allAccountsSorted();"
+                                    [value]="chartOfAccounts._id">
+                                {{chartOfAccounts.accountName}}
+                            </option>
+                        </select>
+
+                    </td>
+                    <td>
+                        <input type="number" id="debitInput" class="account-input">
+                    </td>
+                    <td></td>
+                </tr>
+
+                <tr *ngFor="let account of debitAccountsLists; let i = index ">
+                    <td>
+                    </td>
+                    <td>
+
+                        <select class="custom-select" style="width:auto;" id="debitAccountName{{i}}">
+                            <option [hidden]="!chartOfAccounts.accountActive" *ngFor="let chartOfAccounts of allAccountsSorted();"
+                                    [value]="chartOfAccounts._id">
+                                {{chartOfAccounts.accountName}}
+                            </option>
+                        </select>
+
+                    </td>
+                    <td>
+                        <input type="number" id="debitInput{{i}}" class="account-input">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="display: inline-flex">
+                        <select class="custom-select" style="width:auto;" id="typeSelector">
+                            <option value="regular" [selected]="true">Regular</option>
+                            <option value="adjusting" >Adjusting</option>
+                            <option value="closing" >Closing</option>
+                        </select>
+                        &nbsp; &nbsp;
+                    </td>
+                    <td class = "credit-account">
+
+                        <select class="custom-select" style="width:auto;" id="creditAccountName">
+                            <option [hidden]="!chartOfAccounts.accountActive" *ngFor="let chartOfAccounts of allAccountsSorted()"
+                                    [value]="chartOfAccounts._id">
+                                {{chartOfAccounts.accountName}}
+                            </option>
+                        </select>
+
+                    </td>
+                    <td></td>
+                    <td>
+                        <input [attr.maxlength]="25" type="number" id="creditInput" class="account-input">
+                    </td>
+                </tr>
+
+                <tr *ngFor="let account of creditAccountsLists; let i = index ">
+                    <td>
+                    </td>
+                    <td class = "credit-account">
+
+                        <select class="custom-select" style="width:auto;" id="creditAccountName{{i}}">
+                            <option [hidden]="!chartOfAccounts.accountActive" *ngFor="let chartOfAccounts of allAccountsSorted()"
+                                    [value]="chartOfAccounts._id">
+                                {{chartOfAccounts.accountName}}
+                            </option>
+                        </select>
+
+                    </td>
+                    <td></td>
+                    <td>
+                        <input [attr.maxlength]="25" type="number" id="creditInput{{i}}" class="account-input">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td> <input [attr.maxlength]="25" id="journalDescription" ng-model="myInput" [placeholder]="'Description'"></td>
+                    <td> <button class="button" (click)="addDebitRow()">Add Debit</button>
+                        <button class="button" (click)="addCreditRow()">Add Credit</button></td>
+                    <td>
+                        <button class="button" (click)="onCancelClick()">Cancel</button>
+                    </td>
+                    <td>
+                        <button class="button" [disabled]="submitButtonClicked" (click)="onSubmit()">Submit</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-6 offset-sm-3">
+        <div *ngIf="creditDebitUnbalanceError" class="alert-danger">Credits and Debits must be equal.</div>
+        <br *ngIf="creditDebitUnbalanceError">
+        <div *ngIf="emptyInput" class="alert-danger">Credit and debit amounts must not be empty or Zero</div>
+        <br *ngIf="emptyInput">
+        <div *ngIf="negativeBalanceError" class="alert-danger">Credit and Debit amounts must not be negative</div>
+        <br *ngIf="negativeBalanceError">
+        <div *ngIf="creditDebitAccountMatchError" class="alert-danger">Credit and Debit accounts must not be the same</div>
+    </div>
+</div>

@@ -21,6 +21,7 @@
         <a [routerLink]="['/home']">Dashboard</a>
         <a [routerLink]="['/accounts']">Chart Of Accounts</a>
         <a *ngIf="currentUser?.role === '1'" [routerLink]="['/userAccounts']">User Accounts</a>
+        <a *ngIf="currentUser?.role !== '1'" [routerLink]="['/journalize']">Journalize</a>
         <a [routerLink]="['/logsPage']">Logs</a>
         <div class="logout-option"><a [routerLink]="['/login']">Logout</a></div>
       </mat-nav-list>

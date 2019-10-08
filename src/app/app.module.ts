@@ -56,6 +56,8 @@ import { JwtService } from './_services/jwt.service';
 import { EditAccountResolverService } from './_services/edit-account-resolver-service';
 import { UpdateAccountComponent } from './accounts/update-account/update-account.component';
 import { JournalizeComponent } from './journalize/journalize.component';
+import { JournalEntryService } from './_services/journal-entry.service';
+import { SystemAlertsForUsersService } from './_services/system-alerts-for-users.service';
 
 
 @NgModule({
@@ -120,6 +122,8 @@ import { JournalizeComponent } from './journalize/journalize.component';
     MatDatepickerModule,
     JwtService,
     EditAccountResolverService,
+    JournalEntryService,
+    SystemAlertsForUsersService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],

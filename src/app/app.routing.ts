@@ -11,6 +11,7 @@ import { CreateNewAccountComponent } from './accounts/create-new-account/create-
 import { AccountViewComponent } from './accounts/account-view/account-view.component';
 import { EditAccountResolverService } from './_services/edit-account-resolver-service';
 import { UpdateAccountComponent } from './accounts/update-account/update-account.component';
+import { JournalizeComponent } from './journalize/journalize.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -27,6 +28,7 @@ const appRoutes: Routes = [
             account: EditAccountResolverService }},
     { path: 'accounts/:id/view', component: AccountViewComponent, canActivate: [AuthGuard], resolve: {
         account: EditAccountResolverService}},
+    { path: 'journalize', component: JournalizeComponent},
 
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
