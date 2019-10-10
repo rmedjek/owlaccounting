@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { LogTrack, User} from '../_models';
 import { environment } from '../../environments/environment';
-import { AccountPaginationResponse, ChartOfAccounts } from '../_models/chartOfAccounts';
+import { ChartOfAccounts } from '../_models/chartOfAccounts';
 import { LogTrackService } from './index';
 import { forkJoin, Observable } from 'rxjs';
 
@@ -12,17 +12,6 @@ export class ChartOfAccountsService {
 
   constructor(private http: HttpClient, private logTrackService: LogTrackService) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-  }
-
-  getAllFilteredAndSortedAccounts({ page, perPage, sortField, sortDir, filter }): Observable<AccountPaginationResponse> {
-    let queryString = `${environment.apiUrl}/accounts?page=${page + 1}&perPage=${perPage}`;
-    if (sortField && sortDir) {
-      queryString = `${queryString}&sortField=${sortField}&sortDir=${sortDir}`;
-    }
-    if (filter) {
-      queryString = `${queryString}&filter=${filter}`;
-    }
-    return this.http.get<AccountPaginationResponse>(queryString);
   }
 
   getAll() {
@@ -46,7 +35,7 @@ export class ChartOfAccountsService {
   updateAccount(account: ChartOfAccounts, message: LogTrack) {
     if (this.currentUser.role === '1' || this.currentUser.role === '2') {
       const messageLog = this.logTrackService.logData(message, this.currentUser.username);
-      const createAccountRequest = this.http.put(`${environment.apiUrl}/accounts/` + account._id, account);
+      const createAccountRequest = this.http.put(`${environment.apiUrl}/accounts/` + account.id, account);
       return forkJoin([messageLog, createAccountRequest]);
     }
   }

@@ -39,7 +39,7 @@ export class CreateNewAccountComponent implements OnInit {
 
   ngOnInit() {
     this.createForm();
-    this.setAccountToForm();
+    // this.setAccountToForm();
   }
 
   private createForm() {
@@ -60,38 +60,38 @@ export class CreateNewAccountComponent implements OnInit {
     });
   }
 
-  private setAccountToForm() {
-    this.route.params
-        .subscribe(params => {
-          const id = params['id'];
-          if (!id) {
-            return;
-          }
-          this.title = 'Edit Account';
-          this.route.data.subscribe((data: {account: ChartOfAccounts}) => {
-            this.account = data.account;
-          });
-
-          this.accountForm.patchValue({
-            accountNumber: this.account.accountNumber,
-            accountName: this.account.accountName,
-            accountDesc: this.account.accountDesc,
-            accountType: this.account.accountType,
-            accountSubType: this.account.accountSubType,
-            normalSide: this.account.normalSide,
-            accountBalance: this.account.accountBalance,
-            accountInitBalance: this.account.accountInitBalance,
-            accountOrder: this.account.accountOrder,
-            createdBy: this.account.createdBy,
-            createdDate: this.account.createdDate,
-            debit: this.account.debit,
-            credit: this.account.credit,
-            accountActive: this.account.accountActive,
-            statement: this.account.accountNumber,
-            comment: this.account.comment
-          });
-        });
-  }
+  // private setAccountToForm() {
+  //   this.route.params
+  //       .subscribe(params => {
+  //         const id = params['id'];
+  //         if (!id) {
+  //           return;
+  //         }
+  //         this.title = 'Edit Account';
+  //         this.route.data.subscribe((data: {account: ChartOfAccounts}) => {
+  //           this.account = data.account;
+  //         });
+  //
+  //         this.accountForm.patchValue({
+  //           accountNumber: this.account.accountNumber,
+  //           accountName: this.account.accountName,
+  //           accountDesc: this.account.accountDesc,
+  //           accountType: this.account.accountType,
+  //           accountSubType: this.account.accountSubType,
+  //           normalSide: this.account.normalSide,
+  //           accountBalance: this.account.accountBalance,
+  //           accountInitBalance: this.account.accountInitBalance,
+  //           accountOrder: this.account.accountOrder,
+  //           createdBy: this.account.createdBy,
+  //           createdDate: this.account.createdDate,
+  //           debit: this.account.debit,
+  //           credit: this.account.credit,
+  //           accountActive: this.account.accountActive,
+  //           statement: this.account.accountNumber,
+  //           comment: this.account.comment
+  //         });
+  //       });
+  // }
 
   // convenience getter for easy access to form fields
   get f() { return this.accountForm.controls; }
@@ -101,24 +101,9 @@ export class CreateNewAccountComponent implements OnInit {
     if (this.accountForm.invalid) {
       return;
     }
-    this.balance = this.accountForm.controls.accountBalance.value.toString();
+    this.balance = this.accountForm.controls['accountBalance'].value.toString();
     this.loading = true;
     if (!this.balance.includes('-')) {
-      if (this.account) {
-        const newLog = new LogTrack();
-        newLog.logDataInput = 'updated ' + this.account;
-        newLog.logInitial = this.account + '';
-        newLog.logFinal = this.account + '';
-
-        this.chartOfAccountsService.updateAccountById(this.account._id, this.accountForm.value, newLog)
-            .subscribe(data => {
-              this.snackBar.open('Account updated', 'Success', {
-                duration: 2000
-              });
-              this.router.navigate(['accounts']);
-              },
-                    err => this.errorHandler(err, 'Failed to update account'));
-      }
       this.chartOfAccountsService.createAccount(this.accountForm.value, this.currentUser)
           .pipe(first())
           .subscribe(

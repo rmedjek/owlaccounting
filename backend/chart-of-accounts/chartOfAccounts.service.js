@@ -1,17 +1,21 @@
 ﻿const db = require('../_helpers/db');
-const ChartOfAccountsService = db.chartOfAccounts;
 const ChartOfAccounts = db.chartOfAccounts;
+const ChartOfAccountsService = db.chartOfAccounts;
 
 module.exports = {
+    getAll,
     createAccount,
     update,
     findOne,
     updateById,
     delete: _delete,
     getTemplateBody,
-    getAccountTemplate: getAccountTemplate
+    getAccountTemplate: getAccountTemplate,
 };
 
+async function getAll() {
+    return await ChartOfAccountsService.find({});
+}
 
 async function createAccount(userParam) {
     const chartOfAccounts = new ChartOfAccountsService();
@@ -35,17 +39,6 @@ async function createAccount(userParam) {
     await chartOfAccounts.save();
 }
 
-async function update(id, userParam) {
-    const account = await ChartOfAccounts.findById(id);
-    // validate
-    if (!account) throw 'ChartOfAccountsService not found';
-
-    // copy userParam properties to user
-    Object.assign(account, userParam);
-
-    await account.save();
-}
-
 async function _delete(id) {
     return await ChartOfAccounts.findByIdAndRemove(id);
 }
@@ -56,6 +49,17 @@ async function findOne(id) {
 
 async function updateById(id) {
     return  await ChartOfAccounts.findOneAndUpdate(id);
+}
+
+async function update(id, userParam) {
+    const account = await ChartOfAccounts.findById(id);
+    // validate
+    if (!account) throw 'ChartOfAccountsService not found';
+
+    // copy userParam properties to user
+    Object.assign(account, userParam);
+
+    await account.save();
 }
 
 function getTemplateBody(account) {

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from '../_models';
+import { LogTrack, User } from '../_models';
 import { ChartOfAccounts } from '../_models/chartOfAccounts';
 import { ChartOfAccountsService } from '../_services/chart-of-accounts.service';
 import { JournalEntryService } from '../_services/journal-entry.service';
@@ -18,6 +18,7 @@ export class JournalizeComponent implements OnInit {
   currentUser: User;
   accountList: ChartOfAccounts[] = [];
   allAccounts: ChartOfAccounts[] = [];
+  specificAccountForReroute: ChartOfAccounts[] = [];
   allEntries: JournalEntry[] = [];
   entriesList: JournalEntry[] = [];
   allEntriesBackup: JournalEntry[] = [];
@@ -96,7 +97,7 @@ export class JournalizeComponent implements OnInit {
   }
 
   getAccountById(accountId: string) {
-    return this.allAccounts.find(x => x._id === accountId);
+    return this.allAccounts.find(x => x.id === accountId);
   }
 
 

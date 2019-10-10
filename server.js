@@ -1,3 +1,5 @@
+import { LedgerAccountTransactionsComponent } from "./src/app/ledger-account-transactions/ledger-account-transactions.component";
+
 require('rootpath')();
 const express = require('express');
 const app = express();
@@ -30,7 +32,7 @@ app.use('/users',    require('./backend/users/users.controller'));
 app.use('/logTrack', require('./backend/log-track/logTrack.controller'));
 app.use('/accounts', require('./backend/chart-of-accounts/chartOfAccounts.controller'));
 app.use('/journals', require('./backend/journal-entries/journalEntries.controller'));
-
+app.use('/systemAlerts', require('./backend/system-alerts-for-users/system-alerts-for-users.controller'));
 
 
 

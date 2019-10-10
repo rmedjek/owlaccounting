@@ -66,8 +66,8 @@
         </table>
     </mat-card-content>
     <mat-card-actions>
-        <button  mat-raised-button color="basic" matTooltip="Edit the account" [routerLink]="['/accounts/edit',account._id]">Edit</button>
-        <button mat-raised-button color="primary" matTooltip="Download the account chart as *.pdf" (click)="downloadHandler(account._id)">Download</button>
+        <button  mat-raised-button color="basic" matTooltip="Edit the account" [routerLink]="['/accounts/edit',account.id]">Edit</button>
+        <button mat-raised-button color="primary" matTooltip="Download the account chart as *.pdf" (click)="downloadHandler(account.id)">Download</button>
         <button mat-raised-button color="warn" [routerLink]="['/accounts']">Cancel</button>
     </mat-card-actions>
     <mat-progress-bar *ngIf="isResultsLoading" mode="indeterminate" color="accent"></mat-progress-bar>

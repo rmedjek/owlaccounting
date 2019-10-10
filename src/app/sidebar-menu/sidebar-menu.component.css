@@ -1,3 +1,7 @@
+.example-spacer {
+  flex: 1 1 auto;
+}
+
 body {
   font-family: "Lato", sans-serif;
 }
@@ -14,8 +18,6 @@ body {
   position: fixed;
   margin-top: 64px;
   left: 0;
-  left: 0;
-  margin-top: 64px;
   width: 240px;
   background-color: white;
   overflow-x: hidden;
@@ -96,6 +98,7 @@ h1.my-app-name {
   /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
      causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
   flex: 1;
+  z-index: 2;
 }
 
 .my-is-mobile .my-sidenav-container {

@@ -1,7 +1,20 @@
 <div class="my-container" [class.example-is-mobile]="mobileQuery.matches">
   <mat-toolbar color="primary" class="my-toolbar">
     <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
-    <h1 class="example-app-name">Owl Accounting</h1>
+    <span>Owl Accounting</span> <span class="example-spacer"></span>
+    <div class="md-toolbar-tools" fxShow="true" fxHide.lt-md="true">
+      <span class="example-spacer"></span>
+      <!-- The following menu items will be hidden on both SM and XS screen sizes -->
+      <a [routerLink]="['/home']" mat-button>Dashboard</a>
+      <a [routerLink]="['/accounts']" mat-button>Chart of accounts</a>
+      <a *ngIf="currentUser?.role === '1'" [routerLink]="['/userAccounts']" mat-button>User Accounts</a>
+      <a *ngIf="currentUser?.role !== '1'" [routerLink]="['/journalize']" mat-button>Journalize</a>
+      <a [routerLink]="['/logsPage']" mat-button>Logs</a>
+      <a mat-button color="warn" [routerLink]="['/login']">Logout</a>
+    </div>
+    <div fxShow="true" fxHide.gt-sm="true">
+      <a href="#" (click)="snav.toggle()">Show Side Menu</a>
+    </div>
   </mat-toolbar>
 
   <mat-sidenav-container class="sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">

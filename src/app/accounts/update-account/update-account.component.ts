@@ -110,7 +110,7 @@ export class UpdateAccountComponent implements OnInit {
         newLog.logInitial = this.account.accountBalance + '';
         newLog.logFinal = this.account.accountBalance + '';
 
-        this.chartOfAccountsService.updateAccountById(this.account._id, this.accountForm.value, newLog)
+        this.chartOfAccountsService.updateAccountById(this.account.id, this.accountForm.value, newLog)
             .subscribe(data => {
               this.snackBar.open('Account updated', 'Success', {
                 duration: 2000

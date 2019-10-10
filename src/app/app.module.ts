@@ -58,6 +58,9 @@ import { UpdateAccountComponent } from './accounts/update-account/update-account
 import { JournalizeComponent } from './journalize/journalize.component';
 import { JournalEntryService } from './_services/journal-entry.service';
 import { SystemAlertsForUsersService } from './_services/system-alerts-for-users.service';
+import { LedgerAccountTransactionsComponent } from './ledger-account-transactions/ledger-account-transactions.component';
+import { DataTableModule } from 'angular-6-datatable';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 
 @NgModule({
@@ -91,7 +94,9 @@ import { SystemAlertsForUsersService } from './_services/system-alerts-for-users
         MatSnackBarModule,
         MatSlideToggleModule,
         MatButtonToggleModule,
-        RouterModule
+        RouterModule,
+        DataTableModule,
+        FlexLayoutModule
     ],
   declarations: [
     AppComponent,
@@ -110,7 +115,8 @@ import { SystemAlertsForUsersService } from './_services/system-alerts-for-users
     CreateNewAccountComponent,
     AccountViewComponent,
     UpdateAccountComponent,
-    JournalizeComponent
+    JournalizeComponent,
+    LedgerAccountTransactionsComponent
   ],
   providers: [
     AuthGuard,
