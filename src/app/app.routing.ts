@@ -12,7 +12,6 @@ import { AccountViewComponent } from './accounts/account-view/account-view.compo
 import { EditAccountResolverService } from './_services/edit-account-resolver-service';
 import { UpdateAccountComponent } from './accounts/update-account/update-account.component';
 import { JournalizeComponent } from './journalize/journalize.component';
-import { LedgerAccountTransactionsComponent } from './ledger-account-transactions/ledger-account-transactions.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },

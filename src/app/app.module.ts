@@ -58,9 +58,9 @@ import { UpdateAccountComponent } from './accounts/update-account/update-account
 import { JournalizeComponent } from './journalize/journalize.component';
 import { JournalEntryService } from './_services/journal-entry.service';
 import { SystemAlertsForUsersService } from './_services/system-alerts-for-users.service';
-import { LedgerAccountTransactionsComponent } from './ledger-account-transactions/ledger-account-transactions.component';
 import { DataTableModule } from 'angular-6-datatable';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { LedgerService } from './_services/ledgerService.service';
 
 
 @NgModule({
@@ -115,8 +115,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     CreateNewAccountComponent,
     AccountViewComponent,
     UpdateAccountComponent,
-    JournalizeComponent,
-    LedgerAccountTransactionsComponent
+    JournalizeComponent
   ],
   providers: [
     AuthGuard,
@@ -130,6 +129,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     EditAccountResolverService,
     JournalEntryService,
     SystemAlertsForUsersService,
+      LedgerService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],

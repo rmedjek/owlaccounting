@@ -1,5 +1,3 @@
-import { LedgerAccountTransactionsComponent } from "./src/app/ledger-account-transactions/ledger-account-transactions.component";
-
 require('rootpath')();
 const express = require('express');
 const app = express();

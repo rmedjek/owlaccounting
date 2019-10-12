@@ -8,6 +8,7 @@ import { AlertService } from '../_services';
 import { SystemAlertsForUsersService } from '../_services/system-alerts-for-users.service';
 import { first } from 'rxjs/operators';
 import { JournalEntry } from '../_models/journal-entries';
+import { LedgerService } from '../_services/ledgerService.service';
 
 @Component({
   selector: 'app-journalize',
@@ -50,7 +51,8 @@ export class JournalizeComponent implements OnInit {
               private journalEntryService: JournalEntryService,
               private router: Router,
               private alertService: AlertService,
-              private systemAlertsForUsersService: SystemAlertsForUsersService) {
+              private systemAlertsForUsersService: SystemAlertsForUsersService,
+              private  ledgerService: LedgerService) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
@@ -329,6 +331,98 @@ export class JournalizeComponent implements OnInit {
     }
   }
 
+
+  updateJournalStatus(entry: JournalEntry, action: string) {
+    if (action === 'approve') {
+      this.updateAccountBalance(entry);
+      entry.status = 'approved';
+
+      const newLog = new LogTrack();
+      newLog.logDataInput = 'Approved a journal entry ';
+      newLog.logInitial =  entry.description + 'Status: Pending';
+      newLog.logFinal =  entry.description + 'Status: Approved';
+
+      this.journalEntryService.updateEntry(entry, newLog).pipe(first()).subscribe(() => {
+        this.loadAllJournalEntries();
+      });
+    } else {
+      entry.status = 'declined';
+      entry.declineReason = prompt('Enter Reason (if applicable):');
+      const newLog = new LogTrack();
+      newLog.logDataInput = 'Declines a journal entry ';
+      newLog.logInitial =  entry.description + 'Status: Pending';
+      newLog.logFinal =  entry.description + 'Status: Declined';
+
+      this.journalEntryService.updateEntry(entry, newLog).pipe(first()).subscribe(() => {
+        this.loadAllJournalEntries();
+      });
+    }
+  }
+
+  updateAccountBalance(journal: JournalEntry) {
+    journal.accountDebit.forEach((account, index) => {
+      this.ledgerService.logTableEntry(journal, account, journal.amountDebit[index], true ).pipe(first()).subscribe(() => {});
+      const debitAccount = this.allAccounts.filter(account => account.accountName.includes(journal.accountDebit[index]));
+      this.updateDebitBalance(debitAccount[0], journal, index);
+    });
+
+    journal.accountCredit.forEach((account, index) => {
+      this.ledgerService.logTableEntry(journal, account, journal.amountCredit[index], false ).pipe(first()).subscribe(() => {});
+      const creditAccount = this.allAccounts.filter(account => account.accountName.includes(journal.accountCredit[index]));
+      this.updateCreditBalance(creditAccount[0], journal, index);
+    });
+  }
+
+  updateDebitBalance(debitAccount: ChartOfAccounts, journal: JournalEntry, i: number) {
+    const accountUpdate = debitAccount;
+    if ((debitAccount.accountType === 'Expense' || debitAccount.accountType === 'Asset') &&
+        debitAccount.accountName !== 'Accumulated Depreciation') {
+      accountUpdate.accountBalance +=  journal.amountDebit[i];
+
+      const newLog = new LogTrack();
+      newLog.logDataInput = 'Approved a journal that affected account ' + debitAccount.accountName;
+      newLog.logInitial =  debitAccount.accountName + ': Pending';
+      newLog.logFinal =  debitAccount.accountName + ': Approved';
+
+      this.accountsService.updateAccount(accountUpdate, newLog).pipe(first()).subscribe(() => {
+      });
+    } else {
+      accountUpdate.accountBalance -=  journal.amountDebit[i];
+
+      const newLog = new LogTrack();
+      newLog.logDataInput = 'Approved a journal that affected account ' + debitAccount.accountName;
+      newLog.logInitial =  debitAccount.accountName + ': Pending';
+      newLog.logFinal =  debitAccount.accountName + ': Approved';
+
+      this.accountsService.updateAccount(accountUpdate, newLog).pipe(first()).subscribe(() => {
+      });
+    }
+  }
+
+  updateCreditBalance(creditAccount: ChartOfAccounts, journal: JournalEntry, i: number) {
+    const accountUpdate = creditAccount;
+    if ((creditAccount.accountType === 'Expense' || creditAccount.accountType === 'Asset') &&
+        creditAccount.accountName !== 'Accumulated Depreciation') {
+      accountUpdate.accountBalance -=  journal.amountCredit[i];
+
+      const newLog = new LogTrack();
+      newLog.logDataInput = 'Approved a journal that affected account ' + creditAccount.accountName;
+      newLog.logInitial =  creditAccount.accountName + ': Pending';
+      newLog.logFinal =  creditAccount.accountName + ': Approved';
+      this.accountsService.updateAccount(accountUpdate, newLog).pipe(first()).subscribe(() => {
+      });
+    } else {
+      accountUpdate.accountBalance +=  journal.amountCredit[i];
+
+      const newLog = new LogTrack();
+      newLog.logDataInput = 'Approved a journal that affected account ' + creditAccount.accountName;
+      newLog.logInitial =  creditAccount.accountName + ': Pending';
+      newLog.logFinal =  creditAccount.accountName + ': Approved';
+      this.accountsService.updateAccount(accountUpdate, newLog).pipe(first()).subscribe(() => {
+      });
+    }
+  }
+
   onOptionSelect(selected: string) {
     if (selected === 'pending') {
       this.approvedOrDeclinedEntries = false;
@@ -399,5 +493,12 @@ export class JournalizeComponent implements OnInit {
   resetInput() {
     this.allEntries = this.allEntriesBackup;
     this.entriesList = this.entriesListBackup;
+  }
+
+  setLedgerSortEntry(tTableSortAccount: string, accountNumber: number) {
+    this.specificAccountForReroute = this.accountList.filter(account => account.accountName === tTableSortAccount);
+    localStorage.setItem('accountSortBy', JSON.stringify(tTableSortAccount));
+    localStorage.setItem('accountNumber', JSON.stringify(this.specificAccountForReroute[0].accountNumber));
+    this.router.navigate(['/ledger']);
   }
 }
