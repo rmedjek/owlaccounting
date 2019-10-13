@@ -61,6 +61,7 @@ import { SystemAlertsForUsersService } from './_services/system-alerts-for-users
 import { DataTableModule } from 'angular-6-datatable';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { LedgerService } from './_services/ledgerService.service';
+import { LedgerComponent } from './ledger/ledger.component';
 
 
 @NgModule({
@@ -115,7 +116,8 @@ import { LedgerService } from './_services/ledgerService.service';
     CreateNewAccountComponent,
     AccountViewComponent,
     UpdateAccountComponent,
-    JournalizeComponent
+    JournalizeComponent,
+    LedgerComponent
   ],
   providers: [
     AuthGuard,
