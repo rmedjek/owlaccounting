@@ -2,15 +2,15 @@
       
 
 <div class="col-xs-6">
-        <h1>Account Name</h1>
+        <h1>Journal Entries</h1>
 <table class="table table-striped" [mfData]="journalEntries" #mf="mfDataTable" [mfRowsOnPage]="5">
     <thead>
         <tr>
             
             <th (click)="sortByAccountCreatedOn()"><a>Created On</a> <a class="sort-by"></a></th>
             
-            <th (click)="sortByAccountType()"><a>Account Type</a> <a class="sort-by"></a></th>
-            
+            <th (click)="sortByAccountType()"><a>Account Debited</a> <a class="sort-by"></a></th>
+            <th (click)="sortByAccountType()"><a>Account Credited</a> <a class="sort-by"></a></th>
             
             <th><a>Debit</a> <a class="sort-by"></a></th>
             <th><a>Credit</a> <a class="sort-by"></a></th>
@@ -18,20 +18,40 @@
             
         </tr>
         </thead>
-        <tbody>
-            <tr *ngFor="let journalEntry of mf.data;">
+        <tbody *ngFor="let journalEntry of mf.data;">
+            <tr>
                 <td>
                     {{journalEntry.createdDate}}
                 </td>
                 <td>
-                    {{journalEntry.type}}
+                    {{journalEntry.accountDebit}}
                 </td>
+                <td>
+
+                </td>
+                
                 <td>
                     {{journalEntry.amountDebit}}
                 </td>
                 <td>
-                    {{journalEntry.amountCredit}}
+
                 </td>
+                
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+
+                    <td>
+                        {{journalEntry.accountCredit}}
+                    </td>
+
+                    <td></td>
+
+                    <td>
+                        {{journalEntry.amountCredit}}
+                    </td>
+
             </tr>
             
             </tbody>

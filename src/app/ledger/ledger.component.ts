@@ -39,9 +39,4 @@ export class LedgerComponent implements OnInit {
       this.journalEntries = entry;
     });
   } 
-
-  
-
-  
-
 }
