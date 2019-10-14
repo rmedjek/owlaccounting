@@ -1,1 +1,42 @@
-<p>ledger works!</p>
+<app-sidebar-menu></app-sidebar-menu>
+      
+
+<div class="col-xs-6">
+        <h1>Account Name</h1>
+<table class="table table-striped" [mfData]="journalEntries" #mf="mfDataTable" [mfRowsOnPage]="5">
+    <thead>
+        <tr>
+            
+            <th (click)="sortByAccountCreatedOn()"><a>Created On</a> <a class="sort-by"></a></th>
+            
+            <th (click)="sortByAccountType()"><a>Account Type</a> <a class="sort-by"></a></th>
+            
+            
+            <th><a>Debit</a> <a class="sort-by"></a></th>
+            <th><a>Credit</a> <a class="sort-by"></a></th>
+            
+            
+        </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let journalEntry of mf.data;">
+                <td>
+                    {{journalEntry.createdDate}}
+                </td>
+                <td>
+                    {{journalEntry.type}}
+                </td>
+                <td>
+                    {{journalEntry.amountDebit}}
+                </td>
+                <td>
+                    {{journalEntry.amountCredit}}
+                </td>
+            </tr>
+            
+            </tbody>
+</table>
+</div>
+
+
+

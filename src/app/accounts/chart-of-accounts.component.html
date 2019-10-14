@@ -37,9 +37,9 @@
         </thead>
         <tbody>
         <tr *ngFor="let chartOfAccounts of mf.data;" [hidden]="currentUser.role !== '1'">
-            <td >{{chartOfAccounts.accountNumber}} </td>
+            <td (click)="redirect()"> <a matTooltip="Go to ledger"> {{chartOfAccounts.accountNumber}} </a> </td>
             <td >{{chartOfAccounts.accountOrder}} </td>
-            <td (blur)="changeValue(chartOfAccounts, 'name', $event)">{{chartOfAccounts.accountName}} </td>
+            <td (blur)="changeValue(chartOfAccounts, 'name', $event)" (click)="redirect()"> <a matTooltip="Go to ledger"> {{chartOfAccounts.accountName}} </a></td>
             <td><app-account-type-selector [account]="chartOfAccounts"></app-account-type-selector></td>
             <td (blur)="changeValue(chartOfAccounts, 'subtype', $event)">{{chartOfAccounts.accountSubType}} </td>
             <td (blur)="changeValue(chartOfAccounts, 'normalSide', $event)">{{chartOfAccounts.normalSide}}</td>

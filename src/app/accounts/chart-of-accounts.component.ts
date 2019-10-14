@@ -26,6 +26,10 @@ export class ChartOfAccountsComponent implements OnInit {
     this.loadAllAccounts();
   }
 
+  redirect(){
+    this.router.navigate(['/ledger']);
+  }
+
   private loadAllAccounts() {
     this.accountsService.getAll().pipe(first()).subscribe(account => {
       this.accountList = account;
