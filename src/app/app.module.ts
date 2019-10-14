@@ -16,7 +16,7 @@ import {
     MatButtonModule,
     MatButtonToggleModule,
     MatCardModule,
-    MatDatepickerModule,
+    MatDatepickerModule, MatDialogModule,
     MatExpansionModule,
     MatFormFieldModule,
     MatIconModule,
@@ -58,9 +58,10 @@ import { UpdateAccountComponent } from './accounts/update-account/update-account
 import { JournalizeComponent } from './journalize/journalize.component';
 import { JournalEntryService } from './_services/journal-entry.service';
 import { SystemAlertsForUsersService } from './_services/system-alerts-for-users.service';
+import { LedgerService } from './_services/ledger.service';
+import { LedgerAccountTransactionsComponent } from './ledger-account-transactions/ledger-account-transactions.component';
 import { DataTableModule } from 'angular-6-datatable';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { LedgerService } from './_services/ledgerService.service';
 
 
 @NgModule({
@@ -96,7 +97,8 @@ import { LedgerService } from './_services/ledgerService.service';
         MatButtonToggleModule,
         RouterModule,
         DataTableModule,
-        FlexLayoutModule
+        FlexLayoutModule,
+        MatDialogModule
     ],
   declarations: [
     AppComponent,
@@ -115,7 +117,8 @@ import { LedgerService } from './_services/ledgerService.service';
     CreateNewAccountComponent,
     AccountViewComponent,
     UpdateAccountComponent,
-    JournalizeComponent
+    JournalizeComponent,
+    LedgerAccountTransactionsComponent
   ],
   providers: [
     AuthGuard,
@@ -129,7 +132,7 @@ import { LedgerService } from './_services/ledgerService.service';
     EditAccountResolverService,
     JournalEntryService,
     SystemAlertsForUsersService,
-      LedgerService,
+    LedgerService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],

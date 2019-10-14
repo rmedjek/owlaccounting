@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { LogTrack, User } from '../_models';
 import { ChartOfAccounts } from '../_models/chartOfAccounts';
 import { ChartOfAccountsService } from '../_services/chart-of-accounts.service';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-chart-of-accounts',
@@ -18,7 +19,9 @@ export class ChartOfAccountsComponent implements OnInit {
   sortTracker = 0;
   accountBalanceError = false;
 
-  constructor(private accountsService: ChartOfAccountsService,  private router: Router) {
+  constructor(private accountsService: ChartOfAccountsService,
+              private router: Router,
+              public snackBar: MatSnackBar) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
@@ -63,9 +66,13 @@ export class ChartOfAccountsComponent implements OnInit {
         });
       } else {
         this.accountBalanceError = true;
-        setTimeout(() => {
-          this.accountBalanceError = false;
-        }, 6000);
+        this.snackBar.open('Account Balance must be zero', 'Failure', {
+          duration: 6000
+        });
+        this.accountBalanceError = false;
+        // setTimeout(() => {
+        //   this.accountBalanceError = false;
+        // }, 6000);
       }
     }
   }
@@ -451,8 +458,8 @@ export class ChartOfAccountsComponent implements OnInit {
     }
   }
 
-  setTTableSortEntry(tTableSortAccount: string, accountNumber: number) {
-    localStorage.setItem('accountSortBy', JSON.stringify(tTableSortAccount));
+  setLedgerSortEntry(ledgerSortAccount: string, accountNumber: number) {
+    localStorage.setItem('accountSortBy', JSON.stringify(ledgerSortAccount));
     localStorage.setItem('accountNumber', JSON.stringify(accountNumber));
     this.router.navigate(['/ledger']);
   }

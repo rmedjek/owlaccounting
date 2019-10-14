@@ -2,9 +2,10 @@
     <div class="col-sm-6 offset-sm-3">
         <app-sidebar-menu></app-sidebar-menu>
         <div *ngIf="accountBalanceError" class="alert-danger">Account Balance must be zero</div>
-        <form >
-                <input type="search" id="myInput" required class="search-box" (keyup)="loadUsersBySearch()" (keypress)="loadUsersBySearch()" placeholder="Search by name or username" title="Type in a name">
-                <button class="close-icon" (click)="resetInput()" type="reset"></button>
+        <form>
+            <input type="search" id="myInput" required class="search-box" (keyup)="loadUsersBySearch()"
+                   (keypress)="loadUsersBySearch()" placeholder="Search by name or username" title="Type in a name">
+            <button class="close-icon" (click)="resetInput()" type="reset"></button>
             <button mat-raised-button color="primary"
                         matTooltip="Create a new account record"
                         [routerLink]="['/createNewAccount']"
@@ -30,6 +31,7 @@
             <th><a>Credit</a> <a class="sort-by"></a></th>
             <th><a>Statement</a> <a class="sort-by"></a></th>
             <th><a>Comment</a><a class="sort-by"></a></th>
+            <th><a>Description</a><a class="sort-by"></a></th>
             <th *ngIf="isAdmin(currentUser)" (click)="sortByAccountStatus()"><a>Deactivate/Activate</a> <a class="sort-by"></a></th>
             <th *ngIf="isAdmin(currentUser)" (click)="sortByAccountStatus()"><a>Edit</a><a class="sort-by"></a></th>
             <th *ngIf="isAdmin(currentUser)" (click)="sortByAccountStatus()"><a>View</a><a class="sort-by"></a></th>
@@ -50,6 +52,7 @@
             <td (blur)="changeValue(chartOfAccounts, 'debit', $event)">{{chartOfAccounts.debit | currency: 'USD': "symbol": '1.2-2'}} </td>
             <td (blur)="changeValue(chartOfAccounts, 'credit', $event)">{{chartOfAccounts.credit | currency: 'USD': "symbol": '1.2-2'}} </td>
             <td >{{chartOfAccounts.statement}} </td>
+            <td >{{chartOfAccounts.accountDesc}} </td>
             <td >{{chartOfAccounts.comment}} </td>
             <td [hidden]="!chartOfAccounts.accountActive"><a (click)="deactivateAccount(chartOfAccounts)" class="text-danger">Deactivate</a></td>
             <td [hidden]="chartOfAccounts.accountActive"><a (click)="activateAccount(chartOfAccounts)" class="text-danger">Activate</a></td>
@@ -68,9 +71,10 @@
 
         <tbody>
         <tr *ngFor="let chartOfAccounts of mf.data" [hidden]="currentUser.role === '1'">
-            <td >{{chartOfAccounts.accountNumber}} </td>
+            <td  style="color: blue"> <a (click)="setLedgerSortEntry(chartOfAccounts.accountName, chartOfAccounts.accountNumber)">
+            {{chartOfAccounts.accountNumber}}</a></td>
             <td >{{chartOfAccounts.accountOrder}} </td>
-            <td  style="color: blue"><a (click)="setTTableSortEntry(chartOfAccounts.accountName, chartOfAccounts.accountNumber)">
+            <td  style="color: blue"><a (click)="setLedgerSortEntry(chartOfAccounts.accountName, chartOfAccounts.accountNumber)">
                 {{chartOfAccounts.accountName}} </a></td>
             <td >{{chartOfAccounts.accountType}} </td>
             <td >{{chartOfAccounts.accountSubType}} </td>
@@ -82,6 +86,7 @@
             <td >{{chartOfAccounts.debit | currency: 'USD': "symbol": '1.2-2'}} </td>
             <td >{{chartOfAccounts.credit | currency: 'USD': "symbol": '1.2-2'}} </td>
             <td >{{chartOfAccounts.statement}} </td>
+            <td >{{chartOfAccounts.accountDesc}} </td>
             <td >{{chartOfAccounts.comment}} </td>
         </tr>
         </tbody>

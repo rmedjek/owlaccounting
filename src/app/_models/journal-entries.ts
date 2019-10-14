@@ -10,4 +10,7 @@ export class JournalEntry {
     createdDate: Date;
     status: string;
     declineReason: string;
+    imageData: string;
+    imageName: string;
+    imageType: string;
 }

@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { AlertService, AuthenticationService } from '../../_services';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
     templateUrl: 'login.component.html',
@@ -19,7 +20,8 @@ export class LoginComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private authenticationService: AuthenticationService,
-        private alertService: AlertService) {}
+        private alertService: AlertService,
+        public snackBar: MatSnackBar) {}
 
     ngOnInit() {
         this.loginForm = this.formBuilder.group({
@@ -49,8 +51,10 @@ export class LoginComponent implements OnInit {
             .subscribe(
                 data => {
                     this.router.navigate([this.returnUrl]);
-                },
-                error => {
+                }, error => {
+                    this.snackBar.open('incorrect password or username', 'failure', {
+                       duration: 6000
+                    });
                     this.alertService.error(error);
                     this.loading = false;
                 });

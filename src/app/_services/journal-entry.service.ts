@@ -19,7 +19,7 @@ export class JournalEntryService {
     return this.http.get<JournalEntry[]>(`${environment.apiUrl}/journals`);
   }
 
-  createEntry(entry: JournalEntry) {
+  logNewEntry(entry: JournalEntry) {
     if (this.currentUser.role === '3' || this.currentUser.role === '2') {
       const newLog = new LogTrack();
       newLog.logDataInput = 'Created a new journal Entry on ' +

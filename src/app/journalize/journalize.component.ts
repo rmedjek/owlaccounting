@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import { first } from 'rxjs/operators';
+import { AlertService } from '../_services';
+import { Router } from '@angular/router';
 import { LogTrack, User } from '../_models';
 import { ChartOfAccounts } from '../_models/chartOfAccounts';
+import { JournalEntry } from '../_models/journal-entries';
 import { ChartOfAccountsService } from '../_services/chart-of-accounts.service';
 import { JournalEntryService } from '../_services/journal-entry.service';
-import { Router } from '@angular/router';
-import { AlertService } from '../_services';
 import { SystemAlertsForUsersService } from '../_services/system-alerts-for-users.service';
-import { first } from 'rxjs/operators';
-import { JournalEntry } from '../_models/journal-entries';
-import { LedgerService } from '../_services/ledgerService.service';
+import { LedgerService } from '../_services/ledger.service';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-journalize',
@@ -19,40 +20,42 @@ export class JournalizeComponent implements OnInit {
   currentUser: User;
   accountList: ChartOfAccounts[] = [];
   allAccounts: ChartOfAccounts[] = [];
-  specificAccountForReroute: ChartOfAccounts[] = [];
   allEntries: JournalEntry[] = [];
-  entriesList: JournalEntry[] = [];
   allEntriesBackup: JournalEntry[] = [];
   entriesListBackup: JournalEntry[] = [];
+  approvedOrDeclinedEntries = false;
+  updateAccountForm = false;
+  submitButtonClicked = false;
+  entriesList: JournalEntry[] = [];
+  emptyDate = false;
+  creditDebitUnbalanceError = false;
+  creditDebitAccountMatchError = false;
+  negativeBalanceError = false;
+  debitContainsNegativeError = false;
+  creditContainsNegativeError = false;
+  debitCreditAccountNamesMatchError = false;
+  emptyInput = false;
+  errorExistsInNewJournal = false;
+  totalDebit = 0;
+  totalCredit = 0;
+  debitAccountsLists = [];
+  creditAccountsLists = [];
+  newJournalEntryHidden = true;
   listOfDebitAccountNames: string[] = [];
   listOfCreditAccountNames: string[] = [];
   listOfDebitAccountAmounts = [];
   listOfCreditAccountAmounts = [];
-  debitAccountsLists = [];
-  creditAccountsLists = [];
-  debitContainsNegativeValue = false;
-  creditContainsNegativeValue = false;
-  errorExistsInNewJournal = false;
-  emptyInput = false;
   Date = Date.now();
-  isDebitCreditAccountNameSame = false;
-  totalDebit = 0;
-  totalCredit = 0;
-  negativeBalanceError = false;
-  creditDebitAccountMatchError = false;
-  submitButtonClicked = false;
-  emptyDate = false;
-  creditDebitUnbalanceError = false;
-  newJournalEntryHidden = true;
-  approvedOrDeclinedEntries = false;
-  updateAccountForm = false;
+  specificAccountForReroute: ChartOfAccounts[] = [];
+  image: {};
 
   constructor(private accountsService: ChartOfAccountsService,
               private journalEntryService: JournalEntryService,
               private router: Router,
               private alertService: AlertService,
-              private systemAlertsForUsersService: SystemAlertsForUsersService,
-              private  ledgerService: LedgerService) {
+              private alertsForUsersService: SystemAlertsForUsersService,
+              private ledgerService: LedgerService,
+              public snackBar: MatSnackBar) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
@@ -64,24 +67,12 @@ export class JournalizeComponent implements OnInit {
     }, 1000);
   }
 
-  onSubmit() {
-    this.debitAccountNames();
-    this.debitAccountAmounts();
-    this.creditAccountNames();
-    this.creditAccountAmounts();
-    this.negativeDebitAccountAmounts();
-    this.negativeCreditAccountAmounts();
-    this.zeroDebitAccountAmount();
-    this.zeroCreditAccountAmount();
-    this.emptyDebitAccountAmounts();
-    this.emptyCreditAccountAmounts();
-    this.creditDebitAccSameName();
-    this.creditAccSameNameWithIndex();
-    this.addDebitAmount();
-    this.addCreditAmount();
-    this.debitCreditNegativeValuesErrorHandler();
-    this.debitCreditAccountNameSameErrorHandler();
-    this.createEntry();
+  addDebitRow() {
+    this.debitAccountsLists.push({value: ''});
+  }
+
+  addCreditRow() {
+    this.creditAccountsLists.push({value: ''});
   }
 
   private loadAllAccounts() {
@@ -94,70 +85,92 @@ export class JournalizeComponent implements OnInit {
   private loadAllJournalEntries() {
     this.journalEntryService.getAll().pipe(first()).subscribe(entry => {
       this.allEntries = entry;
+      this.allEntriesBackup = entry;
       this.entriesList = entry;
+      this.entriesListBackup = entry;
     });
   }
-
-  getAccountById(accountId: string) {
-    return this.allAccounts.find(x => x.id === accountId);
+  async onSubmit() {
+    this.addDebitAccountNameToDebitAccountNamesList();
+    this.getElementByDebitAccountName();
+    this.getElementByDebitInput();
+    this.getElementByCreditAccountName();
+    this.getElementByCreditInput();
+    this.isDebitAccAmountNegative();
+    this.isCreditAccAmountNegative();
+    this.isDebitAccountAmountsZero();
+    this.isCreditAccountAmountsZero();
+    this.isDebitAccountAmountsEmpty();
+    this.isCreditAccountAmountsEmpty();
+    this.isAccountDebitAndCreditNamesMatch();
+    this.isCreditAccountNamesMatch();
+    this.isDebitAccountsNameMatch();
+    this.addAmountToTotalDebit();
+    this.addAmountToTotalCredit();
+    this.isDebitOrCreditAccountsContainsNegativeErrors();
+    this.isDebitAndCreditAccountSame();
+    this.logNewEntry();
   }
 
+  private addDebitAccountNameToDebitAccountNamesList() {
+    this.listOfDebitAccountNames.push(this.getAccountFromId(
+        (document.getElementById('debitAccountName') as HTMLInputElement).value).accountName);
+  }
 
-  private debitAccountNames() {
-    this.listOfDebitAccountNames.push(this.getAccountById((
-        document.getElementById('debitAccountName') as HTMLInputElement).value).accountName);
+  private getElementByDebitAccountName() {
     this.debitAccountsLists.forEach((item, index) => {
-      this.listOfDebitAccountNames.push(this.getAccountById((
-          document.getElementById('debitAccountName' + index) as HTMLInputElement).value).accountName);
+      this.listOfDebitAccountNames.push(this.getAccountFromId(
+          (document.getElementById('debitAccountName' + index) as HTMLInputElement).value).accountName);
     });
   }
 
-  private debitAccountAmounts() {
+  private getElementByDebitInput() {
     this.listOfDebitAccountAmounts.push((document.getElementById('debitInput') as HTMLInputElement).value);
     this.debitAccountsLists.forEach((item, index) => {
       this.listOfDebitAccountAmounts.push(((document.getElementById('debitInput' + index) as HTMLInputElement).value));
     });
   }
 
-  private creditAccountNames() {
-    this.listOfCreditAccountNames.push(this.getAccountById((
-        document.getElementById('creditAccountName') as HTMLInputElement).value).accountName);
+  private getElementByCreditAccountName() {
+    this.listOfCreditAccountNames.push(this.getAccountFromId(
+        (document.getElementById('creditAccountName') as HTMLInputElement).value).accountName);
     this.creditAccountsLists.forEach((item, index) => {
-      this.listOfCreditAccountNames.push(this.getAccountById((
-          document.getElementById('creditAccountName' + index) as HTMLInputElement).value).accountName);
+      this.listOfCreditAccountNames.push(
+          this.getAccountFromId((document.getElementById('creditAccountName' + index) as HTMLInputElement).value).accountName);
     });
   }
 
-  private creditAccountAmounts() {
-    this.listOfCreditAccountAmounts.push((document.getElementById('creditInput') as HTMLInputElement).value);
+  private getElementByCreditInput() {
+    this.listOfCreditAccountAmounts.push(
+        (document.getElementById('creditInput') as HTMLInputElement).value);
     this.creditAccountsLists.forEach((item, index) => {
       this.listOfCreditAccountAmounts.push(((document.getElementById('creditInput' + index) as HTMLInputElement).value));
     });
   }
 
-  private negativeDebitAccountAmounts() {
-    this.listOfDebitAccountAmounts.forEach((item) => {
-      if (item.includes('-')) {
-        this.debitContainsNegativeValue = true;
+  private isDebitAccAmountNegative() {
+    this.listOfDebitAccountAmounts.forEach((account) => {
+      if (account.includes('-')) {
+        this.debitContainsNegativeError = true;
         this.errorExistsInNewJournal = true;
         return;
       }
     });
   }
 
-  private negativeCreditAccountAmounts() {
-    this.listOfCreditAccountAmounts.forEach((item) => {
-      if (item.includes('-')) {
-        this.creditContainsNegativeValue = true;
+  private isCreditAccAmountNegative() {
+    this.listOfCreditAccountAmounts.forEach((account) => {
+      if (account.includes('-')) {
+        this.creditContainsNegativeError = true;
         this.errorExistsInNewJournal = true;
         return;
       }
     });
   }
 
-  private zeroDebitAccountAmount() {
-    this.listOfDebitAccountAmounts.forEach((item) => {
-      if (item === '0') {
+  private isDebitAccountAmountsZero() {
+    this.listOfDebitAccountAmounts.forEach((account) => {
+      if (account === '0') {
         this.emptyInput = true;
         this.errorExistsInNewJournal = true;
         setTimeout(() => {
@@ -168,9 +181,9 @@ export class JournalizeComponent implements OnInit {
     });
   }
 
-  private zeroCreditAccountAmount() {
-    this.listOfCreditAccountAmounts.forEach((item) => {
-      if (item === '0') {
+  private isCreditAccountAmountsZero() {
+    this.listOfCreditAccountAmounts.forEach((account) => {
+      if (account === '0') {
         this.emptyInput = true;
         this.errorExistsInNewJournal = true;
         setTimeout(() => {
@@ -181,7 +194,7 @@ export class JournalizeComponent implements OnInit {
     });
   }
 
-  private emptyDebitAccountAmounts() {
+  private isDebitAccountAmountsEmpty() {
     this.listOfDebitAccountAmounts.forEach((item) => {
       if (item === '') {
         this.emptyInput = true;
@@ -194,7 +207,7 @@ export class JournalizeComponent implements OnInit {
     });
   }
 
-  private emptyCreditAccountAmounts() {
+  private isCreditAccountAmountsEmpty() {
     this.listOfCreditAccountAmounts.forEach((item) => {
       if (item === '') {
         this.emptyInput = true;
@@ -207,82 +220,80 @@ export class JournalizeComponent implements OnInit {
     });
   }
 
-  private creditDebitAccSameName() {
+  private isAccountDebitAndCreditNamesMatch() {
     this.listOfCreditAccountNames.forEach((accountCredit) => {
       this.listOfDebitAccountNames.forEach((accountDebit) => {
         if (accountDebit === accountCredit) {
           this.errorExistsInNewJournal = true;
-          this.isDebitCreditAccountNameSame = true;
+          this.debitCreditAccountNamesMatchError = true;
           return;
         }
       });
     });
   }
 
-  private creditAccSameNameWithIndex() {
-    this.listOfCreditAccountNames.forEach((accountCredit, creditIndex) => {
-      this.listOfDebitAccountNames.forEach((accountDebit, index) => {
-        if (accountDebit === accountCredit && creditIndex !== index) {
+  private isCreditAccountNamesMatch() {
+    this.listOfCreditAccountNames.forEach((accountCredit, index) => {
+      this.listOfCreditAccountNames.forEach((accountDebit, index1) => {
+        if (accountDebit === accountCredit && index !== index1) {
           this.errorExistsInNewJournal = true;
-          this.isDebitCreditAccountNameSame = true;
+          this.debitCreditAccountNamesMatchError = true;
           return;
         }
       });
     });
   }
 
-  private addDebitAmount() {
+  private isDebitAccountsNameMatch() {
+    this.listOfDebitAccountNames.forEach((accountCredit, index) => {
+      this.listOfDebitAccountNames.forEach((accountDebit, index1) => {
+        if (accountDebit === accountCredit && index !== index1) {
+          this.errorExistsInNewJournal = true;
+          this.debitCreditAccountNamesMatchError = true;
+          return;
+        }
+      });
+    });
+  }
+
+  private addAmountToTotalDebit() {
     this.listOfDebitAccountAmounts.forEach((amount) => {
       this.totalDebit += Number(amount);
     });
   }
 
-  private addCreditAmount() {
+  private addAmountToTotalCredit() {
     this.listOfCreditAccountAmounts.forEach((amount) => {
       this.totalCredit += Number(amount);
     });
   }
 
-  private debitCreditNegativeValuesErrorHandler() {
-    if (this.debitContainsNegativeValue || this.creditContainsNegativeValue) {
+  private isDebitOrCreditAccountsContainsNegativeErrors() {
+    if (this.debitContainsNegativeError || this.creditContainsNegativeError) {
       this.negativeBalanceError = true;
       setTimeout(() => {
         this.negativeBalanceError = false;
       }, 6000);
-      this.debitContainsNegativeValue = false;
-      this.creditContainsNegativeValue = false;
+      this.debitContainsNegativeError = false;
+      this.creditContainsNegativeError = false;
       return;
     }
   }
 
-  private debitCreditAccountNameSameErrorHandler() {
-    if (this.isDebitCreditAccountNameSame) {
+  private isDebitAndCreditAccountSame() {
+    if (this.debitCreditAccountNamesMatchError) {
       this.creditDebitAccountMatchError = true;
       setTimeout(() => {
         this.creditDebitAccountMatchError = false;
       }, 6000);
-      this.isDebitCreditAccountNameSame = false;
+      this.debitCreditAccountNamesMatchError = false;
       this.submitButtonClicked = false;
       return;
     }
   }
 
-  addDebitRow() {
-    this.debitAccountsLists.push({value: ''});
-  }
-
-  addCreditRow() {
-    this.creditAccountsLists.push({value: ''});
-  }
-
-  private errorCheck() {
-    return this.emptyDate || this.creditDebitUnbalanceError || this.creditDebitAccountMatchError || this.negativeBalanceError ||
-        this.debitContainsNegativeValue || this.creditContainsNegativeValue || this.isDebitCreditAccountNameSame || this.emptyInput ||
-        this.errorExistsInNewJournal;
-  }
-
-  private createEntry() {
-    if (this.errorCheck()) {
+  private async logNewEntry() {
+    if (!this.errorCheck()) {
       if ((this.totalDebit === this.totalCredit)) {
         this.totalCredit = 0;
         this.totalDebit = 0;
@@ -298,27 +309,35 @@ export class JournalizeComponent implements OnInit {
         newJournal.createdDate = new Date();
         newJournal.description = (document.getElementById('journalDescription') as HTMLInputElement).value;
 
-        this.journalEntryService.createEntry(newJournal).pipe(first())
-            .subscribe(
-                data => {
-                  this.debitAccountsLists = [];
-                  this.creditAccountsLists = [];
-                  this.loadAllJournalEntries();
-                  this.debitAccountsLists.forEach((item, index) => {
-                    if (index !== 0) {
-                      item.pop();
-                    }
-                  });
-                  this.submitButtonClicked = false;
-                  this.alertService.success('Journal Created', true);
-                  setTimeout(() => {
-                    this.alertService.success('Journal Created', false);
-                  }, 6000);
-                  this.router.navigate(['/journalize']);
-                }, error => {
-                  this.submitButtonClicked = false;
-                  this.alertService.error(error);
-                });
+        // const files = (document.getElementById('myFile') as HTMLInputElement).files[0];
+        //
+        // if (files) {
+        //   const x = await this.getBase64(files).then((data) => newJournal.imageData = data.toString());
+        //   console.log('constant: ' + x);
+        //   newJournal.imageName = files.name;
+        //   newJournal.imageType = files.type;
+        // }
+
+        this.journalEntryService.logNewEntry(newJournal).pipe
+        (first())
+            .subscribe(data => {
+              this.debitAccountsLists = [];
+              this.creditAccountsLists = [];
+              this.loadAllJournalEntries();
+              this.debitAccountsLists.forEach((item, index) => {
+                if (index !== 0) {
+                  item.pop();
+                }
+              });
+              this.submitButtonClicked = false;
+              this.snackBar.open('Journal Created', 'success', {
+                duration: 6000
+              });
+              this.router.navigate(['/journalize']);
+            }, error => {
+              this.submitButtonClicked = false;
+              this.alertService.error(error);
+            });
       } else {
         this.submitButtonClicked = false;
         this.creditDebitUnbalanceError = true;
@@ -331,6 +350,18 @@ export class JournalizeComponent implements OnInit {
     }
   }
 
+  getAccountFromId(accountId: string) {
+    return this.allAccounts.find(x => x.id === accountId);
+  }
+
+  async getBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror  = err => reject(err);
+    });
+  }
 
   updateJournalStatus(entry: JournalEntry, action: string) {
     if (action === 'approve') {
@@ -361,22 +392,35 @@ export class JournalizeComponent implements OnInit {
 
   updateAccountBalance(journal: JournalEntry) {
     journal.accountDebit.forEach((account, index) => {
-      this.ledgerService.logTableEntry(journal, account, journal.amountDebit[index], true ).pipe(first()).subscribe(() => {});
-      const debitAccount = this.allAccounts.filter(account => account.accountName.includes(journal.accountDebit[index]));
+      this.ledgerService.createLedgerEntry(
+          journal, account, journal.amountDebit[index], true ).pipe(first()).subscribe(() => {});
+      const debitAccount = this.allAccounts.filter(debitAccount => debitAccount.accountName.includes(journal.accountDebit[index]));
       this.updateDebitBalance(debitAccount[0], journal, index);
     });
 
     journal.accountCredit.forEach((account, index) => {
-      this.ledgerService.logTableEntry(journal, account, journal.amountCredit[index], false ).pipe(first()).subscribe(() => {});
-      const creditAccount = this.allAccounts.filter(account => account.accountName.includes(journal.accountCredit[index]));
+      this.ledgerService.createLedgerEntry(journal, account, journal.amountCredit[index], false ).pipe(first()).subscribe(() => {});
+      const creditAccount = this.allAccounts.filter(
+          creditAccount => creditAccount.accountName.includes(journal.accountCredit[index]));
       this.updateCreditBalance(creditAccount[0], journal, index);
     });
   }
 
+  onOptionSelect(selected: string) {
+    if (selected === 'pending') {
+      this.approvedOrDeclinedEntries = false;
+    }
+    if (selected !== 'pending') {
+      this.approvedOrDeclinedEntries = true;
+    }
+    this.entriesList = this.allEntries.filter(entry => entry.status.includes(selected));
+    this.entriesListBackup = this.allEntries.filter(entry => entry.status.includes(selected));
+  }
+
   updateDebitBalance(debitAccount: ChartOfAccounts, journal: JournalEntry, i: number) {
     const accountUpdate = debitAccount;
-    if ((debitAccount.accountType === 'Expense' || debitAccount.accountType === 'Asset') &&
-        debitAccount.accountName !== 'Accumulated Depreciation') {
+    if ((debitAccount.accountType === 'Expense' || debitAccount.accountType === 'Asset')
+        && debitAccount.accountName !== 'Accumulated Depreciation') {
       accountUpdate.accountBalance +=  journal.amountDebit[i];
 
       const newLog = new LogTrack();
@@ -423,15 +467,10 @@ export class JournalizeComponent implements OnInit {
     }
   }
 
-  onOptionSelect(selected: string) {
-    if (selected === 'pending') {
-      this.approvedOrDeclinedEntries = false;
-    }
-    if (selected !== 'pending') {
-      this.approvedOrDeclinedEntries = true;
-    }
-    this.entriesList = this.allEntries.filter(entry => entry.status.includes(selected));
-    this.entriesListBackup = this.allEntries.filter(entry => entry.status.includes(selected));
+  errorCheck() {
+    return this.emptyDate || this.creditDebitUnbalanceError || this.creditDebitAccountMatchError ||
+        this.negativeBalanceError || this.debitContainsNegativeError || this.creditContainsNegativeError ||
+        this.debitCreditAccountNamesMatchError || this.emptyInput || this.errorExistsInNewJournal;
   }
 
   onCancelClick() {
@@ -447,13 +486,20 @@ export class JournalizeComponent implements OnInit {
     this.updateAccountForm = false;
     const accountNumber = ((document.getElementById('accountNumberField') as HTMLInputElement).value);
     const details = ((document.getElementById('ReasonForUpdate') as HTMLInputElement).value);
-    this.systemAlertsForUsersService.logAlertWithAccountNumber(
+    this.alertsForUsersService.logAlertWithAccountNumber(
         details, this.currentUser.username, Number(accountNumber)).pipe(first()).subscribe(() => {
     });
   }
 
   updateAccountButton() {
     this.updateAccountForm = !this.updateAccountForm;
+  }
+
+  setLedgerSortEntry(ledgerSortAccount: string, accountNumber: number) {
+    this.specificAccountForReroute = this.accountList.filter(account => account.accountName === ledgerSortAccount);
+    localStorage.setItem('accountSortBy', JSON.stringify(ledgerSortAccount));
+    localStorage.setItem('accountNumber', JSON.stringify(this.specificAccountForReroute[0].accountNumber));
+    this.router.navigate(['/ledger']);
   }
 
   allAccountsSorted() {
@@ -475,8 +521,9 @@ export class JournalizeComponent implements OnInit {
     if (search.length === 0 || search.length === null) {
       this.entriesList = this.entriesListBackup;
     } else {
-      this.entriesList = this.entriesListBackup.filter(entry => entry.status.includes(search) || entry.createdBy.includes(search)
-          || entry.description.includes(search) || entry.type.includes(search));
+      this.entriesList = this.entriesListBackup.filter(entry => entry.status.includes(search) ||
+          entry.createdBy.includes(search) || entry.description.includes(search) || entry.type.includes(search));
+      this.accountList.filter(account => account.accountName.includes(search));
     }
   }
 
@@ -485,8 +532,9 @@ export class JournalizeComponent implements OnInit {
     if (search.length === 0 || search.length === null) {
       this.allEntries = this.allEntriesBackup;
     } else {
-      this.allEntries = this.allEntries.filter(entry => entry.status.includes(search) || entry.createdBy.includes(search)
-          || entry.description.includes(search) || entry.type.includes(search));
+      this.allEntries = this.allEntries.filter(entry => entry.status.includes(search) ||
+          entry.createdBy.includes(search) || entry.description.includes(search) || entry.type.includes(search));
+      this.accountList.filter(account => account.accountName.includes(search));
     }
   }
 
@@ -494,11 +542,5 @@ export class JournalizeComponent implements OnInit {
     this.allEntries = this.allEntriesBackup;
     this.entriesList = this.entriesListBackup;
   }
-
-  setLedgerSortEntry(tTableSortAccount: string, accountNumber: number) {
-    this.specificAccountForReroute = this.accountList.filter(account => account.accountName === tTableSortAccount);
-    localStorage.setItem('accountSortBy', JSON.stringify(tTableSortAccount));
-    localStorage.setItem('accountNumber', JSON.stringify(this.specificAccountForReroute[0].accountNumber));
-    this.router.navigate(['/ledger']);
-  }
 }
+

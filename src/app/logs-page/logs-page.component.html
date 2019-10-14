@@ -3,9 +3,9 @@
   <div class="col-sm-6 offset-sm-3">
     <alert></alert>
     <app-sidebar-menu></app-sidebar-menu>
-    <h2>Logs:</h2>
     <form>
-      <input type="search" id="myInput" required class="search-box" (keyup)="loadLogsBySearch()" (keypress)="loadLogsBySearch()" placeholder="Search by name or username" title="Type in a name">
+      <input type="search" id="myInput" required class="search-box"
+             (keyup)="loadLogsBySearch()" (keypress)="loadLogsBySearch()" placeholder="Search by name or username" title="Type in a name">
       <button class="close-icon" (click)="resetInput()" type="reset"></button>
     </form>
     <table class="scroll">

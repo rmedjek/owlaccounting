@@ -4,11 +4,11 @@
   <h5>Add Account</h5>
   <form class="form-container" [formGroup]="accountForm" novalidate (ngSubmit)="onSubmit()">
     <mat-form-field color="accent" >
-      <input matInput placeholder="Account Number"
+      <input pattern="[1-9]{1}[0-9]{7}" matInput placeholder="Account Number"
              type="number"
              formControlName="accountNumber">
       <mat-error *ngIf="accountForm.controls.accountNumber.invalid
-      && accountForm.controls.accountNumber.touched">Account Number is required</mat-error>
+      && accountForm.controls.accountNumber.touched">Account Number is required (must contain 8 digits)</mat-error>
     </mat-form-field>
 
     <mat-form-field color="accent">

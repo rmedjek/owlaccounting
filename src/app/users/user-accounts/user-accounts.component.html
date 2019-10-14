@@ -2,20 +2,22 @@
     <div class="col-sm-6 offset-sm-3">
         <alert></alert>
         <app-sidebar-menu></app-sidebar-menu>
-        <div class="user-account">
-           <button class="btn btn-basic"><a [routerLink]="['/createUser']" *ngIf="currentUser.role === '1'">New User</a></button>
             <form>
                 <input type="search" id="myInput" required class="search-box"
                        (keyup)="loadUsersBySearch()" (keypress)="loadUsersBySearch()"
                        placeholder="Search by name or username" title="Type in a name">
                 <button class="close-icon" (click)="resetInput()" type="reset"></button>
+                <button mat-raised-button
+                        matTooltip="Add New User"
+                        color="primary"
+                        [routerLink]="['/createUser']"
+                        *ngIf="currentUser.role === '1'">New User</button>
             </form>
-        </div>
     </div>
 </div>
 
 <div class="sidenav">
-    <table class="table table-striped" [mfData]="users" #mf="mfDataTable" [mfRowsOnPage]="5">
+    <table class="table table-striped" [mfData]="allUsers" #mf="mfDataTable" [mfRowsOnPage]="5">
         <thead>
         <tr>
             <th (click)="sortByUsername()"><a >Username</a></th>
@@ -46,7 +48,7 @@
 <!--            <td>{{user.passwordExpired}}</td>-->
         </tr>
 
-        <tr *ngFor="let user of users; let i = index" [hidden]="currentUser.role !== '1'">
+        <tr *ngFor="let user of mf.data; let i = index" [hidden]="currentUser.role !== '1'">
             <td>{{user.username}} </td>
             <td contenteditable="true" (blur)="changeValue(user, 'fName', $event)">{{user.firstName}}</td>
             <td contenteditable="true" (blur)="changeValue(user, 'lName', $event)">{{user.lastName}}</td>

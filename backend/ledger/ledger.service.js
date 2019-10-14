@@ -4,7 +4,7 @@ const Ledger = db.ledger;
 
 module.exports = {
     getAll,
-    newLedgerEntry: newLedgerEntry
+    newLedgerEntry
 };
 
 async function getAll() {

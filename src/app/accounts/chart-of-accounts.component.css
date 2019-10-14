@@ -1,11 +1,19 @@
-
-.search-box,.close-icon,.search-wrapper {
-  padding: 10px;
+.pagination{
+  offset: top;
 }
 
 button {
   left: 500px;
   bottom: 60px;
+}
+
+.alert-danger {
+  margin-right: -100px;
+  width: 280px;
+}
+
+::after, ::before {
+  box-sizing: content-box;
 }
 
 .menu-bar {
@@ -14,11 +22,12 @@ button {
 .sidenav{
   text-align: center;
   left:50%;
-  margin-left: -270px;
-  margin-right: auto;
-  max-width: 1000px;
-  float: none;
+  margin-left: -200px;
+  border: 1px solid black;
+  display: inline-table;
+  background-color: white;
 }
+
 th{
   text-align: center;
   font-size: 14px;
@@ -44,7 +53,7 @@ a.sort-by:before,
 a.sort-by:after {
   border: 4px solid transparent;
   content: "";
-  display: block;
+  display: inline-block;
   height: 0;
   right: 5px;
   top: 50%;
@@ -63,6 +72,11 @@ a.sort-by:after {
 .redfamily {
   color: red;
 }
+
+.search-box,.close-icon,.search-wrapper {
+  padding: 10px;
+}
+
 
 .search-wrapper {
   width: 500px;
@@ -89,26 +103,7 @@ a.sort-by:after {
   outline: 0;
   cursor: pointer;
 }
-.close-icon:after {
-  content: "X";
-  display: block;
-  width: 15px;
-  height: 15px;
-  position: absolute;
-  background-color: #FA9595;
-  z-index:1;
-  right: 45px;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-  border-radius: 50%;
-  text-align: center;
-  color: white;
-  font-weight: normal;
-  font-size: 12px;
-  box-shadow: 0 0 2px #E50F0F;
-  cursor: pointer;
-}
+
 .search-box:not(:valid) ~ .close-icon {
   display: none;
 }

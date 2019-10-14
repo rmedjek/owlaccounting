@@ -12,6 +12,8 @@ body {
   top: 0;
   width: 100%;
   z-index: 2;
+  box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
+  /*background-color: black;*/
 }
 
 .sidenav {
@@ -67,6 +69,14 @@ body {
 
 .sidenav a:hover {
   color: #818181;
+}
+
+/*.md-toolbar-tools {*/
+/*  right: -300px;*/
+/*}*/
+
+.md-toolbar-tools a:hover {
+  color: #ffae91;
 }
 
 .main {
