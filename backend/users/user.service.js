@@ -2,7 +2,6 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const db = require('../_helpers/db');
-const Joi = require('@hapi/joi');
 const User = db.User;
 
 module.exports = {
@@ -85,10 +84,6 @@ async function update(id, userParam) {
         throw 'Username "' + userParam.username + '" is already taken';
     }
 
-    // if (user.email !== userParam.email && await User.findOne({ email: userParam.email})) {
-    //     throw 'Email "' + userParam.email + '" is already in the system'
-    // }
-
     // hash password if it was entered
     if (userParam.password) {
         userParam.hash = bcrypt.hashSync(userParam.password, 10);
@@ -102,31 +97,3 @@ async function update(id, userParam) {
 async function _delete(id) {
     await User.findByIdAndRemove(id);
 }
-
-// function validateForgotSchema(body) {
-//     const schema = Joi.object().key({
-//         email: Joi.string()
-//             .email()
-//             .required(),
-//     });
-//     const {error, value} = Joi.validate(body, schema);
-//     if (error && error.details) {
-//         return {error};
-//     }
-//     return {value};
-// }
-
-// function validateSignupSchema(body) {
-//     const schema = Joi.object({
-//         email: Joi.string()
-//             .email()
-//             .required(),
-//         password: Joi.string().required(),
-//         name: Joi.string().required(),
-//     });
-//     const { error, value } = Joi.validate(body, schema);
-//     if (error && error.details) {
-//         return { error };
-//     }
-//     return { value };
-// }

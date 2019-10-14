@@ -8,6 +8,7 @@ import { CreateUserComponent } from './create-user/create-user.component';
 import { UserAccountsComponent } from './user-accounts/user-accounts.component';
 import { LogsPageComponent } from './logs-page/logs-page.component';
 import { ForgotPasswordComponent } from './login/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './login/reset-password/reset-password.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -17,7 +18,7 @@ const appRoutes: Routes = [
     { path: 'createUser', component: CreateUserComponent },
     { path: 'logsPage', component: LogsPageComponent },
     { path: 'forgotpassword', component: ForgotPasswordComponent },
-    { path: 'reset-password/:token', component: ForgotPasswordComponent },
+    { path: 'reset-password/:token', component: ResetPasswordComponent },
 
     // otherwise redirect to home
     { path: '**', redirectTo: '' }

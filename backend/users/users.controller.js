@@ -7,6 +7,8 @@ const User = db.User;
 const config = require('../config.json');
 const sendEmail = require( '../_helpers/mail');
 const passport = require('passport');
+const nodemailer = require('nodemailer');
+const htmlToText = require('html-to-text');
 
 // routes
 router.post('/authenticate', authenticate);
@@ -66,44 +68,75 @@ function _delete(req, res, next) {
 
 async function forgotPassword(req, res, value) {
     try {
-     //   const { value, error } = userService.validateForgotSchema(req.body);
-     //    if (error && error.details) {
-     //        return res.sendStatus(400).json(error);
-     //    }
         const criteria = {
             $or: [
-                { 'google.email':  value.email },
-                { 'github.email':  value.email },
-                { 'twitter.email': value.email },
-                { 'local.email':   value.email },
+                {'google.email': value.email},
+                {'github.email': value.email},
+                {'twitter.email': value.email},
+                {'local.email': value.email},
             ],
         };
         const user = await User.findOne(criteria);
         console.log('User: ' + user.email);
         if (!user) {
             const error = 'could not find user';
-            res.status(404).json( { error });
-            return ;
+            res.status(404).json({error});
+            return;
         }
-        const token = jwt.sign({ sub: user.id }, config.secret, { expiresIn: '1h' });
+        const token = jwt.sign({sub: user.id}, config.secret, {expiresIn: '1h'});
         console.log('token ' + token);
         const resetLink = `<h4> Please click on the link to reset the password </h4>
-                            <a href ='${config.apiUrl}/reset-password/${token}'>Reset Password</a>`;
+                            <a href ='${config.frontendURL}/reset-password/${token}'>Reset Password</a>`;
         console.log('reset link' + resetLink);
         const sanitizedUser = userService.getById(user.id);
-        console.log('sanitized ' + JSON.stringify(sanitizedUser));
-        const results = await sendEmail({
-            html: resetLink,
-            subject: 'Forgot Password',
-            email: sanitizedUser.email,
+        console.log('user sanit: ' + userService.getById(user.id));
+        return new Promise((resolve, reject) => {
+            const transpoter = nodemailer.createTransport({
+                host: config.host,
+                port: config.port,
+                auth: {
+                    user: config.username,
+                    pass: config.password,
+                },
+            });
+
+            console.log('transporter ' + transpoter)
+            const text = htmlToText.fromString(req.body.html, {
+                wordwrap: 130,
+            });
+            const mailOptions = {
+                from: '"Owl Accounting 👻👻👻" <noreplay@owlaccounting.com>',
+                to: user.email,
+                email: sanitizedUser.email,
+                subject: 'Forgot Password',
+                text,
+                html: resetLink,
+            };
+            console.log('MailOptions: ' + JSON.stringify(mailOptions));
+
+            transpoter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    return reject(error);
+                }
+                console.log('Message id ', info.messageId);
+                console.log('Preview URL ', nodemailer.getTestMessageUrl(info));
+                return resolve({message: 'Reset Email has sent to your inbox'});
+            });
+            return res.json(mailOptions);
         });
-        console.log('results '+ JSON.stringify(results));
-        return res.json(results);
-    } catch (err) {
-        console.log(err);
-        return res.status(500)
-    }
+        // const results = await sendEmail({
+        //     html: resetLink,
+        //     subject: 'Forgot Password',
+        //     email: sanitizedUser.email,
+        // });
+        //     console.log('results '+ JSON.stringify(mailOptions));
+        //     return res.json(mailOptions);
+        } catch (err) {
+            console.log(err);
+            return res.status(500)
+        }
 }
+
 
 async function resetPassword(req, res) {
     try {

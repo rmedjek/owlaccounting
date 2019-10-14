@@ -10,7 +10,6 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./reset-password.component.css']
 })
 export class ResetPasswordComponent implements OnInit {
-
   form: FormGroup;
   isResultsLoading = false;
   private token = '';
