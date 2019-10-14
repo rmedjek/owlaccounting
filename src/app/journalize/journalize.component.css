@@ -1,0 +1,222 @@
+.sidenav{
+    text-align: center;
+    left:50%;
+    margin-left: 130px;
+    margin-right: auto;
+    max-width: 1000px;
+    float: none;
+}
+
+#journalDescription {
+    width: 100%;
+    padding: 7px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.table thead th {
+    vertical-align: baseline;
+}
+.sidenav1{
+    text-align: center;
+    left:50%;
+    margin-left: 300px;
+    margin-right: auto;
+    max-width: 1000px;
+    float: none;
+}
+.credit-account{
+    padding-left: 20px;
+}
+.input-group{
+    width: 180px;
+}
+
+.alert-danger{
+    padding-bottom: 2px;
+    padding-top: 2px;
+    width: 100%;
+    text-align: center;
+    border-radius: 10px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.button{
+    margin: 10px;
+}
+
+.account-input{
+    max-width: 100px;
+}
+
+th{
+    text-align: center;
+}
+th:hover {
+    color: #5990a0;
+}
+.my-header h3 {
+    display: inline;
+}
+.right{
+    float: right;
+}
+
+th a.sort-by {
+    padding-right: 18px;
+    position: relative;
+}
+a.sort-by:before,
+a.sort-by:after {
+    border: 4px solid transparent;
+    content: "";
+    display: block;
+    height: 0;
+    right: 5px;
+    top: 50%;
+    position: absolute;
+    width: 0;
+}
+a.sort-by:before {
+    border-bottom-color: #666;
+    margin-top: -9px;
+}
+a.sort-by:after {
+    border-top-color: #666;
+    margin-top: 1px;
+}
+
+/*td{*/
+/*padding:10px ;*/
+/*border: 1px solid #dddddd;*/
+/*}*/
+/*th {*/
+/*padding: 15px;*/
+/*border: 1px solid #dddddd;*/
+/*}*/
+
+/*th{*/
+/*background-color: green;*/
+/*color: white;*/
+/*}*/
+
+/*th:hover {*/
+/*color: #0000EE;*/
+/*}*/
+
+/*tr:nth-child(even) {*/
+/*background-color: #dddddd;*/
+/*}*/
+
+/*#AccountTable {*/
+/*border-collapse: separate;*/
+/*width: 100%;*/
+/*border: 1px solid black;*/
+/*font-size: 18px;*/
+/*border-radius:6px;*/
+/*-moz-border-radius:6px;*/
+/*}*/
+
+/*#AccountTable th, #myTable td {*/
+/*text-align: left;*/
+/*padding: 12px;*/
+/*}*/
+
+/*#AccountTable tr {*/
+/*border-bottom: 1px solid #ddd;*/
+/*}*/
+
+/*#AccountTable tr.header, #myTable tr:hover {*/
+/*background-color: #f0f0f0;*/
+/*}*/
+
+.redfamily {
+    color: red;
+}
+.search-box,.close-icon,.search-wrapper {
+    position: relative;
+    padding: 10px;
+}
+.search-wrapper {
+    width: 500px;
+    margin: auto;
+    margin-top: 50px;
+}
+.search-box {
+    margin-bottom: 14px;
+    margin-top: 14px;
+    width: 80%;
+    border: 1px solid #ccc;
+    outline: 0;
+    border-radius: 5px;
+}
+.search-box:focus {
+    box-shadow: 0 0 15px 5px #b0e0ee;
+    border: 2px solid #bebede;
+}
+.close-icon {
+    border:1px solid transparent;
+    background-color: transparent;
+    display: inline-block;
+    vertical-align: middle;
+    outline: 0;
+    cursor: pointer;
+}
+.close-icon:after {
+    content: "X";
+    display: block;
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    background-color: #FA9595;
+    z-index:1;
+    right: 45px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    border-radius: 50%;
+    text-align: center;
+    color: white;
+    font-weight: normal;
+    font-size: 12px;
+    box-shadow: 0 0 2px #E50F0F;
+    cursor: pointer;
+}
+.search-box:not(:valid) ~ .close-icon {
+    display: none;
+}
+
+
+.upload-btn-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.btn {
+    border: 2px solid gray;
+    color: gray;
+    background-color: white;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.btn:hover{
+    color: #126178;
+}
+
+.upload-btn-wrapper input[type=file] {
+    font-size: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+}

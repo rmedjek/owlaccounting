@@ -1,0 +1,268 @@
+<div class="row">
+    <div class="col-sm-6 offset-sm-3">
+        <alert></alert>
+        <app-sidebar-menu></app-sidebar-menu>
+        <!--error messages were here-->
+        <form *ngIf="approvedOrDeclinedEntries">
+            <input type="search" id="myInput" required class="search-box" (keyup)="approvedOrPendingSearch()"
+                   (keypress)="approvedOrPendingSearch()" placeholder="Search for specific entry" title="Type in a name">
+            <button class="close-icon" (click)="resetInput()" type="reset"></button>
+        </form>
+
+        <form *ngIf="!approvedOrDeclinedEntries">
+            <input type="search" id="myInput" required class="search-box" (keyup)="pendingSearch()"
+                   (keypress)="pendingSearch()" placeholder="Search for specific entry" title="Type in a name">
+            <button class="close-icon" (click)="resetInput()" type="reset"></button>
+        </form>
+
+        <div class="my-header">
+            <button mat-raised-button color="primary" class="button" (click)="onEntryButton()">New Entry</button>
+            <button mat-raised-button color="primary" class="button" (click)="updateAccountButton()">Update/Add Account</button>
+            <select class="custom-select" style="left: 0;" style="width:auto;" (change)="onOptionSelect($event.target.value)">
+                <option>-- None --</option>
+                <option value="pending">Pending</option>
+                <option value="approved" >Approved</option>
+                <option value="declined" >Declined</option>
+            </select>
+        </div>
+        <div *ngIf="emptyDate" class="alert-danger">Date must be entered</div>
+    </div>
+    <div class="sidenav1" *ngIf="updateAccountForm">
+        <table class="table" style="width:100%">
+            <thead>
+            <tr>
+                <th>Account Number</th>
+                <th>Reason/Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <input type="number" id="accountNumberField" class="account-input">
+                </td>
+                <td>
+                    <input [attr.maxlength]="200" id="ReasonForUpdate" ng-model="myInput" [placeholder]="'Description'">
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button mat-raised-button color="primary" class="button" (click)="onCancelClick()">Cancel</button>
+                    <button mat-raised-button color="warn" class="button" (click)="onUpdateFormClick()">Submit</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="sidenav" *ngIf="!newJournalEntryHidden">
+        <form>
+            <table id="journalTable" class="table">
+                <thead>
+                <tr>
+                    <th>New Journal Entry</th>
+                    <th>Account</th>
+                    <th>Debit</th>
+                    <th>Credit</th>
+                </tr>
+                </thead>
+                <tr>
+                    <td>
+                        {{ Date | date:'MM/dd/yyyy h:mm:ssa' }}
+                    </td>
+                    <td>
+                        <select class="custom-select" style="width:auto;" id="debitAccountName">
+                            <option [hidden]="!chartOfAccounts.accountActive" *ngFor="let chartOfAccounts of allAccountsSorted();"
+                                    [value]="chartOfAccounts.id">
+                                {{chartOfAccounts.accountName}}
+                            </option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="number" id="debitInput" class="account-input">
+                    </td>
+                    <td></td>
+                </tr>
+
+                <tr *ngFor="let account of debitAccountsLists; let i = index ">
+                    <td>
+                    </td>
+                    <td>
+                        <select class="custom-select" style="width:auto;" id="debitAccountName{{i}}">
+                            <option [hidden]="!chartOfAccounts.accountActive" *ngFor="let chartOfAccounts of allAccountsSorted();"
+                                    [value]="chartOfAccounts.id">
+                                {{chartOfAccounts.accountName}}
+                            </option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="number" id="debitInput{{i}}" class="account-input">
+                    </td>
+                </tr>
+                <tr>
+                    <td style="display: inline-flex">
+                        <select class="custom-select" style="width:auto;" id="typeSelector">
+                            <option value="regular" [selected]="true">Regular</option>
+                            <option value="adjusting" >Adjusting</option>
+                            <option value="closing" >Closing</option>
+                        </select>
+                        &nbsp; &nbsp;
+                        <div class="upload-btn-wrapper" *ngIf="currentUser?.role === '3'">
+                            <button class="btn">Upload a file</button>
+                            <input type="file" name="myFile" id="myFile" />
+                        </div>
+                    </td>
+                    <td class = "credit-account">
+                        <select class="custom-select" style="width:auto;" id="creditAccountName">
+                            <option [hidden]="!chartOfAccounts.accountActive" *ngFor="let chartOfAccounts of allAccountsSorted()"
+                                    [value]="chartOfAccounts.id">
+                                {{chartOfAccounts.accountName}}
+                            </option>
+                        </select>
+                    </td>
+                    <td></td>
+                    <td>
+                        <input [attr.maxlength]="25" type="number" id="creditInput" class="account-input">
+                    </td>
+                </tr>
+                <tr *ngFor="let account of creditAccountsLists; let i = index ">
+                    <td>
+                    </td>
+                    <td class = "credit-account">
+                        <select class="custom-select" style="width:auto;" id="creditAccountName{{i}}">
+                            <option [hidden]="!chartOfAccounts.accountActive" *ngFor="let chartOfAccounts of allAccountsSorted()"
+                                    [value]="chartOfAccounts.id">
+                                {{chartOfAccounts.accountName}}
+                            </option>
+                        </select>
+                    </td>
+                    <td></td>
+                    <td>
+                        <input [attr.maxlength]="25" type="number" id="creditInput{{i}}" class="account-input">
+                    </td>
+                </tr>
+                <tr>
+                    <td> <input [attr.maxlength]="25" id="journalDescription" ng-model="myInput" placeholder="Description"></td>
+                    <td> <button mat-raised-button color="primary" class="button" (click)="addDebitRow()">Add Debit</button>
+                        <button mat-raised-button color="primary"  class="button" (click)="addCreditRow()">Add Credit</button></td>
+                    <td>
+                        <button mat-raised-button color="primary"  class="button" (click)="onCancelClick()">Cancel</button>
+                    </td>
+                    <td>
+                        <button mat-raised-button color="primary"  class="button" [disabled]="submitButtonClicked" (click)="onSubmit()">Submit</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-6 offset-sm-3">
+        <div *ngIf="creditDebitUnbalanceError" class="alert-danger">Credits and Debits must be equal.</div>
+        <br *ngIf="creditDebitUnbalanceError">
+        <div *ngIf="emptyInput" class="alert-danger">Credit and debit amounts must not be empty or Zero</div>
+        <br *ngIf="emptyInput">
+        <div *ngIf="negativeBalanceError" class="alert-danger">Credit and Debit amounts must not be negative</div>
+        <br *ngIf="negativeBalanceError">
+        <div *ngIf="creditDebitAccountMatchError" class="alert-danger">Credit and Debit accounts must not be the same</div>
+    </div>
+</div>
+
+<div class="sidenav">
+    <br><br>
+    <table id="AccountTable" class="table" [mfData]="accountList" #mf="mfDataTable" [mfRowsOnPage]="5">
+        <thead>
+        <tr>
+            <th ><a class="sort-by">Status</a></th>
+            <th><a class="sort-by">Date/Time</a></th>
+            <th ><a class="sort-by">Types</a></th>
+            <th ><a class="sort-by">Creator</a></th>
+            <th ><a class="sort-by">Accounts</a></th>
+            <th ><a class="sort-by">Debits</a></th>
+            <th ><a class="sort-by">Credits</a></th>
+<!--            <th></th>-->
+            <th *ngIf="currentUser?.role === '2' && !approvedOrDeclinedEntries"><a>Actions</a></th>
+        </tr>
+        </thead>
+        <tbody  *ngFor="let journalEntry of allEntries.reverse(); let i = index" [hidden]="approvedOrDeclinedEntries">
+        <tr *ngFor="let account of journalEntry.accountDebit ; let t = index;">
+            <td *ngIf="t === 0 && journalEntry.status === 'pending'">{{journalEntry.status}} </td>
+            <td *ngIf="t === 0 && journalEntry.status === 'pending'">{{journalEntry.createdDate | date:'MM/dd/yyyy h:mma'}} </td>
+            <td *ngIf="t === 0 && journalEntry.status === 'pending'">{{journalEntry.type}}</td>
+            <td *ngIf="t === 0 && journalEntry.status === 'pending'">{{journalEntry.createdBy}}</td>
+            <td *ngIf="t !== 0 && journalEntry.status === 'pending'"></td>
+            <td *ngIf="t !== 0 && journalEntry.status === 'pending'"></td>
+            <td *ngIf="t !== 0 && journalEntry.status === 'pending'"></td>
+            <td *ngIf="t !== 0 && journalEntry.status === 'pending'"></td>
+            <td *ngIf="journalEntry.status === 'pending'"><a style="color: #126178"
+                (click)="setLedgerSortEntry(journalEntry.accountDebit[t], journalEntry.id)">{{journalEntry.accountDebit[t]}}</a></td>
+            <td style="text-align: left" *ngIf="journalEntry.status === 'pending'">${{journalEntry.amountDebit[t] | number:'1.2'}}</td>
+            <td *ngIf="journalEntry.status === 'pending'"></td>
+            <td *ngIf="((journalEntry.accountDebit.length >1 && t !==1 && t !== 0) && currentUser.role !== '3') &&
+                journalEntry.status === 'pending'"></td>
+            <div style="display: grid" *ngIf="(currentUser.role === '2' && t === 0) && journalEntry.status === 'pending'">
+                <td *ngIf="journalEntry.status === 'pending'"><a (click)="updateJournalStatus(journalEntry, 'approve')"
+                     class="text-danger">Approve</a></td>
+                <td *ngIf="journalEntry.status === 'pending'"><a (click)="updateJournalStatus(journalEntry, 'decline')"
+                     class="text-danger">Decline</a></td>
+                <td *ngIf="journalEntry.status !== 'pending'">
+            </div>
+        </tr>
+
+        <tr *ngFor="let account of journalEntry.accountCredit ; let p = index;">
+            <td *ngIf="journalEntry.status === 'pending'"></td>
+            <td *ngIf="journalEntry.status === 'pending'"><a href="{{journalEntry.imageData}}" download="{{journalEntry.imageName}}">{{journalEntry.imageName}}</a></td>
+            <td colspan="2" *ngIf="(p === journalEntry.accountCredit.length-1) && journalEntry.status === 'pending'"> {{journalEntry.description}}</td>
+            <td colspan="2" *ngIf="(p !== journalEntry.accountCredit.length-1) && journalEntry.status === 'pending'"> </td>
+            <td  *ngIf="journalEntry.status === 'pending'"><a style="color: #126178"
+                (click)="setLedgerSortEntry(journalEntry.accountCredit[p], journalEntry.id)">{{journalEntry.accountCredit[p]}}</a></td>
+            <td *ngIf="journalEntry.status === 'pending'"></td>
+            <td *ngIf="journalEntry.status === 'pending'">${{journalEntry.amountCredit[p] | number:'1.2'}}</td>
+            <td *ngIf="((journalEntry.accountDebit.length >1 || (journalEntry.accountDebit.length >1 && p !== 0)) && currentUser.role !== '3') && journalEntry.status === 'pending' "></td>
+
+            <!--<div *ngIf="(currentUser.role === '2' && journalEntry.accountDebit.length === 1 && p==0) && journalEntry.status === 'pending'">-->
+            <!--<td *ngIf="journalEntry.status === 'pending'"><a (click)="updateJournalStatus(journalEntry, 'decline')" class="text-danger">Decline</a></td>-->
+            <!--<td *ngIf="journalEntry.status !== 'pending'">-->
+            <!--</div>-->
+            <td *ngIf="p !== 0 && journalEntry.status === 'pending' "></td>
+        </tr>
+        </tbody>
+
+        <tbody  *ngFor="let journalEntry of entriesList; let i = index" [hidden]="!approvedOrDeclinedEntries">
+        <tr *ngFor="let account of journalEntry.accountDebit ; let t = index;">
+            <td *ngIf="t!==0"></td>
+            <td *ngIf="t!==0"></td>
+            <td *ngIf="t!==0"></td>
+            <td *ngIf="t!==0"></td>
+            <td *ngIf="t === 0">{{journalEntry.status}} </td>
+            <td *ngIf="t === 0">{{journalEntry.createdDate | date:'MM/dd/yyyy h:mma'}} </td>
+            <td *ngIf="t === 0">{{journalEntry.type}}</td>
+            <td *ngIf="t === 0">{{journalEntry.createdBy}}</td>
+            <td><a style="color: #126178"
+                (click)="setLedgerSortEntry(journalEntry.accountDebit[t], journalEntry.id)">{{journalEntry.accountDebit[t]}}</a></td>
+            <td>${{journalEntry.amountDebit[t] | number:'1.2'}}</td>
+            <td ></td>
+            <td *ngIf="(journalEntry.accountDebit.length >1 && t !==1 && t !== 0)"></td>
+
+        </tr>
+        <tr *ngFor="let account of journalEntry.accountCredit ; let p = index;">
+<!--            <td></td>-->
+            <td><a href="{{journalEntry.imageData}}" download="{{journalEntry.imageName}}">{{journalEntry.imageName}}</a></td>
+            <td colspan="2"  *ngIf="(p === journalEntry.accountCredit.length-1)"> {{journalEntry.description}}</td>
+            <td colspan="2"  *ngIf="(p !== journalEntry.accountCredit.length-1)"> </td>
+            <td colspan="2" style="padding-left: 150px; "><a style="color: #126178;" (click)="setLedgerSortEntry(journalEntry.accountCredit[p], journalEntry.id)">{{journalEntry.accountCredit[p]}}</a></td>
+            <td ></td>
+            <td >${{journalEntry.amountCredit[p] | number:'1.2'}}</td>
+            <td *ngIf="p !== 0"></td>
+        </tr>
+        <tr *ngIf="journalEntry.declineReason">
+            <td></td>
+            <td>Reason:</td>
+            <td colspan="4" style="text-align: left">{{journalEntry.declineReason}}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
