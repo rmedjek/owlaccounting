@@ -62,8 +62,8 @@
                 <tr>
                     <th>New Journal Entry</th>
                     <th>Account</th>
-                    <th>Debit</th>
-                    <th>Credit</th>
+                    <th><a matTooltip="Add debit" (click)="addDebitRow()">Debit + </a></th>
+                    <th><a matTooltip="Add credit" (click)="addCreditRow()">Credit +</a></th>
                 </tr>
                 </thead>
                 <tr>
@@ -142,9 +142,8 @@
                     </td>
                 </tr>
                 <tr>
+                    <br>
                     <td> <input [attr.maxlength]="25" id="journalDescription" ng-model="myInput" placeholder="Description"></td>
-                    <td> <button mat-raised-button color="primary" class="button" (click)="addDebitRow()">Add Debit</button>
-                        <button mat-raised-button color="primary"  class="button" (click)="addCreditRow()">Add Credit</button></td>
                     <td>
                         <button mat-raised-button color="primary"  class="button" (click)="onCancelClick()">Cancel</button>
                     </td>
