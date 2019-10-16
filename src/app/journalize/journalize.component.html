@@ -62,8 +62,8 @@
                 <tr>
                     <th>New Journal Entry</th>
                     <th>Account</th>
-                    <th><a matTooltip="Add debit" (click)="addDebitRow()">Debit + </a></th>
-                    <th><a matTooltip="Add credit" (click)="addCreditRow()">Credit +</a></th>
+                    <th><button mat-raised-button color="primary" matTooltip="Add debit" (click)="addDebitRow()">Debit + </button></th>
+                    <th><button mat-raised-button color="primary" matTooltip="Add credit" (click)="addCreditRow()">Credit +</button></th>
                 </tr>
                 </thead>
                 <tr>
@@ -81,12 +81,12 @@
                     <td>
                         <input type="number" id="debitInput" class="account-input">
                     </td>
+
                     <td></td>
                 </tr>
 
                 <tr *ngFor="let account of debitAccountsLists; let i = index ">
-                    <td>
-                    </td>
+                    <td></td>
                     <td>
                         <select class="custom-select" style="width:auto;" id="debitAccountName{{i}}">
                             <option [hidden]="!chartOfAccounts.accountActive" *ngFor="let chartOfAccounts of allAccountsSorted();"
@@ -97,6 +97,9 @@
                     </td>
                     <td>
                         <input type="number" id="debitInput{{i}}" class="account-input">
+                    </td>
+                    <td>
+                        <button class="btn btn-default"  type="button" (click)="deleteFieldValue(i)">Delete</button>
                     </td>
                 </tr>
                 <tr>
@@ -124,10 +127,10 @@
                     <td>
                         <input [attr.maxlength]="25" type="number" id="creditInput" class="account-input">
                     </td>
+
                 </tr>
                 <tr *ngFor="let account of creditAccountsLists; let i = index ">
-                    <td>
-                    </td>
+                    <td></td>
                     <td class = "credit-account">
                         <select class="custom-select" style="width:auto;" id="creditAccountName{{i}}">
                             <option [hidden]="!chartOfAccounts.accountActive" *ngFor="let chartOfAccounts of allAccountsSorted()"
@@ -136,14 +139,16 @@
                             </option>
                         </select>
                     </td>
-                    <td></td>
+                    <td>
+                        <button class="btn btn-default"  type="button" (click)="deleteFieldValue(i)">Delete</button>
+                    </td>
                     <td>
                         <input [attr.maxlength]="25" type="number" id="creditInput{{i}}" class="account-input">
                     </td>
                 </tr>
                 <tr>
                     <br>
-                    <td> <input [attr.maxlength]="25" id="journalDescription" ng-model="myInput" placeholder="Description"></td>
+                    <td> <input [attr.maxlength]="250" id="journalDescription" ng-model="myInput" placeholder="Description"></td>
                     <td>
                         <button mat-raised-button color="primary"  class="button" (click)="onCancelClick()">Cancel</button>
                     </td>
@@ -158,13 +163,13 @@
 
 <div class="row">
     <div class="col-sm-6 offset-sm-3">
-        <div *ngIf="creditDebitUnbalanceError" class="alert-danger">Credits and Debits must be equal.</div>
+        <div *ngIf="creditDebitUnbalanceError" class="alert-danger">Credits and Debits amounts must be equal.</div>
         <br *ngIf="creditDebitUnbalanceError">
         <div *ngIf="emptyInput" class="alert-danger">Credit and debit amounts must not be empty or Zero</div>
         <br *ngIf="emptyInput">
         <div *ngIf="negativeBalanceError" class="alert-danger">Credit and Debit amounts must not be negative</div>
         <br *ngIf="negativeBalanceError">
-        <div *ngIf="creditDebitAccountMatchError" class="alert-danger">Credit and Debit accounts must not be the same</div>
+        <div *ngIf="creditDebitAccountNamesMatchError" class="alert-danger">Credit and Debit accounts names must not match</div>
     </div>
 </div>
 
@@ -211,14 +216,16 @@
 
         <tr *ngFor="let account of journalEntry.accountCredit ; let p = index;">
             <td *ngIf="journalEntry.status === 'pending'"></td>
-            <td *ngIf="journalEntry.status === 'pending'"><a href="{{journalEntry.imageData}}" download="{{journalEntry.imageName}}">{{journalEntry.imageName}}</a></td>
+            <td *ngIf="journalEntry.status === 'pending'"><a href="{{journalEntry.imageData}}"
+                download="{{journalEntry.imageName}}">{{journalEntry.imageName}}</a></td>
             <td colspan="2" *ngIf="(p === journalEntry.accountCredit.length-1) && journalEntry.status === 'pending'"> {{journalEntry.description}}</td>
             <td colspan="2" *ngIf="(p !== journalEntry.accountCredit.length-1) && journalEntry.status === 'pending'"> </td>
             <td  *ngIf="journalEntry.status === 'pending'"><a style="color: #126178"
                 (click)="setLedgerSortEntry(journalEntry.accountCredit[p], journalEntry.id)">{{journalEntry.accountCredit[p]}}</a></td>
             <td *ngIf="journalEntry.status === 'pending'"></td>
             <td *ngIf="journalEntry.status === 'pending'">${{journalEntry.amountCredit[p] | number:'1.2'}}</td>
-            <td *ngIf="((journalEntry.accountDebit.length >1 || (journalEntry.accountDebit.length >1 && p !== 0)) && currentUser.role !== '3') && journalEntry.status === 'pending' "></td>
+            <td *ngIf="((journalEntry.accountDebit.length >1 || (journalEntry.accountDebit.length >1 && p !== 0)) &&
+                 currentUser.role !== '3') && journalEntry.status === 'pending' "></td>
 
             <!--<div *ngIf="(currentUser.role === '2' && journalEntry.accountDebit.length === 1 && p==0) && journalEntry.status === 'pending'">-->
             <!--<td *ngIf="journalEntry.status === 'pending'"><a (click)="updateJournalStatus(journalEntry, 'decline')" class="text-danger">Decline</a></td>-->
