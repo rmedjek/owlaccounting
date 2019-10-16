@@ -29,7 +29,7 @@ export class JournalizeComponent implements OnInit {
   entriesList: JournalEntry[] = [];
   emptyDate = false;
   creditDebitUnbalanceError = false;
-  creditDebitAccountMatchError = false;
+  creditDebitAccountNamesMatchError = false;
   negativeBalanceError = false;
   debitContainsNegativeError = false;
   creditContainsNegativeError = false;
@@ -108,7 +108,7 @@ export class JournalizeComponent implements OnInit {
     this.addAmountToTotalDebit();
     this.addAmountToTotalCredit();
     this.isDebitOrCreditAccountsContainsNegativeErrors();
-    this.isDebitAndCreditAccountSame();
+    this.isDebitAndCreditAccountNamesMatch();
     this.logNewEntry();
   }
 
@@ -175,7 +175,7 @@ export class JournalizeComponent implements OnInit {
         this.errorExistsInNewJournal = true;
         setTimeout(() => {
           this.emptyInput = false;
-        }, 6000);
+        }, 9000);
         return;
       }
     });
@@ -188,7 +188,7 @@ export class JournalizeComponent implements OnInit {
         this.errorExistsInNewJournal = true;
         setTimeout(() => {
           this.emptyInput = false;
-        }, 6000);
+        }, 9000);
         return;
       }
     });
@@ -201,7 +201,7 @@ export class JournalizeComponent implements OnInit {
         this.errorExistsInNewJournal = true;
         setTimeout(() => {
           this.emptyInput = false;
-        }, 6000);
+        }, 9000);
         return;
       }
     });
@@ -214,7 +214,7 @@ export class JournalizeComponent implements OnInit {
         this.errorExistsInNewJournal = true;
         setTimeout(() => {
           this.emptyInput = false;
-        }, 6000);
+        }, 9000);
         return;
       }
     });
@@ -273,19 +273,19 @@ export class JournalizeComponent implements OnInit {
       this.negativeBalanceError = true;
       setTimeout(() => {
         this.negativeBalanceError = false;
-      }, 6000);
+      }, 9000);
       this.debitContainsNegativeError = false;
       this.creditContainsNegativeError = false;
       return;
     }
   }
 
-  private isDebitAndCreditAccountSame() {
+  private isDebitAndCreditAccountNamesMatch() {
     if (this.debitCreditAccountNamesMatchError) {
-      this.creditDebitAccountMatchError = true;
+      this.creditDebitAccountNamesMatchError = true;
       setTimeout(() => {
-        this.creditDebitAccountMatchError = false;
-      }, 6000);
+        this.creditDebitAccountNamesMatchError = false;
+      }, 9000);
       this.debitCreditAccountNamesMatchError = false;
       this.submitButtonClicked = false;
       return;
@@ -331,7 +331,7 @@ export class JournalizeComponent implements OnInit {
               });
               this.submitButtonClicked = false;
               this.snackBar.open('Journal Created', 'success', {
-                duration: 6000
+                duration: 9000
               });
               this.router.navigate(['/journalize']);
             }, error => {
@@ -343,7 +343,7 @@ export class JournalizeComponent implements OnInit {
         this.creditDebitUnbalanceError = true;
         setTimeout(() => {
           this.creditDebitUnbalanceError = false;
-        }, 6000);
+        }, 9000);
       }
     } else {
       this.submitButtonClicked = false;
@@ -468,7 +468,7 @@ export class JournalizeComponent implements OnInit {
   }
 
   errorCheck() {
-    return this.emptyDate || this.creditDebitUnbalanceError || this.creditDebitAccountMatchError ||
+    return this.emptyDate || this.creditDebitUnbalanceError || this.creditDebitAccountNamesMatchError ||
         this.negativeBalanceError || this.debitContainsNegativeError || this.creditContainsNegativeError ||
         this.debitCreditAccountNamesMatchError || this.emptyInput || this.errorExistsInNewJournal;
   }
@@ -541,6 +541,12 @@ export class JournalizeComponent implements OnInit {
   resetInput() {
     this.allEntries = this.allEntriesBackup;
     this.entriesList = this.entriesListBackup;
+  }
+
+
+  deleteFieldValue(index) {
+    this.creditAccountsLists.splice(index, 1);
+    this.debitAccountsLists.splice(index, 1);
   }
 }
 
