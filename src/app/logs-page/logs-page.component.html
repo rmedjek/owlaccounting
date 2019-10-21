@@ -1,14 +1,11 @@
 <script src="../home/index.ts"></script>
-<div class="row">
-  <div class="col-sm-6 offset-sm-3">
+  <div class="col-sm-18 offset-sm-0">
     <alert></alert>
     <app-sidebar-menu></app-sidebar-menu>
-    <form>
       <input type="search" id="myInput" required class="search-box"
-             (keyup)="loadLogsBySearch()" (keypress)="loadLogsBySearch()" placeholder="Search by name or username" title="Type in a name">
+             (keyup)="loadLogsBySearch()" (keypress)="loadLogsBySearch()" placeholder="Search" title="Type in a name">
       <button class="close-icon" (click)="resetInput()" type="reset"></button>
-    </form>
-    <table class="scroll">
+    <table class="table table-striped" [mfData]="logsOfData.reverse()" #mf="mfDataTable" [mfRowsOnPage]="5">
       <thead>
       <tr>
         <th style="width: 1%" (click)="sortByUser()"><a class="sort-by">User</a></th>
@@ -17,7 +14,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let logTrack of logsOfData.reverse()">
+      <tr *ngFor="let logTrack of mf.data">
         <td>{{logTrack.createdBy}}</td>
         <td>
           <div style="min-width: 100px">{{logTrack.logDataInput}}</div>
@@ -29,6 +26,14 @@
         </td>
       </tr>
       </tbody>
+      <tfoot>
+      <tr>
+        <td colspan="5">
+          <mfBootstrapPaginator
+                  [rowsOnPageSet]="[5, 10, 15, 30, 60, 100]"
+          ></mfBootstrapPaginator>
+        </td>
+      </tr>
+      </tfoot>
     </table>
-  </div>
 </div>

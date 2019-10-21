@@ -5,6 +5,7 @@ import { LogTrack, User } from '../_models';
 import { ChartOfAccounts } from '../_models/chartOfAccounts';
 import { ChartOfAccountsService } from '../_services/chart-of-accounts.service';
 import { MatSnackBar } from '@angular/material';
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 
 @Component({
   selector: 'app-chart-of-accounts',
@@ -21,7 +22,8 @@ export class ChartOfAccountsComponent implements OnInit {
 
   constructor(private accountsService: ChartOfAccountsService,
               private router: Router,
-              public snackBar: MatSnackBar) {
+              public snackBar: MatSnackBar,
+              private spinnerService: Ng4LoadingSpinnerService) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
@@ -30,9 +32,11 @@ export class ChartOfAccountsComponent implements OnInit {
   }
 
   private loadAllAccounts() {
+    this.spinnerService.show();
     this.accountsService.getAll().pipe(first()).subscribe(account => {
       this.accountList = account;
       this.allAccounts = account;
+      this.spinnerService.hide();
     });
   }
 

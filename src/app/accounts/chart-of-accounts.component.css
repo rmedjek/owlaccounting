@@ -19,22 +19,33 @@ button {
 .menu-bar {
   float: right;
 }
+
+.sidenav-user-role {
+  text-align: center;
+  left:50%;
+  margin-left: -25%;
+  display: inline-table;
+  background-color: white;
+}
+
 .sidenav{
   text-align: center;
   left:50%;
-  margin-left: -200px;
-  border: 1px solid black;
+  margin-left: -35%;
   display: inline-table;
   background-color: white;
 }
 
 th{
-  text-align: center;
+  text-align: left;
   font-size: 14px;
+  white-space: nowrap;
 }
 td {
-  text-align: center;
+  text-align: left;
   font-size: 14px;
+  white-space: nowrap;
+  padding: 10px;
 }
 
 .thead {

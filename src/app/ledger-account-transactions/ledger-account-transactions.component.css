@@ -7,6 +7,11 @@
    float: none;
 
  }
+
+.back-button {
+  right: 100px;
+  top: 30px;
+}
 .my-header h3 {
   display: inline;
 }
@@ -71,50 +76,6 @@ a.sort-by:after {
   border-top-color: #666;
   margin-top: 1px;
 }
-
-/*td{*/
-/*padding:10px ;*/
-/*border: 1px solid #dddddd;*/
-/*}*/
-/*th {*/
-/*padding: 15px;*/
-/*border: 1px solid #dddddd;*/
-/*}*/
-
-/*th{*/
-/*background-color: green;*/
-/*color: white;*/
-/*}*/
-
-/*th:hover {*/
-/*color: #0000EE;*/
-/*}*/
-
-/*tr:nth-child(even) {*/
-/*background-color: #dddddd;*/
-/*}*/
-
-/*#AccountTable {*/
-/*border-collapse: separate;*/
-/*width: 100%;*/
-/*border: 1px solid black;*/
-/*font-size: 18px;*/
-/*border-radius:6px;*/
-/*-moz-border-radius:6px;*/
-/*}*/
-
-/*#AccountTable th, #myTable td {*/
-/*text-align: left;*/
-/*padding: 12px;*/
-/*}*/
-
-/*#AccountTable tr {*/
-/*border-bottom: 1px solid #ddd;*/
-/*}*/
-
-/*#AccountTable tr.header, #myTable tr:hover {*/
-/*background-color: #f0f0f0;*/
-/*}*/
 
 .redfamily {
   color: red;

@@ -9,7 +9,9 @@ import { ChartOfAccountsService } from '../_services/chart-of-accounts.service';
 import { JournalEntryService } from '../_services/journal-entry.service';
 import { SystemAlertsForUsersService } from '../_services/system-alerts-for-users.service';
 import { LedgerService } from '../_services/ledger.service';
-import { MatSnackBar } from '@angular/material';
+import { ToasterService } from '../_services/toast.service';
+import { ToasterPosition } from '../_models/toaster-enum.position';
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 
 @Component({
   selector: 'app-journalize',
@@ -55,7 +57,8 @@ export class JournalizeComponent implements OnInit {
               private alertService: AlertService,
               private alertsForUsersService: SystemAlertsForUsersService,
               private ledgerService: LedgerService,
-              public snackBar: MatSnackBar) {
+              private toaster: ToasterService,
+              private spinnerService: Ng4LoadingSpinnerService) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
@@ -76,151 +79,117 @@ export class JournalizeComponent implements OnInit {
   }
 
   private loadAllAccounts() {
+    this.spinnerService.show();
     this.accountsService.getAll().pipe(first()).subscribe(account => {
       this.accountList = account;
       this.allAccounts = account;
+      this.spinnerService.hide();
     });
   }
 
   private loadAllJournalEntries() {
+    this.spinnerService.show();
     this.journalEntryService.getAll().pipe(first()).subscribe(entry => {
       this.allEntries = entry;
       this.allEntriesBackup = entry;
       this.entriesList = entry;
       this.entriesListBackup = entry;
+      this.spinnerService.hide();
     });
   }
   async onSubmit() {
-    this.addDebitAccountNameToDebitAccountNamesList();
-    this.getElementByDebitAccountName();
-    this.getElementByDebitInput();
-    this.getElementByCreditAccountName();
-    this.getElementByCreditInput();
-    this.isDebitAccAmountNegative();
-    this.isCreditAccAmountNegative();
-    this.isDebitAccountAmountsZero();
-    this.isCreditAccountAmountsZero();
-    this.isDebitAccountAmountsEmpty();
-    this.isCreditAccountAmountsEmpty();
-    this.isAccountDebitAndCreditNamesMatch();
-    this.isCreditAccountNamesMatch();
-    this.isDebitAccountsNameMatch();
-    this.addAmountToTotalDebit();
-    this.addAmountToTotalCredit();
-    this.isDebitOrCreditAccountsContainsNegativeErrors();
-    this.isDebitAndCreditAccountNamesMatch();
-    this.logNewEntry();
-  }
+    this.submitButtonClicked = true;
+    this.errorExistsInNewJournal = false;
+    this.totalDebit = 0;
+    this.totalCredit = 0;
+    this.listOfDebitAccountNames = [];
+    this.listOfCreditAccountNames = [];
+    this.listOfDebitAccountAmounts = [];
+    this.listOfCreditAccountAmounts = [];
 
-  private addDebitAccountNameToDebitAccountNamesList() {
-    this.listOfDebitAccountNames.push(this.getAccountFromId(
-        (document.getElementById('debitAccountName') as HTMLInputElement).value).accountName);
-  }
-
-  private getElementByDebitAccountName() {
+    this.listOfDebitAccountNames.push(this.getAccountFromId((document.getElementById('debitAccountName') as
+        HTMLInputElement).value).accountName);
     this.debitAccountsLists.forEach((item, index) => {
-      this.listOfDebitAccountNames.push(this.getAccountFromId(
-          (document.getElementById('debitAccountName' + index) as HTMLInputElement).value).accountName);
+      this.listOfDebitAccountNames.push(this.getAccountFromId((document.getElementById('debitAccountName' + index) as
+          HTMLInputElement).value).accountName);
     });
-  }
-
-  private getElementByDebitInput() {
     this.listOfDebitAccountAmounts.push((document.getElementById('debitInput') as HTMLInputElement).value);
     this.debitAccountsLists.forEach((item, index) => {
       this.listOfDebitAccountAmounts.push(((document.getElementById('debitInput' + index) as HTMLInputElement).value));
     });
-  }
 
-  private getElementByCreditAccountName() {
-    this.listOfCreditAccountNames.push(this.getAccountFromId(
-        (document.getElementById('creditAccountName') as HTMLInputElement).value).accountName);
+    this.listOfCreditAccountNames.push(this.getAccountFromId((document.getElementById('creditAccountName') as
+        HTMLInputElement).value).accountName);
     this.creditAccountsLists.forEach((item, index) => {
-      this.listOfCreditAccountNames.push(
-          this.getAccountFromId((document.getElementById('creditAccountName' + index) as HTMLInputElement).value).accountName);
+      this.listOfCreditAccountNames.push(this.getAccountFromId((document.getElementById('creditAccountName' + index) as
+          HTMLInputElement).value).accountName);
     });
-  }
-
-  private getElementByCreditInput() {
-    this.listOfCreditAccountAmounts.push(
-        (document.getElementById('creditInput') as HTMLInputElement).value);
+    this.listOfCreditAccountAmounts.push((document.getElementById('creditInput') as HTMLInputElement).value);
     this.creditAccountsLists.forEach((item, index) => {
       this.listOfCreditAccountAmounts.push(((document.getElementById('creditInput' + index) as HTMLInputElement).value));
     });
-  }
 
-  private isDebitAccAmountNegative() {
-    this.listOfDebitAccountAmounts.forEach((account) => {
-      if (account.includes('-')) {
+    this.listOfDebitAccountAmounts.forEach((item) => {
+      if (item.includes('-')) {
         this.debitContainsNegativeError = true;
         this.errorExistsInNewJournal = true;
         return;
       }
     });
-  }
 
-  private isCreditAccAmountNegative() {
-    this.listOfCreditAccountAmounts.forEach((account) => {
-      if (account.includes('-')) {
+    this.listOfCreditAccountAmounts.forEach((item) => {
+      if (item.includes('-')) {
         this.creditContainsNegativeError = true;
         this.errorExistsInNewJournal = true;
         return;
       }
     });
-  }
 
-  private isDebitAccountAmountsZero() {
-    this.listOfDebitAccountAmounts.forEach((account) => {
-      if (account === '0') {
+    this.listOfDebitAccountAmounts.forEach((item) => {
+      if (item === '0') {
+        this.emptyInput = true;
+        this.toaster.error('Credit and debit amounts must not be empty or Zero', 'error!', ToasterPosition.bottomRight);
+        this.errorExistsInNewJournal = true;
+        setTimeout(() => {
+          this.emptyInput = false;
+        }, 6000);
+        return;
+      }
+    });
+
+    this.listOfDebitAccountAmounts.forEach((item) => {
+      if (item === '0') {
         this.emptyInput = true;
         this.errorExistsInNewJournal = true;
         setTimeout(() => {
           this.emptyInput = false;
-        }, 9000);
+        }, 6000);
         return;
       }
     });
-  }
 
-  private isCreditAccountAmountsZero() {
-    this.listOfCreditAccountAmounts.forEach((account) => {
-      if (account === '0') {
-        this.emptyInput = true;
-        this.errorExistsInNewJournal = true;
-        setTimeout(() => {
-          this.emptyInput = false;
-        }, 9000);
-        return;
-      }
-    });
-  }
-
-  private isDebitAccountAmountsEmpty() {
     this.listOfDebitAccountAmounts.forEach((item) => {
       if (item === '') {
         this.emptyInput = true;
         this.errorExistsInNewJournal = true;
         setTimeout(() => {
           this.emptyInput = false;
-        }, 9000);
+        }, 6000);
         return;
       }
     });
-  }
 
-  private isCreditAccountAmountsEmpty() {
-    this.listOfCreditAccountAmounts.forEach((item) => {
+    this.listOfDebitAccountAmounts.forEach((item) => {
       if (item === '') {
         this.emptyInput = true;
         this.errorExistsInNewJournal = true;
         setTimeout(() => {
           this.emptyInput = false;
-        }, 9000);
+        }, 6000);
         return;
       }
     });
-  }
 
-  private isAccountDebitAndCreditNamesMatch() {
     this.listOfCreditAccountNames.forEach((accountCredit) => {
       this.listOfDebitAccountNames.forEach((accountDebit) => {
         if (accountDebit === accountCredit) {
@@ -230,9 +199,7 @@ export class JournalizeComponent implements OnInit {
         }
       });
     });
-  }
 
-  private isCreditAccountNamesMatch() {
     this.listOfCreditAccountNames.forEach((accountCredit, index) => {
       this.listOfCreditAccountNames.forEach((accountDebit, index1) => {
         if (accountDebit === accountCredit && index !== index1) {
@@ -242,9 +209,7 @@ export class JournalizeComponent implements OnInit {
         }
       });
     });
-  }
 
-  private isDebitAccountsNameMatch() {
     this.listOfDebitAccountNames.forEach((accountCredit, index) => {
       this.listOfDebitAccountNames.forEach((accountDebit, index1) => {
         if (accountDebit === accountCredit && index !== index1) {
@@ -254,45 +219,38 @@ export class JournalizeComponent implements OnInit {
         }
       });
     });
-  }
 
-  private addAmountToTotalDebit() {
     this.listOfDebitAccountAmounts.forEach((amount) => {
       this.totalDebit += Number(amount);
     });
-  }
 
-  private addAmountToTotalCredit() {
     this.listOfCreditAccountAmounts.forEach((amount) => {
       this.totalCredit += Number(amount);
     });
-  }
 
-  private isDebitOrCreditAccountsContainsNegativeErrors() {
     if (this.debitContainsNegativeError || this.creditContainsNegativeError) {
       this.negativeBalanceError = true;
+      this.toaster.error('Credit and Debit amounts must not be negative.', 'error!', ToasterPosition.bottomRight);
       setTimeout(() => {
         this.negativeBalanceError = false;
-      }, 9000);
+      }, 6000);
       this.debitContainsNegativeError = false;
       this.creditContainsNegativeError = false;
+      this.submitButtonClicked = false;
       return;
     }
-  }
 
-  private isDebitAndCreditAccountNamesMatch() {
     if (this.debitCreditAccountNamesMatchError) {
       this.creditDebitAccountNamesMatchError = true;
+      this.toaster.error('Credit and Debit accounts names must not match.', 'error!', ToasterPosition.bottomRight);
       setTimeout(() => {
         this.creditDebitAccountNamesMatchError = false;
-      }, 9000);
+      }, 6000);
       this.debitCreditAccountNamesMatchError = false;
       this.submitButtonClicked = false;
       return;
     }
-  }
 
-  private async logNewEntry() {
     if (!this.errorCheck()) {
       if ((this.totalDebit === this.totalCredit)) {
         this.totalCredit = 0;
@@ -309,41 +267,42 @@ export class JournalizeComponent implements OnInit {
         newJournal.createdDate = new Date();
         newJournal.description = (document.getElementById('journalDescription') as HTMLInputElement).value;
 
-        // const files = (document.getElementById('myFile') as HTMLInputElement).files[0];
-        //
-        // if (files) {
-        //   const x = await this.getBase64(files).then((data) => newJournal.imageData = data.toString());
-        //   console.log('constant: ' + x);
-        //   newJournal.imageName = files.name;
-        //   newJournal.imageType = files.type;
-        // }
+        const files = (document.getElementById('myFile') as HTMLInputElement).files[0];
 
-        this.journalEntryService.logNewEntry(newJournal).pipe
-        (first())
-            .subscribe(data => {
-              this.debitAccountsLists = [];
-              this.creditAccountsLists = [];
-              this.loadAllJournalEntries();
-              this.debitAccountsLists.forEach((item, index) => {
-                if (index !== 0) {
-                  item.pop();
-                }
-              });
-              this.submitButtonClicked = false;
-              this.snackBar.open('Journal Created', 'success', {
-                duration: 9000
-              });
-              this.router.navigate(['/journalize']);
-            }, error => {
-              this.submitButtonClicked = false;
-              this.alertService.error(error);
-            });
+        if (files) {
+          const x = await this.getBase64(files).then((data) => newJournal.imageData = data.toString());
+          console.log(x);
+          newJournal.imageName = files.name;
+          newJournal.imageType = files.type;
+        }
+        this.spinnerService.show();
+        this.journalEntryService.createNewEntry(newJournal).pipe(first())
+            .subscribe(
+                data => {
+                  this.debitAccountsLists = [];
+                  this.creditAccountsLists = [];
+                  this.loadAllJournalEntries();
+                  this.debitAccountsLists.forEach((item, index) => {
+                    if (index !== 0) {
+                      item.pop();
+                    }
+                  });
+                  this.submitButtonClicked = false;
+                  this.toaster.success('Journal entry created!', 'success!', ToasterPosition.bottomRight);
+                  this.router.navigate(['/journalize']);
+                  this.spinnerService.hide();
+                },
+                error => {
+                  this.submitButtonClicked = false;
+                  this.alertService.error(error);
+                });
       } else {
         this.submitButtonClicked = false;
         this.creditDebitUnbalanceError = true;
+        this.toaster.error('Credits and Debits amounts must be equal.', 'error!', ToasterPosition.bottomRight);
         setTimeout(() => {
           this.creditDebitUnbalanceError = false;
-        }, 9000);
+        }, 6000);
       }
     } else {
       this.submitButtonClicked = false;
@@ -366,25 +325,29 @@ export class JournalizeComponent implements OnInit {
   updateJournalStatus(entry: JournalEntry, action: string) {
     if (action === 'approve') {
       this.updateAccountBalance(entry);
+      this.toaster.success('Journal entry approved!', 'success!', ToasterPosition.bottomRight);
       entry.status = 'approved';
-
       const newLog = new LogTrack();
       newLog.logDataInput = 'Approved a journal entry ';
       newLog.logInitial =  entry.description + 'Status: Pending';
       newLog.logFinal =  entry.description + 'Status: Approved';
-
+      this.spinnerService.show();
       this.journalEntryService.updateEntry(entry, newLog).pipe(first()).subscribe(() => {
+        this.spinnerService.hide();
         this.loadAllJournalEntries();
       });
     } else {
       entry.status = 'declined';
+      this.toaster.error('Journal entry rejected!', 'failure!', ToasterPosition.bottomRight);
+
       entry.declineReason = prompt('Enter Reason (if applicable):');
       const newLog = new LogTrack();
       newLog.logDataInput = 'Declines a journal entry ';
       newLog.logInitial =  entry.description + 'Status: Pending';
       newLog.logFinal =  entry.description + 'Status: Declined';
-
+      this.spinnerService.show();
       this.journalEntryService.updateEntry(entry, newLog).pipe(first()).subscribe(() => {
+        this.spinnerService.hide();
         this.loadAllJournalEntries();
       });
     }
@@ -392,8 +355,11 @@ export class JournalizeComponent implements OnInit {
 
   updateAccountBalance(journal: JournalEntry) {
     journal.accountDebit.forEach((account, index) => {
-      this.ledgerService.createLedgerEntry(
-          journal, account, journal.amountDebit[index], true ).pipe(first()).subscribe(() => {});
+      this.spinnerService.show();
+      this.ledgerService.createLedgerEntry(journal, account, journal.amountDebit[index], true )
+          .pipe(first()).subscribe(() => {
+            this.spinnerService.hide();
+          });
       const debitAccount = this.allAccounts.filter(debitAccount => debitAccount.accountName.includes(journal.accountDebit[index]));
       this.updateDebitBalance(debitAccount[0], journal, index);
     });
@@ -427,8 +393,9 @@ export class JournalizeComponent implements OnInit {
       newLog.logDataInput = 'Approved a journal that affected account ' + debitAccount.accountName;
       newLog.logInitial =  debitAccount.accountName + ': Pending';
       newLog.logFinal =  debitAccount.accountName + ': Approved';
-
+      this.spinnerService.show();
       this.accountsService.updateAccount(accountUpdate, newLog).pipe(first()).subscribe(() => {
+        this.spinnerService.hide();
       });
     } else {
       accountUpdate.accountBalance -=  journal.amountDebit[i];
@@ -437,8 +404,9 @@ export class JournalizeComponent implements OnInit {
       newLog.logDataInput = 'Approved a journal that affected account ' + debitAccount.accountName;
       newLog.logInitial =  debitAccount.accountName + ': Pending';
       newLog.logFinal =  debitAccount.accountName + ': Approved';
-
+      this.spinnerService.show();
       this.accountsService.updateAccount(accountUpdate, newLog).pipe(first()).subscribe(() => {
+        this.spinnerService.hide();
       });
     }
   }
@@ -453,7 +421,9 @@ export class JournalizeComponent implements OnInit {
       newLog.logDataInput = 'Approved a journal that affected account ' + creditAccount.accountName;
       newLog.logInitial =  creditAccount.accountName + ': Pending';
       newLog.logFinal =  creditAccount.accountName + ': Approved';
+      this.spinnerService.show();
       this.accountsService.updateAccount(accountUpdate, newLog).pipe(first()).subscribe(() => {
+        this.spinnerService.hide();
       });
     } else {
       accountUpdate.accountBalance +=  journal.amountCredit[i];
@@ -462,7 +432,9 @@ export class JournalizeComponent implements OnInit {
       newLog.logDataInput = 'Approved a journal that affected account ' + creditAccount.accountName;
       newLog.logInitial =  creditAccount.accountName + ': Pending';
       newLog.logFinal =  creditAccount.accountName + ': Approved';
+      this.spinnerService.show();
       this.accountsService.updateAccount(accountUpdate, newLog).pipe(first()).subscribe(() => {
+        this.spinnerService.hide();
       });
     }
   }
@@ -474,6 +446,8 @@ export class JournalizeComponent implements OnInit {
   }
 
   onCancelClick() {
+    this.debitCreditAccountNamesMatchError = false;
+    this.creditDebitAccountNamesMatchError = false;
     this.newJournalEntryHidden = true;
     this.updateAccountForm = false;
   }
@@ -486,8 +460,10 @@ export class JournalizeComponent implements OnInit {
     this.updateAccountForm = false;
     const accountNumber = ((document.getElementById('accountNumberField') as HTMLInputElement).value);
     const details = ((document.getElementById('ReasonForUpdate') as HTMLInputElement).value);
-    this.alertsForUsersService.logAlertWithAccountNumber(
-        details, this.currentUser.username, Number(accountNumber)).pipe(first()).subscribe(() => {
+    this.spinnerService.show();
+    this.alertsForUsersService.logAlertWithAccountNumber(details, this.currentUser.username, Number(accountNumber))
+        .pipe(first()).subscribe(() => {
+      this.spinnerService.hide();
     });
   }
 
@@ -523,7 +499,7 @@ export class JournalizeComponent implements OnInit {
     } else {
       this.entriesList = this.entriesListBackup.filter(entry => entry.status.includes(search) ||
           entry.createdBy.includes(search) || entry.description.includes(search) || entry.type.includes(search));
-      this.accountList.filter(account => account.accountName.includes(search));
+      this.accountList.filter(account => account.accountName.toLowerCase().includes(search));
     }
   }
 

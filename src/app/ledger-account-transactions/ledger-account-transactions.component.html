@@ -4,7 +4,11 @@
     <app-sidebar-menu></app-sidebar-menu>
     <button mat-raised-button color="primary" *ngIf="journalEntryDisplay" (click)="onBackClick()">Back</button>
     <br><br>
+<!--    <button class="back-button" mat-raised-button color="primary"-->
+<!--            matTooltip="back to journalizing"-->
+<!--            [routerLink]="['/journalize']">Back</button>-->
     <div *ngIf="!journalEntryDisplay" class="my-header">
+
       <h5 style="float: left">Name: {{accountName}}</h5>
       <h5 class="right">Account # {{accountNumber}}</h5>
     </div>
@@ -17,7 +21,7 @@
     <tr>
       <th><a class="sort-by">Date</a></th>
       <th><a class="sort-by">Reference</a></th>
-      <th><a class="sort-by">Account Name</a></th>
+      <th><a class="sort-by" >Account Name</a></th>
       <th><a class="sort-by">Debit</a></th>
       <th><a class="sort-by">Credit</a></th>
     </tr>
@@ -25,8 +29,8 @@
     <tbody>
     <tr *ngFor="let ledgerEntry of mf.data">
       <td>{{ledgerEntry.createdDate | date:'MM/dd/yyyy h:mma'}}</td>
-      <td><a style="color: #126178" (click)="referenceJournal(ledgerEntry.journalId)">J1</a></td>
-      <td>{{ledgerEntry.accountName}}</td>
+      <td><a matTooltip="go to ledger detail" style="color: #126178" (click)="referenceJournal(ledgerEntry.journalId)">J1</a></td>
+      <td><a matTooltip="back to journalizing" [routerLink]="['/journalize']">{{ledgerEntry.accountName}}</a></td>
       <td *ngIf="!ledgerEntry.accountDebit"></td>
       <td>{{ledgerEntry.amount | currency: 'USD': "symbol": '1.2-2'}}</td>
       <td *ngIf="ledgerEntry.accountDebit"></td>
@@ -59,7 +63,7 @@
         <td *ngIf="t === 0">{{journalEntry.createdDate | date:'MM/dd/yyyy h:mma'}} </td>
         <td *ngIf="t === 0">{{journalEntry.type}}</td>
         <td *ngIf="t === 0">{{journalEntry.createdBy}}</td>
-        <td>{{journalEntry.accountDebit[t]}}</td>
+        <td><a matTooltip="back to ledger" style="color: #0000ee" *ngIf="journalEntryDisplay" (click)="onBackClick()">{{journalEntry.accountDebit[t]}}</a></td>
         <td>{{journalEntry.amountDebit[t] | currency: 'USD': "symbol": '1.2-2'}}</td>
         <td ></td>
         <td *ngIf="(journalEntry.accountDebit.length >1 && t !==1 && t !== 0)"></td>

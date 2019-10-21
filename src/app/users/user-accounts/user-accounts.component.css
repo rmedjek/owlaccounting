@@ -2,10 +2,6 @@
   offset: top;
 }
 
-form {
-
-}
-
 button {
   left: 100px;
   bottom: 5px;
@@ -27,7 +23,6 @@ button {
   float: none;
   height: 10px;
   margin-left: 60px;
-  border: 1px solid black;
   display: inline-table;
   background-color: white;
 }

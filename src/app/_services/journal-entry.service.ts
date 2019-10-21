@@ -9,7 +9,6 @@ import { forkJoin } from 'rxjs';
 @Injectable()
 export class JournalEntryService {
   currentUser: User;
-
   constructor(private http: HttpClient,
               private logService: LogTrackService) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -19,7 +18,7 @@ export class JournalEntryService {
     return this.http.get<JournalEntry[]>(`${environment.apiUrl}/journals`);
   }
 
-  logNewEntry(entry: JournalEntry) {
+  createNewEntry(entry: JournalEntry) {
     if (this.currentUser.role === '3' || this.currentUser.role === '2') {
       const newLog = new LogTrack();
       newLog.logDataInput = 'Created a new journal Entry on ' +
@@ -28,7 +27,9 @@ export class JournalEntryService {
         + entry.createdDate.getFullYear() + ' '
         + entry.createdDate.getHours() + ':'
         + entry.createdDate.getMinutes() + ':'
-        + entry.createdDate.getSeconds();
+        + entry.createdDate.getSeconds() +
+          ' debit amount: $' + entry.amountDebit +
+          ' credit amount: $' + entry.amountCredit;
       newLog.logInitial = '';
       newLog.logFinal = entry.description;
 

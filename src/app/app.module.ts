@@ -62,6 +62,9 @@ import { LedgerService } from './_services/ledger.service';
 import { LedgerAccountTransactionsComponent } from './ledger-account-transactions/ledger-account-transactions.component';
 import { DataTableModule } from 'angular-6-datatable';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { ToastrModule } from 'ngx-toastr';
+import { ToasterService } from './_services/toast.service';
+import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 
 
 @NgModule({
@@ -98,7 +101,9 @@ import { FlexLayoutModule } from '@angular/flex-layout';
         RouterModule,
         DataTableModule,
         FlexLayoutModule,
-        MatDialogModule
+        MatDialogModule,
+        Ng4LoadingSpinnerModule.forRoot(),
+        ToastrModule.forRoot()
     ],
   declarations: [
     AppComponent,
@@ -133,6 +138,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     JournalEntryService,
     SystemAlertsForUsersService,
     LedgerService,
+    ToasterService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],

@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {LogTrackService} from '../_services';
 import {LogTrack, User} from '../_models';
 import {first} from 'rxjs/operators';
+import { ToasterService } from '../_services/toast.service';
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 
 @Component({
   selector: 'app-logs-page',
@@ -14,7 +16,8 @@ export class LogsPageComponent implements OnInit {
   allLogOfData: LogTrack[] = [];
   sortTracker = 0;
 
-  constructor(private logTrackService: LogTrackService) {
+  constructor(private logTrackService: LogTrackService,
+              private spinnerService: Ng4LoadingSpinnerService) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
@@ -23,9 +26,11 @@ export class LogsPageComponent implements OnInit {
   }
 
   private loadAllLogs() {
+    this.spinnerService.show();
     this.logTrackService.getAll().pipe(first()).subscribe(logData => {
       this.logsOfData = logData;
       this.allLogOfData = logData;
+      this.spinnerService.hide();
     });
   }
 

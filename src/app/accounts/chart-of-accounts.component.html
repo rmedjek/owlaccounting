@@ -13,7 +13,7 @@
         </form>
     </div>
 </div>
-<div class="sidenav">
+<div [ngClass]="currentUser.role !== '1' ? 'sidenav-user-role': 'sidenav'">
     <table class="table table-striped" [mfData]="accountList" #mf="mfDataTable" [mfRowsOnPage]="5">
         <thead>
         <tr>
@@ -27,14 +27,14 @@
             <th (click)="sortByInitBalance()"><a>Initial Balance</a> <a class="sort-by"></a></th>
             <th (click)="sortByAccountCreatedBy()"><a>Created By</a> <a class="sort-by"></a></th>
             <th (click)="sortByAccountCreatedOn()"><a>Created On</a> <a class="sort-by"></a></th>
-            <th><a>Debit</a> <a class="sort-by"></a></th>
-            <th><a>Credit</a> <a class="sort-by"></a></th>
+<!--            <th><a>Debit</a> <a class="sort-by"></a></th>-->
+<!--            <th><a>Credit</a> <a class="sort-by"></a></th>-->
             <th><a>Statement</a> <a class="sort-by"></a></th>
             <th><a>Comment</a><a class="sort-by"></a></th>
-            <th><a>Description</a><a class="sort-by"></a></th>
+<!--            <th><a>Description</a><a class="sort-by"></a></th>-->
             <th *ngIf="isAdmin(currentUser)" (click)="sortByAccountStatus()"><a>Deactivate/Activate</a> <a class="sort-by"></a></th>
-            <th *ngIf="isAdmin(currentUser)" (click)="sortByAccountStatus()"><a>Edit</a><a class="sort-by"></a></th>
-            <th *ngIf="isAdmin(currentUser)" (click)="sortByAccountStatus()"><a>View</a><a class="sort-by"></a></th>
+            <th style="text-align: center"  *ngIf="isAdmin(currentUser)" (click)="sortByAccountStatus()"><a>Edit</a><a class="sort-by"></a></th>
+            <th style="text-align: center"  *ngIf="isAdmin(currentUser)" (click)="sortByAccountStatus()"><a>View</a><a class="sort-by"></a></th>
         </tr>
         </thead>
         <tbody>
@@ -44,18 +44,18 @@
             <td (blur)="changeValue(chartOfAccounts, 'name', $event)">{{chartOfAccounts.accountName}} </td>
             <td><app-account-type-selector [account]="chartOfAccounts"></app-account-type-selector></td>
             <td (blur)="changeValue(chartOfAccounts, 'subtype', $event)">{{chartOfAccounts.accountSubType}} </td>
-            <td (blur)="changeValue(chartOfAccounts, 'normalSide', $event)">{{chartOfAccounts.normalSide}}</td>
+            <td style="text-align: center" (blur)="changeValue(chartOfAccounts, 'normalSide', $event)">{{chartOfAccounts.normalSide}}</td>
             <td (blur)="changeValue(chartOfAccounts, 'balance', $event)">{{chartOfAccounts.accountBalance | currency: 'USD': "symbol": '1.2-2'}} </td>
             <td (blur)="changeValue(chartOfAccounts, 'initBalance', $event)">{{chartOfAccounts.accountInitBalance | currency: 'USD': "symbol": '1.2-2'}} </td>
             <td >{{chartOfAccounts.createdBy}} </td>
             <td >{{chartOfAccounts.createdDate |date:'MM/dd/yyyy h:mma'}} </td>
-            <td (blur)="changeValue(chartOfAccounts, 'debit', $event)">{{chartOfAccounts.debit | currency: 'USD': "symbol": '1.2-2'}} </td>
-            <td (blur)="changeValue(chartOfAccounts, 'credit', $event)">{{chartOfAccounts.credit | currency: 'USD': "symbol": '1.2-2'}} </td>
+<!--            <td (blur)="changeValue(chartOfAccounts, 'debit', $event)">{{chartOfAccounts.debit | currency: 'USD': "symbol": '1.2-2'}} </td>-->
+<!--            <td (blur)="changeValue(chartOfAccounts, 'credit', $event)">{{chartOfAccounts.credit | currency: 'USD': "symbol": '1.2-2'}} </td>-->
             <td >{{chartOfAccounts.statement}} </td>
-            <td >{{chartOfAccounts.accountDesc}} </td>
+<!--            <td >{{chartOfAccounts.accountDesc}} </td>-->
             <td >{{chartOfAccounts.comment}} </td>
-            <td [hidden]="!chartOfAccounts.accountActive"><a (click)="deactivateAccount(chartOfAccounts)" class="text-danger">Deactivate</a></td>
-            <td [hidden]="chartOfAccounts.accountActive"><a (click)="activateAccount(chartOfAccounts)" class="text-danger">Activate</a></td>
+            <td style="text-align: center"  [hidden]="!chartOfAccounts.accountActive"><a (click)="deactivateAccount(chartOfAccounts)" class="text-danger">Deactivate</a></td>
+            <td style="text-align: center"  [hidden]="chartOfAccounts.accountActive"><a (click)="activateAccount(chartOfAccounts)" class="text-danger">Activate</a></td>
             <td>
                 <button matTooltip="edit the account" mat-menu-item [routerLink]="['/accounts/edit',chartOfAccounts.id]">
                     <span>Edit</span>
@@ -78,15 +78,15 @@
                 {{chartOfAccounts.accountName}} </a></td>
             <td >{{chartOfAccounts.accountType}} </td>
             <td >{{chartOfAccounts.accountSubType}} </td>
-            <td>{{chartOfAccounts.normalSide}}</td>
+            <td style="text-align: center">{{chartOfAccounts.normalSide}}</td>
             <td >{{chartOfAccounts.accountBalance | currency: 'USD': "symbol": '1.2-2'}} </td>
             <td >{{chartOfAccounts.accountInitBalance | currency: 'USD': "symbol": '1.2-2'}} </td>
             <td >{{chartOfAccounts.createdBy}} </td>
             <td >{{chartOfAccounts.createdDate |date:'MM/dd/yyyy h:mma'}} </td>
-            <td >{{chartOfAccounts.debit | currency: 'USD': "symbol": '1.2-2'}} </td>
-            <td >{{chartOfAccounts.credit | currency: 'USD': "symbol": '1.2-2'}} </td>
+<!--            <td >{{chartOfAccounts.debit | currency: 'USD': "symbol": '1.2-2'}} </td>-->
+<!--            <td >{{chartOfAccounts.credit | currency: 'USD': "symbol": '1.2-2'}} </td>-->
             <td >{{chartOfAccounts.statement}} </td>
-            <td >{{chartOfAccounts.accountDesc}} </td>
+<!--            <td >{{chartOfAccounts.accountDesc}} </td>-->
             <td >{{chartOfAccounts.comment}} </td>
         </tr>
         </tbody>
@@ -94,7 +94,7 @@
         <tr>
             <td colspan="5">
                 <mfBootstrapPaginator
-                        [rowsOnPageSet]="[5, 10, 15]"
+                        [rowsOnPageSet]="[5, 10, 15, 30]"
                 ></mfBootstrapPaginator>
             </td>
         </tr>

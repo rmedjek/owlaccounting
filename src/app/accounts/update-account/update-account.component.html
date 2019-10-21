@@ -70,24 +70,6 @@
           </mat-select>
       </mat-form-field>
 
-    <mat-form-field color="accent">
-      <input matInput placeholder="debit"
-             type="number"
-             formControlName="debit"/>
-      <mat-error *ngIf="submitted && f.debit.errors" class="invalid-feedback">
-        <div *ngIf="f.debit.errors.required">debit is required</div>
-      </mat-error>
-    </mat-form-field>
-
-    <mat-form-field color="accent">
-      <input matInput placeholder="credit"
-             type="number"
-             formControlName="credit"/>
-      <mat-error *ngIf="submitted && f.credit.errors" class="invalid-feedback">
-        <div *ngIf="f.credit.errors.required">credit is required</div>
-      </mat-error>
-    </mat-form-field>
-
     <mat-form-field [hideRequiredMarker]="accountForm.value.hideRequired"
             [floatLabel]="accountForm.value.floatLabel">
       <mat-select placeholder="statement" formControlName="statement">

@@ -12,10 +12,10 @@ const schema = new Schema({
     imageData: { type: String, required: false},
     declineReason: { type: String, required: false},
     createdDate: { type: Date, default: Date.now },
-    status: { type: String, default: 'pending'},
     imageName: { type: String, required: false},
     imageType: { type: String, required: false},
     image: { data: Buffer, contentType: String},
+    status: { type: String, default: 'pending'},
 });
 
 schema.set('toJSON', { virtuals: true });
