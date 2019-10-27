@@ -42,11 +42,12 @@ export class ChartOfAccountsComponent implements OnInit {
 
   public loadUsersBySearch() {
     this.accountList = this.allAccounts;
-    const search: string = (document.getElementById('myInput') as HTMLInputElement).value;
+    const search: string = (document.getElementById('myInput') as HTMLInputElement).value.toLowerCase();
     if (search.length === 0 || search.length === null) {
       this.accountList = this.allAccounts;
     } else {
-      this.accountList = this.accountList.filter(users => users.accountName.includes(search) || users.accountSubType.includes(search) ||
+      this.accountList = this.accountList.filter(users => users.accountName.includes(search)
+          || users.accountSubType.includes(search) ||
           users.accountType.includes(search));
     }
   }

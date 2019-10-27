@@ -1,0 +1,28 @@
+.center{
+  text-align: center;
+  color: white;
+  font-size: 24px;
+}
+
+.doubleUnderline {
+  text-align: right;
+  text-decoration:underline;
+  border-bottom: 1px solid #000;
+  border-top: 1px solid #000;
+}
+
+.align-right{
+  text-align: right;
+}
+.title-container-header{
+  padding-right: 50px;
+  padding-left: 50px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 10px;
+  background-color: #3D7AC1 ;
+}
+
+.input-group{
+  width: 180px
+}

@@ -23,9 +23,10 @@ export class ChartOfAccountsService {
       account.createdBy = currentUser.username;
 
       const newLog = new LogTrack();
-      newLog.logDataInput = 'Created a new account ' + account.accountName;
+      newLog.logDataInput = 'Created a new account -- account number: ' + account.accountNumber;
       newLog.logInitial = '';
-      newLog.logFinal = account.accountName;
+      newLog.logFinal =  'account name: '  + account.accountName  + ' -- account type: '
+          + account.accountType + ' -- account initial balance: $' + account.accountInitBalance;
       const messageLog = this.logTrackService.logData(newLog, this.currentUser.username);
       const createAccountRequest = this.http.post(`${environment.apiUrl}/accounts/createAccount`, account);
       return forkJoin([messageLog, createAccountRequest]);

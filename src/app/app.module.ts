@@ -39,7 +39,7 @@ import {
 } from '@angular/material';
 import { RegisterComponent } from './auth/register';
 import { UserService } from './_services';
-import { SidebarMenuComponent } from './sidebar-menu/sidebar-menu.component';
+import { SidebarMenuComponent } from './home/sidebar-menu/sidebar-menu.component';
 import { UserAccountsComponent } from './users/user-accounts/user-accounts.component';
 import { LogsPageComponent } from './logs-page/logs-page.component';
 import { CreateUserComponent } from './users/create-user/create-user.component';
@@ -54,7 +54,7 @@ import { AccountViewComponent } from './accounts/account-view/account-view.compo
 import { RouterModule } from '@angular/router';
 import { JwtService } from './_services/jwt.service';
 import { EditAccountResolverService } from './_services/edit-account-resolver-service';
-import { UpdateAccountComponent } from './accounts/update-account/update-account.component';
+import { UpdateAccountComponent } from './accounts/edit-account/update-account.component';
 import { JournalizeComponent } from './journalize/journalize.component';
 import { JournalEntryService } from './_services/journal-entry.service';
 import { SystemAlertsForUsersService } from './_services/system-alerts-for-users.service';
@@ -65,6 +65,11 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ToastrModule } from 'ngx-toastr';
 import { ToasterService } from './_services/toast.service';
 import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
+import { TrialBalanceComponent } from './view-statements/trial-balance/trial-balance.component';
+import { BsDropdownModule } from 'ngx-bootstrap';
+import { RetainedEarningsComponent } from './view-statements/retained-earnings/retained-earnings.component';
+import { IncomeStatementComponent } from './view-statements/income-statement/income-statement.component';
+import { BalanceSheetComponent } from './view-statements/balance-sheet/balance-sheet.component';
 
 
 @NgModule({
@@ -103,7 +108,8 @@ import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
         FlexLayoutModule,
         MatDialogModule,
         Ng4LoadingSpinnerModule.forRoot(),
-        ToastrModule.forRoot()
+        ToastrModule.forRoot(),
+        BsDropdownModule.forRoot()
     ],
   declarations: [
     AppComponent,
@@ -123,7 +129,11 @@ import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
     AccountViewComponent,
     UpdateAccountComponent,
     JournalizeComponent,
-    LedgerAccountTransactionsComponent
+    LedgerAccountTransactionsComponent,
+    TrialBalanceComponent,
+    RetainedEarningsComponent,
+    IncomeStatementComponent,
+    BalanceSheetComponent
   ],
   providers: [
     AuthGuard,

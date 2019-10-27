@@ -28,6 +28,8 @@ export class JournalEntryService {
         + entry.createdDate.getHours() + ':'
         + entry.createdDate.getMinutes() + ':'
         + entry.createdDate.getSeconds() +
+          ' debit account name: ' + entry.accountDebit +
+          ' credit account name: ' + entry.accountCredit +
           ' debit amount: $' + entry.amountDebit +
           ' credit amount: $' + entry.amountCredit;
       newLog.logInitial = '';
