@@ -16,8 +16,11 @@ module.exports = {
 
 async function authenticate({ username, password }) {
     const user = await User.findOne({ username });
-
-    passwordExpired(user); //checks password for expiration upon authenication
+    passwordExpired = passwordExpired(user); //returns number of days that password is still valid
+    if (passwordExpired <= 0){ 
+        user.passwordExpired = true;
+        user.save();
+    }
 
     if (user && bcrypt.compareSync(password, user.hash)) {
         if(user.passwordExpired === false){
@@ -99,16 +102,15 @@ async function _delete(id) {
     await User.findByIdAndRemove(id);
 }
 
-async function passwordExpired(user) {
+function passwordExpired(user) {
     var duration = 180; //In Days
     var creationDate = user.passwordCreationDate;
     var date = new Date();
-    var expire =  creationDate + (duration * 24 * 60 * 60 * 1000); //time in milliseconds
-    
-        if (expire < date){
-            user.passwordExpired = true;
-            throw "Your password has expired, please contact your system administrator ";
-        }
+    var epoch = Math.floor(date.getTime() / 1000);
+    var expire =  Math.floor(creationDate.getTime() / 1000) + (duration * 24 * 60 * 60); //time in milliseconds
+    var daysTillExpire = Math.floor(expire / 60 / 60 / 24) - Math.floor(epoch / 60 / 60 / 24); //days till expiration
+
+    return daysTillExpire;
     }
 
 
