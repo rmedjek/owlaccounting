@@ -1,3 +1,7 @@
+.example-spacer {
+  flex: 1 1 auto;
+}
+
 body {
   font-family: "Lato", sans-serif;
 }
@@ -7,15 +11,16 @@ body {
   left: 0;
   top: 0;
   width: 100%;
+  z-index: 2;
+  box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
+  /*background-color: black;*/
 }
 
 .sidenav {
   position: fixed;
   margin-top: 64px;
   left: 0;
-  left: 0;
-  margin-top: 64px;
-  width: 200px;
+  width: 240px;
   background-color: white;
   overflow-x: hidden;
   padding-top: 20px;
@@ -66,6 +71,14 @@ body {
   color: #818181;
 }
 
+/*.md-toolbar-tools {*/
+/*  right: -300px;*/
+/*}*/
+
+.md-toolbar-tools a:hover {
+  color: #ffae91;
+}
+
 .main {
   margin-left: 160px; /* Same as the width of the sidenav */
   font-size: 28px; /* Increased text to enable scrolling */
@@ -95,6 +108,7 @@ h1.my-app-name {
   /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
      causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
   flex: 1;
+  z-index: 2;
 }
 
 .my-is-mobile .my-sidenav-container {

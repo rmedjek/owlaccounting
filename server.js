@@ -17,8 +17,8 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+app.use(bodyParser.json({limit: '50mb'}));
 app.use(cors());
 app.use(pdf);
 
@@ -26,9 +26,12 @@ app.use(pdf);
 app.use(jwt());
 
 // API Routes
-app.use('/users', require('./backend/users/users.controller'));
-app.use('/logTrack', require('./backend/logTrack/logTrack.controller'));
+app.use('/users',    require('./backend/users/users.controller'));
+app.use('/logTrack', require('./backend/log-track/logTrack.controller'));
 app.use('/accounts', require('./backend/chart-of-accounts/chartOfAccounts.controller'));
+app.use('/journals', require('./backend/journal-entries/journalEntries.controller'));
+app.use('/ledger', require('./backend/ledger/ledger.controller'));
+app.use('/systemAlerts', require('./backend/system-alerts-for-users/system-alerts-for-users.controller'));
 
 
 

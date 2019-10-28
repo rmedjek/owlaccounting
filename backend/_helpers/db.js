@@ -11,7 +11,10 @@ mongoose.connect(config.connectionString)
 
 module.exports = {
     User: require('../users/user.model'),
-    logTrack: require('../logTrack/logTrack.model'),
+    logTrack: require('../log-track/logTrack.model'),
     chartOfAccounts: require('../chart-of-accounts/chartOfAccounts.model'),
+    JournalEntries: require('../journal-entries/journalEntries.model'),
+    ledger: require('../ledger/ledger.model'),
+    systemAlert: require('../system-alerts-for-users/system-alerts-for-users.model')
 };
 

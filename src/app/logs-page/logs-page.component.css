@@ -1,9 +1,12 @@
 table  {
-  margin-top: 30px;
-  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-  table-layout:fixed;
+  margin-top: 10px;
+  text-align: center;
+  left: 80%;
+  margin-left: -60%;
+  max-width: 100%;
+  float: none;
+  display: inline-table;
+  background-color: white;
 }
 
 th:hover {
@@ -11,12 +14,14 @@ th:hover {
 }
 
 td, th {
-  border: 1px solid #ddd;
-  padding: 8px;
   text-align: center;
 }
 td{
   text-align: left;
+}
+
+th {
+  white-space: nowrap;
 }
 
 th a.sort-by {
@@ -25,7 +30,7 @@ th a.sort-by {
 }
 a.sort-by:before,
 a.sort-by:after {
-  border: 4px solid transparent;
+  /*border: 4px solid transparent;*/
   content: "";
   display: block;
   height: 0;
@@ -56,30 +61,8 @@ th {
   padding-bottom: 12px;
   width: 15%;
 }
-table.scroll {
-   width: 100%;
-   border-collapse: collapse;
-  border-spacing: 30px;
-  border: 2px solid black;
-}
-
-table.scroll tbody,
-table.scroll thead { display: block; }
-
-
-table.scroll tbody {
-  height: 500px;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
 
 tbody { border-top: 2px solid black; }
-
-tbody td, thead th {
-  /* width: 20%; */ /* Optional */
-  border-right: 1px solid black;
-  /* white-space: nowrap; */
-}
 
 tbody td:last-child, thead th:last-child {
   border-right: none;
@@ -92,19 +75,13 @@ tbody td:last-child, thead th:last-child {
   position: relative;
   padding: 10px;
 }
-.search-wrapper {
-  align: center;
-  width: 500px;
-  margin: auto;
-  margin-top: 50px;
-}
 .search-box {
-  margin-top: 40px;
-  left: 10%;
-  width: 80%;
+  left: 100%;
+  width: 35%;
   border: 1px solid #ccc;
   outline: 0;
-  border-radius: 15px;
+  border-radius: 7px;
+  bottom: 5px;
 }
 .search-box:focus {
   box-shadow: 0 0 15px 5px #b0e0ee;
@@ -118,31 +95,12 @@ tbody td:last-child, thead th:last-child {
   outline: 0;
   cursor: pointer;
 }
-.close-icon:after {
-  content: "X";
-  display: block;
-  width: 15px;
-  height: 15px;
-  position: absolute;
-  background-color: #FA9595;
-  z-index:1;
-  right: 45px;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-  border-radius: 50%;
-  text-align: center;
-  color: white;
-  font-weight: normal;
-  font-size: 12px;
-  box-shadow: 0 0 2px #E50F0F;
-  cursor: pointer;
-}
+
 .search-box:not(:valid) ~ .close-icon {
   display: none;
 }
 
 .sub-row{
-  background-color: #b0e0ee;
+  color: #0010ee;
 }
 

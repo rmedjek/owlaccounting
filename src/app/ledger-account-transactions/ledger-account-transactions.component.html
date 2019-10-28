@@ -1,0 +1,92 @@
+<div class="row">
+  <div class="col-sm-6 offset-sm-3">
+    <alert></alert>
+    <app-sidebar-menu></app-sidebar-menu>
+    <button mat-raised-button color="primary" *ngIf="journalEntryDisplay" (click)="onBackClick()">Back</button>
+    <br><br>
+<!--    <button class="back-button" mat-raised-button color="primary"-->
+<!--            matTooltip="back to journalizing"-->
+<!--            [routerLink]="['/journalize']">Back</button>-->
+    <div *ngIf="!journalEntryDisplay" class="my-header">
+
+      <h5 style="float: left">Name: {{accountName}}</h5>
+      <h5 class="right">Account # {{accountNumber}}</h5>
+    </div>
+    <div style="clear:both"></div>
+  </div>
+</div>
+<div class="sidenav">
+  <table class="table table-striped" [mfData]="filterItemList(allEntries)" #mf="mfDataTable" *ngIf="!journalEntryDisplay">
+    <thead>
+    <tr>
+      <th><a class="sort-by">Date</a></th>
+      <th><a class="sort-by">Reference</a></th>
+      <th><a class="sort-by" >Account Name</a></th>
+      <th><a class="sort-by">Debit</a></th>
+      <th><a class="sort-by">Credit</a></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let ledgerEntry of mf.data">
+      <td>{{ledgerEntry.createdDate | date:'MM/dd/yyyy h:mma'}}</td>
+      <td><a matTooltip="go to ledger detail" style="color: #126178" (click)="referenceJournal(ledgerEntry.journalId)">J1</a></td>
+      <td><a matTooltip="back to journalizing" [routerLink]="['/journalize']">{{ledgerEntry.accountName}}</a></td>
+      <td *ngIf="!ledgerEntry.accountDebit"></td>
+      <td>{{ledgerEntry.amount | currency: 'USD': "symbol": '1.2-2'}}</td>
+      <td *ngIf="ledgerEntry.accountDebit"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div class="sidenav2">
+    <table id="AccountTable" class="table table-striped" [mfData]="specificJournalEntry" #mf="mfDataTable" *ngIf="journalEntryDisplay">
+      <thead>
+      <tr>
+        <th ><a class="sort-by">Status</a></th>
+        <th><a class="sort-by">Date/Time</a></th>
+        <th ><a class="sort-by">Types</a></th>
+        <th ><a class="sort-by">Creator</a></th>
+        <th ><a class="sort-by">Accounts</a></th>
+        <th ><a class="sort-by">Debits</a></th>
+        <th ><a class="sort-by">Credits</a></th>
+      </tr>
+      </thead>
+      <tbody  *ngFor="let journalEntry of mf.data; let i = index">
+
+      <tr *ngFor="let account of journalEntry.accountDebit ; let t = index;">
+
+        <td *ngIf="t!==0"></td>
+        <td *ngIf="t!==0"></td>
+        <td *ngIf="t!==0"></td>
+        <td *ngIf="t!==0"></td>
+        <td *ngIf="t === 0">{{journalEntry.status}} </td>
+        <td *ngIf="t === 0">{{journalEntry.createdDate | date:'MM/dd/yyyy h:mma'}} </td>
+        <td *ngIf="t === 0">{{journalEntry.type}}</td>
+        <td *ngIf="t === 0">{{journalEntry.createdBy}}</td>
+        <td><a matTooltip="back to ledger" style="color: #0000ee" *ngIf="journalEntryDisplay" (click)="onBackClick()">{{journalEntry.accountDebit[t]}}</a></td>
+        <td>{{journalEntry.amountDebit[t] | currency: 'USD': "symbol": '1.2-2'}}</td>
+        <td ></td>
+        <td *ngIf="(journalEntry.accountDebit.length >1 && t !==1 && t !== 0)"></td>
+      </tr>
+      <tr *ngFor="let account of journalEntry.accountCredit ; let p = index;">
+        <td ></td>
+        <td ></td>
+        <td colspan="2" *ngIf="(p === journalEntry.accountCredit.length-1)"> {{journalEntry.description}}</td>
+        <td colspan="2" *ngIf="(p !== journalEntry.accountCredit.length-1)"> </td>
+        <td style="padding-left: 10px">{{journalEntry.accountCredit[p] }}</td>
+        <td ></td>
+        <td>{{journalEntry.amountCredit[p] | currency: 'USD': "symbol": '1.2-2'}}</td>
+        <td *ngIf="p !== 0"></td>
+      </tr>
+      </tbody>
+      <tfoot>
+      <tr>
+        <td colspan="5">
+          <mfBootstrapPaginator
+                  [rowsOnPageSet]="[5, 10, 15]"
+          ></mfBootstrapPaginator>
+        </td>
+      </tr>
+      </tfoot>
+    </table>
+</div>

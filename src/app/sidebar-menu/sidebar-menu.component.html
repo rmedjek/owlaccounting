@@ -1,11 +1,31 @@
 <div class="my-container" [class.example-is-mobile]="mobileQuery.matches">
   <mat-toolbar color="primary" class="my-toolbar">
     <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
-    <h1 class="example-app-name">Owl Accounting</h1>
+    <span>OwlAccounting</span><span class="example-spacer"></span>
+    <span><img src="./assets/logo11.png" alt="OwlAccountingLogo" style="width:120px;height:60px;margin-right:400px; margin-bottom: -10px;"></span>
+    <div class="md-toolbar-tools" fxShow="true" fxHide.lt-md="true">
+      <span class="example-spacer"></span>
+
+      <a [routerLink]="['/home']" mat-button>Dashboard</a>
+      <a [routerLink]="['/accounts']" mat-button>Chart of accounts</a>
+      <a *ngIf="currentUser?.role === '1'" [routerLink]="['/userAccounts']" mat-button>User Accounts</a>
+      <a *ngIf="currentUser?.role !== '1'" [routerLink]="['/journalize']" mat-button>Journalize</a>
+      <a [routerLink]="['/logsPage']" mat-button>Event Logs</a>
+      <a mat-button color="warn" [routerLink]="['/login']">Logout</a>
+      <a style="font-size: 16px; margin-left: 20px"> {{currentUser?.username}}</a>
+      <a style="font-size: 14px" *ngIf="currentUser?.role === '1'"> (Admin)</a>
+      <a style="font-size: 14px" *ngIf="currentUser?.role === '2'"> (Manager)</a>
+      <a style="font-size: 14px" *ngIf="currentUser?.role === '3'"> (Accountant)</a>
+      <img src="./assets/img_avatar.png" class="avatar-image"
+           style="width:50px;height:50px; margin-left: 10px; display: inline">
+    </div>
+    <div fxShow="true" fxHide.gt-sm="true">
+      <a href="#" (click)="snav.toggle()">Show Side Menu</a>
+    </div>
   </mat-toolbar>
 
   <mat-sidenav-container class="sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
-    <mat-sidenav class="sidenav" #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
+    <mat-sidenav class="sidenav mat-elevation-z10"  #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
                  [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
       <mat-nav-list>
         <img src="./assets/img_avatar.png" class="avatar-image">
@@ -19,9 +39,10 @@
         <br>
         <a></a>
         <a [routerLink]="['/home']">Dashboard</a>
-        <a [routerLink]="['/chartOfAccounts']">Chart Of Accounts</a>
+        <a [routerLink]="['/accounts']">Chart Of Accounts</a>
         <a *ngIf="currentUser?.role === '1'" [routerLink]="['/userAccounts']">User Accounts</a>
-        <a [routerLink]="['/logsPage']">Logs</a>
+        <a *ngIf="currentUser?.role !== '1'" [routerLink]="['/journalize']">Journalize</a>
+        <a [routerLink]="['/logsPage']">Event Logs</a>
         <div class="logout-option"><a [routerLink]="['/login']">Logout</a></div>
       </mat-nav-list>
     </mat-sidenav>

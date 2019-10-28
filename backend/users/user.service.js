@@ -23,7 +23,7 @@ async function authenticate({ username, password }) {
     }
 
     if (user && bcrypt.compareSync(password, user.hash)) {
-        if(user.passwordExpired === false){
+        // if(user.passwordExpired === false) {
             if(user.accountActive === true) {
                 const {hash, ...userWithoutHash} = user.toObject();
                 const token = jwt.sign({sub: user.id}, config.secret, { expiresIn: '1h' });
@@ -36,7 +36,7 @@ async function authenticate({ username, password }) {
         } else {
             throw 'Your password has expired.'
         }
-    }
+    // }
 }
 
 async function getAll() {
@@ -112,5 +112,19 @@ function passwordExpired(user) {
 
     return daysTillExpire;
     }
+
+async function passwordExpired(user) {
+  let duration = 180; //In Days
+  let creationDate = user.passwordCreationDate;
+  let date = new Date();
+  let expire =  creationDate + (duration * 24 * 60 * 60 * 1000); //time in milliseconds
+//     console.log('expire date: ' + expire);
+//     console.log('date: ' + date);
+  if (expire < date) {
+       user.passwordExpired = true;
+     //  console.log('user: ' + user.passwordExpired);
+       throw "Your password has expired, please contact your system administrator ";
+    }
+}
 
 

@@ -21,7 +21,7 @@ export class UserService {
 
     register(user: User) {
       user.accountActive = false;
-      user.passwordExpired = false;
+      // user.passwordExpired = false;
       user.role = '3';
       return this.http.post(`${environment.apiUrl}/users/register`, user);
     }
@@ -57,5 +57,10 @@ export class UserService {
     delete(id: number) {
         return this.http.delete(`${environment.apiUrl}/users/` + id);
     }
+
+    deactivate(user: User){
+        user.accountActive = false;
+    }
+    
 }
 

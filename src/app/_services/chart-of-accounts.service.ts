@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { LogTrack, User} from '../_models';
 import { environment } from '../../environments/environment';
-import { AccountPaginationResponse, ChartOfAccounts } from '../_models/chartOfAccounts';
+import { ChartOfAccounts } from '../_models/chartOfAccounts';
 import { LogTrackService } from './index';
 import { forkJoin, Observable } from 'rxjs';
 
@@ -14,15 +14,8 @@ export class ChartOfAccountsService {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
-  getAllAccounts({ page, perPage, sortField, sortDir, filter }): Observable<AccountPaginationResponse> {
-    let queryString = `${environment.apiUrl}/accounts?page=${page + 1}&perPage=${perPage}`;
-    if (sortField && sortDir) {
-      queryString = `${queryString}&sortField=${sortField}&sortDir=${sortDir}`;
-    }
-    if (filter) {
-      queryString = `${queryString}&filter=${filter}`;
-    }
-    return this.http.get<AccountPaginationResponse>(queryString);
+  getAll() {
+    return this.http.get<ChartOfAccounts[]>(`${environment.apiUrl}/accounts`);
   }
 
   createAccount(account: ChartOfAccounts, currentUser: User) {
@@ -42,7 +35,7 @@ export class ChartOfAccountsService {
   updateAccount(account: ChartOfAccounts, message: LogTrack) {
     if (this.currentUser.role === '1' || this.currentUser.role === '2') {
       const messageLog = this.logTrackService.logData(message, this.currentUser.username);
-      const createAccountRequest = this.http.put(`${environment.apiUrl}/accounts/` + account._id, account);
+      const createAccountRequest = this.http.put(`${environment.apiUrl}/accounts/` + account.id, account);
       return forkJoin([messageLog, createAccountRequest]);
     }
   }
@@ -56,8 +49,12 @@ export class ChartOfAccountsService {
     return this.http.get<ChartOfAccounts>(`${environment.apiUrl}/accounts/${id}`);
   }
 
-  updateAccountById(id: string, body: ChartOfAccounts): Observable<ChartOfAccounts> {
-    return this.http.put<ChartOfAccounts>(`${environment.apiUrl}/accounts/${id}`, body);
+  updateAccountById(id: string, body: ChartOfAccounts, message: LogTrack) {
+    if (this.currentUser.role === '1' || this.currentUser.role === '2') {
+      const messageLog = this.logTrackService.logData(message, this.currentUser.username);
+      const updatedAccount = this.http.put(`${environment.apiUrl}/accounts/${id}`, body);
+      return forkJoin([messageLog, updatedAccount]);
+    }
   }
 
   downloadAccount(id: string) {

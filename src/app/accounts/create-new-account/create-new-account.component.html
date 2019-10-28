@@ -1,0 +1,134 @@
+<mat-card>
+<!--  {{this.registerForm.value | json}}-->
+<app-sidebar-menu></app-sidebar-menu>
+  <h5>Add Account</h5>
+  <form class="form-container" [formGroup]="accountForm" novalidate (ngSubmit)="onSubmit()">
+    <mat-form-field color="accent" >
+      <input pattern="[1-9]{1}[0-9]{7}" matInput placeholder="Account Number"
+             type="number"
+             formControlName="accountNumber">
+      <mat-error *ngIf="accountForm.controls.accountNumber.invalid
+      && accountForm.controls.accountNumber.touched">Account Number is required (must contain 8 digits)</mat-error>
+    </mat-form-field>
+
+    <mat-form-field color="accent">
+      <input matInput placeholder="Order"
+             type="number"
+             formControlName="accountOrder"/>
+      <mat-error *ngIf="submitted && f.accountOrder.errors" class="invalid-feedback">
+        <div *ngIf="f.accountOrder.errors.required">Order is required</div>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field color="accent">
+      <input matInput
+             placeholder="Account Name"
+             type="text"
+             formControlName="accountName">
+      <mat-error *ngIf="accountForm.controls.accountName.invalid
+      && accountForm.controls.accountName.touched"> accountName is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field color="accent">
+      <input matInput
+             placeholder="Account Description"
+             type="text"
+             formControlName="accountDesc"/>
+    </mat-form-field>
+
+    <mat-form-field color="accent">
+      <mat-select placeholder="account Type" required formControlName="accountType">
+        <mat-error *ngIf="submitted && f.accountType.errors">
+          <div *ngIf="f.accountType.errors.required">Account type is required</div>
+        </mat-error>
+        <mat-option>-- None --</mat-option>
+        <mat-option value="Asset" >Asset</mat-option>
+        <mat-option value="Expense" >Expense</mat-option>
+        <mat-option value="Liability" >Liability</mat-option>
+        <mat-option value="Equity" >Equity</mat-option>
+        <mat-option value="Revenue">Revenue</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field color="accent">
+      <input matInput placeholder="Account Subtype"
+             type="text"
+             formControlName="accountSubType"/>
+      <mat-error *ngIf="submitted && f.accountSubType.errors" class="invalid-feedback">
+        <div *ngIf="f.accountSubType.errors.required">Account subtype is required</div>
+      </mat-error>
+    </mat-form-field>
+
+      <mat-form-field color="accent">
+          <mat-select placeholder="Normal Side" required formControlName="normalSide">
+              <mat-error *ngIf="submitted && f.normalSide.errors">
+                  <div *ngIf="f.normalSide.errors.required">normalSide is required</div>
+              </mat-error>
+              <mat-option>-- None --</mat-option>
+              <mat-option value="L" >L</mat-option>
+              <mat-option value="R" >R</mat-option>
+          </mat-select>
+      </mat-form-field>
+
+      <mat-form-field color="accent">
+      <input matInput placeholder="Account Balance"
+             type="number"
+             formControlName="accountBalance"/>
+      <mat-error *ngIf="submitted && f.accountBalance.errors" class="invalid-feedback">
+        <div *ngIf="f.accountBalance.errors.required">Balance is required</div>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field color="accent">
+      <input matInput placeholder="Initial Balance"
+             type="number"
+             formControlName="accountInitBalance"/>
+      <mat-error *ngIf="submitted && f.accountInitBalance.errors" class="invalid-feedback">
+        <div *ngIf="f.accountInitBalance.errors.required">Initial Balance is required</div>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field color="accent">
+      <input matInput placeholder="debit"
+             type="number"
+             formControlName="debit"/>
+      <mat-error *ngIf="submitted && f.debit.errors" class="invalid-feedback">
+        <div *ngIf="f.debit.errors.required">debit is required</div>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field color="accent">
+      <input matInput placeholder="credit"
+             type="number"
+             formControlName="credit"/>
+      <mat-error *ngIf="submitted && f.credit.errors" class="invalid-feedback">
+        <div *ngIf="f.credit.errors.required">credit is required</div>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field [hideRequiredMarker]="accountForm.value.hideRequired"
+            [floatLabel]="accountForm.value.floatLabel">
+      <mat-select placeholder="statement" formControlName="statement">
+        <mat-option>-- None --</mat-option>
+        <mat-option value="BalanceSheet">Balance Sheet</mat-option>
+        <mat-option value="Income Statement" >Income Statement</mat-option>
+        <mat-option value="CashFlow" >Cash Flow</mat-option>
+        <mat-option value="RetainedEarnings" >Retained Earnings</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field color="accent">
+      <input matInput placeholder="comment"
+             type="string"
+             formControlName="comment"/>
+    </mat-form-field>
+
+    <div>
+      <button matTooltip="save your changes"
+              mat-raised-button [disabled]="!accountForm.valid" type="submit" color="accent">Save</button>
+      <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+
+      <button matTooltip="cancel and go back" mat-raised-button type="reset"[routerLink]="['/accounts']" class="btn btn-link">Cancel</button>
+    </div>
+  </form>
+</mat-card>

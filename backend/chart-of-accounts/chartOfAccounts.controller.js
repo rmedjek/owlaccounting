@@ -1,8 +1,9 @@
 ﻿const express = require('express');
 const router = express.Router();
 const db = require('../_helpers/db');
-const accountService = require('./chartOfAccounts.service');
 const ChartOfAccounts = db.chartOfAccounts;
+
+const accountService = require('./chartOfAccounts.service');
 const userService = require('../users/user.service');
 const chartOfAccountService = require('./chartOfAccounts.service');
 
@@ -24,34 +25,8 @@ function createAccount(req, res, next) {
 }
 
 function getAll(req, res, next) {
-    const { page = 1, perPage = 10, filter, sortField, sortDir } = req.query;
-    const options = {
-        page: parseInt(page, 10),
-        limit: parseInt(perPage, 10),
-        sort: {
-            [sortField]: sortDir,
-        }
-       // populate: 'client',
-    };
-    const query = {};
-    if (filter) {
-        query.accountName = {
-            $regex: filter,
-        };
-    }
-    if (sortField && sortDir) {
-        options.sort = {
-            [sortField]: sortDir,
-        };
-    }
-    ChartOfAccounts.paginate(query, options)
+    accountService.getAll()
         .then(accounts => res.json(accounts))
-        .catch(err => res.status(500).json(err));
-}
-
-function update(req, res, next) {
-    accountService.update(req.params.id, req.body)
-        .then(() => res.json({}))
         .catch(err => next(err));
 }
 
@@ -79,6 +54,11 @@ function updateById(req, res) {
         .catch(err => res.status(500).json(err));
 }
 
+function update(req, res, next) {
+    accountService.update(req.params.id, req.body)
+        .then(() => res.json({}))
+        .catch(err => next(err));
+}
 
 async function download(req, res) {
     try {
@@ -91,7 +71,7 @@ async function download(req, res) {
         const templateBody = chartOfAccountService.getTemplateBody(account, user);
         const html = chartOfAccountService.getAccountTemplate(templateBody);
         await res.pdfFromHTML({
-            filename: `${account.item}.pdf`,
+            filename: `${account.accountName}.pdf`,
             htmlContent: html,
         });
     } catch (err) {
