@@ -1,0 +1,46 @@
+/*tr {*/
+/*  font-size: 16px;*/
+/*}*/
+
+/*td {*/
+/*  font-size: 16px;*/
+/*}*/
+
+.table td {
+  padding: 0.25rem;
+}
+
+.table th {
+  padding: 0.5rem;
+}
+
+.center{
+  text-align: center;
+  font-size: 24px;
+  color: white;
+}
+
+tr:hover, .hoverStyle:hover {
+  background-color: #b0e0ee;
+}
+
+.doubleUnderline {
+  float: right;
+  text-align: left;
+  text-decoration:underline;
+  border-bottom: 1px solid #000;
+  border-top: 1px solid #000;
+}
+.align-right{
+  text-align: right;
+}
+
+.title-container-header{
+  padding-right: 50px;
+  padding-left: 50px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 10px;
+  background-color: #3D7AC1;
+}
+

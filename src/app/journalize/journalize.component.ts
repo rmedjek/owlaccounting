@@ -271,7 +271,6 @@ export class JournalizeComponent implements OnInit {
 
         if (files) {
           const x = await this.getBase64(files).then((data) => newJournal.imageData = data.toString());
-          console.log(x);
           newJournal.imageName = files.name;
           newJournal.imageType = files.type;
         }
@@ -342,7 +341,8 @@ export class JournalizeComponent implements OnInit {
 
       entry.declineReason = prompt('Enter Reason (if applicable):');
       const newLog = new LogTrack();
-      newLog.logDataInput = 'Declines a journal entry ';
+      newLog.logDataInput = 'Declines a journal entry with ' + 'debit account name: ' + entry.accountDebit + ' credit account name: '
+          + entry.accountCredit;
       newLog.logInitial =  entry.description + 'Status: Pending';
       newLog.logFinal =  entry.description + 'Status: Declined';
       this.spinnerService.show();
@@ -360,14 +360,15 @@ export class JournalizeComponent implements OnInit {
           .pipe(first()).subscribe(() => {
             this.spinnerService.hide();
           });
-      const debitAccount = this.allAccounts.filter(debitAccount => debitAccount.accountName.includes(journal.accountDebit[index]));
+      const debitAccount = this.allAccounts.filter(
+          dataAccount => dataAccount.accountName.includes(journal.accountDebit[index]));
       this.updateDebitBalance(debitAccount[0], journal, index);
     });
 
     journal.accountCredit.forEach((account, index) => {
       this.ledgerService.createLedgerEntry(journal, account, journal.amountCredit[index], false ).pipe(first()).subscribe(() => {});
       const creditAccount = this.allAccounts.filter(
-          creditAccount => creditAccount.accountName.includes(journal.accountCredit[index]));
+          dataAccount => dataAccount.accountName.includes(journal.accountCredit[index]));
       this.updateCreditBalance(creditAccount[0], journal, index);
     });
   }
@@ -488,7 +489,6 @@ export class JournalizeComponent implements OnInit {
       }
       return 0;
     });
-
     return this.accountList;
   }
 
@@ -499,7 +499,7 @@ export class JournalizeComponent implements OnInit {
     } else {
       this.entriesList = this.entriesListBackup.filter(entry => entry.status.includes(search) ||
           entry.createdBy.includes(search) || entry.description.includes(search) || entry.type.includes(search));
-      this.accountList.filter(account => account.accountName.toLowerCase().includes(search));
+      this.accountList.filter(account => account.accountName.includes(search));
     }
   }
 

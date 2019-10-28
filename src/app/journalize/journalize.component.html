@@ -81,7 +81,7 @@
                             <option *ngIf="currentUser?.role === '2'" value="closing">Closing</option>
                         </select>
                         &nbsp; &nbsp;
-                        <div class="upload-btn-wrapper" *ngIf="currentUser?.role === '3'">
+                        <div class="upload-btn-wrapper" *ngIf="currentUser?.role !== '1'">
                             <button class="btn">Upload a file</button>
                             <input type="file" name="myFile" id="myFile" />
                         </div>
@@ -120,7 +120,7 @@
                 <tr>
                     <br>
                     <td>
-                        <textarea rows="4" cols="50" [attr.maxlength]="250" style="height: 100px"
+                        <textarea rows="4" cols="50" [attr.maxlength]="150" style="height: 100px"
                          id="journalDescription" ng-model="myInput" placeholder="Description"></textarea>
                     </td>
                     <td>
@@ -148,7 +148,7 @@
 </div>
 
 <div class="sidenav">
-    <table id="AccountTable" class="table table-active" [mfData]="entriesList" #mf="mfDataTable" [mfRowsOnPage]="3">
+    <table id="AccountTable" class="table table-active" [mfData]="entriesList" #mf="mfDataTable" [mfRowsOnPage]="5">
         <thead>
         <tr>
             <th ><a class="sort-by">Status</a></th>
@@ -177,7 +177,7 @@
             <td *ngIf="t !== 0 && journalEntry.status === 'pending'"></td>
             <td *ngIf="t !== 0 && journalEntry.status === 'pending'"></td>
             <td *ngIf="t !== 0 && journalEntry.status === 'pending'"></td>
-            <td *ngIf="journalEntry.status === 'pending'"><a style="color: #126178"
+            <td *ngIf="journalEntry.status === 'pending'"><a style="color: #126178;white-space: nowrap"
                 (click)="setLedgerSortEntry(journalEntry.accountDebit[t], journalEntry.id)">{{journalEntry.accountDebit[t]}}</a></td>
             <td style="text-align: left" *ngIf="journalEntry.status === 'pending'">${{journalEntry.amountDebit[t] | number:'1.2'}}</td>
             <td *ngIf="journalEntry.status === 'pending'"></td>
@@ -193,9 +193,10 @@
         </tr>
         <tr *ngFor="let account of journalEntry.accountCredit ; let p = index;">
             <td *ngIf="journalEntry.status === 'pending'"></td>
-            <td *ngIf="journalEntry.status === 'pending'"><a href="{{journalEntry.imageData}}"
-                download="{{journalEntry.imageName}}">{{journalEntry.imageName}}</a></td>
-            <td colspan="2" *ngIf="(p === journalEntry.accountCredit.length-1) && journalEntry.status === 'pending'"> {{journalEntry.description}}</td>
+            <td *ngIf="journalEntry.status === 'pending'"><a href="{{journalEntry.imageData}}" download="{{journalEntry.imageName}}">
+                {{journalEntry.imageName}}</a></td>
+            <td colspan="2" *ngIf="(p === journalEntry.accountCredit.length-1) && journalEntry.status === 'pending'">
+                {{journalEntry.description}}</td>
             <td colspan="2" *ngIf="(p !== journalEntry.accountCredit.length-1) && journalEntry.status === 'pending'"> </td>
             <td  *ngIf="journalEntry.status === 'pending'"><a style="color: #126178"
                 (click)="setLedgerSortEntry(journalEntry.accountCredit[p], journalEntry.id)">{{journalEntry.accountCredit[p]}}</a></td>

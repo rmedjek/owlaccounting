@@ -11,6 +11,20 @@
       <a *ngIf="currentUser?.role === '1'" [routerLink]="['/userAccounts']" mat-button>User Accounts</a>
       <a *ngIf="currentUser?.role !== '1'" [routerLink]="['/journalize']" mat-button>Journalize</a>
       <a [routerLink]="['/logsPage']" mat-button>Event Logs</a>
+
+      <span class="dropdown-item" *ngIf="currentUser?.role !== '1'" dropdown (onShown)="onShown()" (onHidden)="onHidden()" (isOpenChange)="isOpenChange()" class="open-show">
+        <a href id="basic-link" dropdownToggle (click)="false" >View statements</a>
+        <ul id="basic-link-dropdown" *dropdownMenu class="dropdown-menu"
+            role="menu" aria-labelledby="basic-link">
+          <li>
+            <a class="dropdown-item" [routerLink]="['/trial-balance']">Trial Balance</a>
+            <a class="dropdown-item" [routerLink]="['/retained-earnings']">Retained earnings</a>
+            <a class="dropdown-item" [routerLink]="['/balance-sheet']">Balance sheet</a>
+            <a class="dropdown-item" [routerLink]="['/income-statement']">Income statement</a>
+          </li>
+        </ul>
+      </span>
+
       <a mat-button color="warn" [routerLink]="['/login']">Logout</a>
       <a style="font-size: 16px; margin-left: 20px"> {{currentUser?.username}}</a>
       <a style="font-size: 14px" *ngIf="currentUser?.role === '1'"> (Admin)</a>
@@ -40,8 +54,9 @@
         <a></a>
         <a [routerLink]="['/home']">Dashboard</a>
         <a [routerLink]="['/accounts']">Chart Of Accounts</a>
-        <a *ngIf="currentUser?.role === '1'" [routerLink]="['/userAccounts']">User Accounts</a>
+        <a *ngIf="currentUser?.role === '1'" [routerLink]="['/userAccounts']">User Accounts </a>
         <a *ngIf="currentUser?.role !== '1'" [routerLink]="['/journalize']">Journalize</a>
+        <a [routerLink]="['/trial-balance']">Trial Balance</a>
         <a [routerLink]="['/logsPage']">Event Logs</a>
         <div class="logout-option"><a [routerLink]="['/login']">Logout</a></div>
       </mat-nav-list>

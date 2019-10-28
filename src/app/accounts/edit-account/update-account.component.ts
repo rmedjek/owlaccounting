@@ -107,7 +107,36 @@ export class UpdateAccountComponent implements OnInit {
         const newLog = new LogTrack();
         newLog.logDataInput = 'account updated ' + this.account.accountBalance;
         newLog.logInitial = this.account.accountBalance + '';
-        newLog.logFinal = this.account.accountBalance + '';
+        newLog.logFinal = this.accountForm.controls.accountBalance.value.toString();
+
+        newLog.logDataInput = 'account name updated: ' + this.account.accountName;
+        newLog.logInitial = this.account.accountName;
+        newLog.logFinal = this.accountForm.controls.accountName.value.toString();
+
+        // newLog.logDataInput = 'account order updated ' + this.account.accountOrder;
+        // newLog.logInitial = this.account.accountOrder + '';
+        // newLog.logFinal =   this.accountForm.controls.accountOrder.value.toString();
+
+        // newLog.logDataInput = 'account number updated ' + this.account.accountNumber;
+        // newLog.logInitial = this.account.accountNumber + '';
+        // newLog.logFinal =   this.accountForm.controls.accountNumber.value.toString();
+        //
+        // newLog.logDataInput = 'account desc updated ' + this.account.accountDesc;
+        // newLog.logInitial = this.account.accountDesc;
+        // newLog.logFinal =   this.accountForm.controls.accountDesc.value.toString();
+        //
+        // newLog.logDataInput = 'account type updated ' + this.account.accountType;
+        // newLog.logInitial = this.account.accountType;
+        // newLog.logFinal =   this.accountForm.controls.accountType.value.toString();
+        //
+        // newLog.logDataInput = 'account accountSubType updated ' + this.account.accountSubType;
+        // newLog.logInitial = this.account.accountSubType;
+        // newLog.logFinal =   this.accountForm.controls.accountSubType.value.toString();
+        //
+        // newLog.logDataInput = 'account normalSide updated ' + this.account.normalSide;
+        // newLog.logInitial = this.account.normalSide;
+        // newLog.logFinal =   this.accountForm.controls.normalSide.value.toString();
+
 
         this.chartOfAccountsService.updateAccountById(this.account.id, this.accountForm.value, newLog)
             .subscribe(data => {

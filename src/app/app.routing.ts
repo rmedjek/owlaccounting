@@ -10,9 +10,13 @@ import { ChartOfAccountsComponent } from './accounts/chart-of-accounts.component
 import { CreateNewAccountComponent } from './accounts/create-new-account/create-new-account.component';
 import { AccountViewComponent } from './accounts/account-view/account-view.component';
 import { EditAccountResolverService } from './_services/edit-account-resolver-service';
-import { UpdateAccountComponent } from './accounts/update-account/update-account.component';
+import { UpdateAccountComponent } from './accounts/edit-account/update-account.component';
 import { JournalizeComponent } from './journalize/journalize.component';
 import { LedgerAccountTransactionsComponent } from './ledger-account-transactions/ledger-account-transactions.component';
+import { TrialBalanceComponent } from './view-statements/trial-balance/trial-balance.component';
+import { RetainedEarningsComponent } from './view-statements/retained-earnings/retained-earnings.component';
+import { IncomeStatementComponent } from './view-statements/income-statement/income-statement.component';
+import { BalanceSheetComponent } from './view-statements/balance-sheet/balance-sheet.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -31,6 +35,10 @@ const appRoutes: Routes = [
         resolve: {account: EditAccountResolverService}},
     { path: 'journalize', component: JournalizeComponent},
     { path: 'ledger', component: LedgerAccountTransactionsComponent},
+    { path: 'trial-balance', component: TrialBalanceComponent},
+    { path: 'retained-earnings', component: RetainedEarningsComponent},
+    { path: 'income-statement', component: IncomeStatementComponent},
+    { path: 'balance-sheet', component: BalanceSheetComponent},
 
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
