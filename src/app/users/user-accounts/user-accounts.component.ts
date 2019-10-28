@@ -32,6 +32,17 @@ export class UserAccountsComponent implements OnInit {
     });
   }
 
+  suspendUser(user: User) {
+      user.accountActive = false;
+      const newLog = new LogTrack();
+      newLog.logDataInput = 'Suspended user ' + user.username + ' due to too many invalid login attempts';
+      newLog.logInitial =  user.username + ': Active';
+      newLog.logFinal =  user.username + ': Deactivate';
+      this.userService.update(user, user, newLog).pipe(first()).subscribe(() => {
+        this.loadAllUsers();
+      });
+  }
+
   deactivateUser(user: User, currentUser: User) {
     if (currentUser.role === '1') {
       user.accountActive = false;
@@ -42,8 +53,10 @@ export class UserAccountsComponent implements OnInit {
       this.userService.update(user, currentUser, newLog).pipe(first()).subscribe(() => {
         this.loadAllUsers();
       });
-    }
+   }
   }
+
+  
 
   activateUser(user: User, currentUser: User) {
     if (currentUser.role === '1') {
