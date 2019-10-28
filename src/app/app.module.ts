@@ -67,6 +67,7 @@ import { ToasterService } from './_services/toast.service';
 import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 
 
+// @ts-ignore
 @NgModule({
     imports: [
         BrowserModule,
@@ -144,4 +145,4 @@ import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
