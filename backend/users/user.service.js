@@ -11,13 +11,16 @@ module.exports = {
     create,
     update,
     delete: _delete,
-    // passwordExpired
+    passwordExpired
 };
 
 async function authenticate({ username, password }) {
     const user = await User.findOne({ username });
-
-    // await passwordExpired(user); //checks password for expiration upon authenication
+    passwordExpired = passwordExpired(user); //returns number of days that password is still valid
+    if (passwordExpired <= 0){ 
+        user.passwordExpired = true;
+        user.save();
+    }
 
     if (user && bcrypt.compareSync(password, user.hash)) {
         // if(user.passwordExpired === false) {
@@ -53,7 +56,7 @@ async function create(userParam,) {
     const user = new User(userParam);
     user.role = "3";
     user.accountActive = false;
-    // user.passwordExpired = false;
+    user.passwordExpired = false;
     // hash password
     if (userParam.password) {
         user.hash = await hashPassword(userParam);
@@ -99,18 +102,29 @@ async function _delete(id) {
     await User.findByIdAndRemove(id);
 }
 
-// async function passwordExpired(user) {
-//     let duration = 180; //In Days
-//     let creationDate = user.passwordCreationDate;
-//     let date = new Date();
-//     let expire =  creationDate + (duration * 24 * 60 * 60 * 1000); //time in milliseconds
+function passwordExpired(user) {
+    var duration = 180; //In Days
+    var creationDate = user.passwordCreationDate;
+    var date = new Date();
+    var epoch = Math.floor(date.getTime() / 1000);
+    var expire =  Math.floor(creationDate.getTime() / 1000) + (duration * 24 * 60 * 60); //time in milliseconds
+    var daysTillExpire = Math.floor(expire / 60 / 60 / 24) - Math.floor(epoch / 60 / 60 / 24); //days till expiration
+
+    return daysTillExpire;
+    }
+
+async function passwordExpired(user) {
+  let duration = 180; //In Days
+  let creationDate = user.passwordCreationDate;
+  let date = new Date();
+  let expire =  creationDate + (duration * 24 * 60 * 60 * 1000); //time in milliseconds
 //     console.log('expire date: ' + expire);
 //     console.log('date: ' + date);
-//         if (expire < date) {
-//             user.passwordExpired = true;
-//             console.log('user: ' + user.passwordExpired);
-//             throw "Your password has expired, please contact your system administrator ";
-//         }
-// }
+  if (expire < date) {
+       user.passwordExpired = true;
+     //  console.log('user: ' + user.passwordExpired);
+       throw "Your password has expired, please contact your system administrator ";
+    }
+}
 
 
