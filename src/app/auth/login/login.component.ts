@@ -2,9 +2,11 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
+import { LogTrack, User } from '../../_models';
 
-import { AlertService, AuthenticationService } from '../../_services';
+import { AlertService, AuthenticationService, UserService } from '../../_services';
 import { MatSnackBar } from '@angular/material';
+
 
 @Component({
     templateUrl: 'login.component.html',
@@ -14,6 +16,8 @@ export class LoginComponent implements OnInit {
     loading = false;
     submitted = false;
     returnUrl: 'returnUrl';
+    invalidLoginCount = 0;
+    previousUserName = this.f.username.value;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -21,6 +25,7 @@ export class LoginComponent implements OnInit {
         private router: Router,
         private authenticationService: AuthenticationService,
         private alertService: AlertService,
+        private userService: UserService,
         public snackBar: MatSnackBar) {}
 
     ngOnInit() {
@@ -41,10 +46,12 @@ export class LoginComponent implements OnInit {
 
     onSubmit() {
         this.submitted = true;
+        
         // stop here if form is invalid
         if (this.loginForm.invalid) {
             return;
         }
+    
         this.loading = true;
         this.authenticationService.login(this.f.username.value, this.f.password.value)
             .pipe(first())
@@ -57,6 +64,10 @@ export class LoginComponent implements OnInit {
                     });
                     this.alertService.error(error);
                     this.loading = false;
+
+
                 });
     }
 }
+
+
