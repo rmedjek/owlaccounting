@@ -6,7 +6,8 @@ import { Ledger } from '../_models/ledger';
 import { JournalEntry } from '../_models/journal-entries';
 import { LedgerService } from '../_services/ledger.service';
 import { JournalEntryService } from '../_services/journal-entry.service';
-
+import {FormControl} from '@angular/forms';
+import {MatDatepickerInputEvent} from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-account-specific-transactions',
@@ -53,6 +54,15 @@ export class LedgerAccountTransactionsComponent implements OnInit {
       // return (x === y)? 0 : x? 1 : -1;
     });
     return this.accountSpecificEntries;
+  }
+
+  filterDates(event: MatDatepickerInputEvent<Date>){
+    this.ledgerService.getAll().pipe(first()).subscribe(entry => {
+      this.allEntries = entry;
+      this.allEntries = this.allEntries.filter(entry => entry.createdDate.toString().slice(8, 10)  === `${event.value.toString().slice(8, 10)}`);
+
+    return this.allEntries;
+    })
   }
 
   referenceJournal(reference: string) {

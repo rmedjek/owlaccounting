@@ -7,17 +7,13 @@
 <!--    <button class="back-button" mat-raised-button color="primary"-->
 <!--            matTooltip="back to journalizing"-->
 <!--            [routerLink]="['/journalize']">Back</button>-->
+
 <mat-form-field>
-  <input matInput [matDatepicker]="picker" placeholder="Choose a start date">
+  <input matInput [matDatepicker]="picker" placeholder="Choose a date" (dateInput)="filterDates($event)" (dateChange)="filterDates($event)">
   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
   <mat-datepicker #picker></mat-datepicker>
 </mat-form-field>
 <br>
-<mat-form-field>
-  <input matInput [matDatepicker]="picker2" placeholder="Choose an end date">
-  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-  <mat-datepicker #picker2></mat-datepicker>
-</mat-form-field>
     <div *ngIf="!journalEntryDisplay" class="my-header">
 
       <h5 style="float: left">Name: {{accountName}}</h5>
@@ -27,7 +23,7 @@
   </div>
 </div>
 <div class="sidenav">
-  <table class="table table-striped" [mfData]="filterItemList(allEntries)" #mf="mfDataTable" *ngIf="!journalEntryDisplay">
+  <table class="table table-striped" [mfData]="filterItemList(allEntries)" #mf="mfDataTable" *ngIf="!journalEntryDisplay" >
     <thead>
     <tr>
       <th><a class="sort-by">Date</a></th>
