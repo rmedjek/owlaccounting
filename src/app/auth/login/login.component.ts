@@ -65,7 +65,17 @@ export class LoginComponent implements OnInit {
                     this.alertService.error(error);
                     this.loading = false;
 
-
+                    //begin account suspension
+                    if (this.f.username.value == this.previousUserName){
+                    this.invalidLoginCount++;
+                    console.log(this.invalidLoginCount + '  ' + this.f.username.value);
+                    }
+                    else if (this.invalidLoginCount > 3){
+                        this.invalidLoginCount++;
+                        this.userService.deactivate(this.f.username.value);
+                        //const newLog = new LogTrack();
+                        //newLog.logDataInput = 'Deactivated user ' + this.f.username.value + ' due to too many invalid attempts';
+                    }
                 });
     }
 }
