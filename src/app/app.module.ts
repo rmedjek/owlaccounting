@@ -72,6 +72,7 @@ import { IncomeStatementComponent } from './view-statements/income-statement/inc
 import { BalanceSheetComponent } from './view-statements/balance-sheet/balance-sheet.component';
 
 
+// @ts-ignore
 @NgModule({
     imports: [
         BrowserModule,
@@ -154,4 +155,4 @@ import { BalanceSheetComponent } from './view-statements/balance-sheet/balance-s
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
