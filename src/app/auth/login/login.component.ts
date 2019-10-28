@@ -2,11 +2,9 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
-import { LogTrack, User } from '../../_models';
 
-import { AlertService, AuthenticationService, UserService } from '../../_services';
+import { AlertService, AuthenticationService } from '../../_services';
 import { MatSnackBar } from '@angular/material';
-
 
 @Component({
     templateUrl: 'login.component.html',
@@ -16,8 +14,6 @@ export class LoginComponent implements OnInit {
     loading = false;
     submitted = false;
     returnUrl: 'returnUrl';
-    invalidLoginCount = 0;
-    previousUserName = this.f.username.value;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -25,9 +21,7 @@ export class LoginComponent implements OnInit {
         private router: Router,
         private authenticationService: AuthenticationService,
         private alertService: AlertService,
-        private userService: UserService,
         public snackBar: MatSnackBar) {}
-
 
     ngOnInit() {
         this.loginForm = this.formBuilder.group({
@@ -39,7 +33,7 @@ export class LoginComponent implements OnInit {
         this.authenticationService.logout();
 
         // get return url from route parameters or default to '/'
-        this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
+        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
 
     // convenience getter for easy access to form fields
@@ -47,12 +41,10 @@ export class LoginComponent implements OnInit {
 
     onSubmit() {
         this.submitted = true;
-
         // stop here if form is invalid
         if (this.loginForm.invalid) {
             return;
         }
-
         this.loading = true;
         this.authenticationService.login(this.f.username.value, this.f.password.value)
             .pipe(first())
@@ -61,23 +53,10 @@ export class LoginComponent implements OnInit {
                     this.router.navigate([this.returnUrl]);
                 }, error => {
                     this.snackBar.open('incorrect password or username', 'failure', {
-                       duration: 6000
+                        duration: 6000
                     });
                     this.alertService.error(error);
                     this.loading = false;
-
-                    // begin account suspension
-                    if (this.f.username.value === this.previousUserName) {
-                    this.invalidLoginCount++;
-                    console.log(this.invalidLoginCount + '  ' + this.f.username.value);
-                    } else if (this.invalidLoginCount > 3) {
-                        this.invalidLoginCount++;
-                        this.userService.deactivate(this.f.username.value);
-                        // const newLog = new LogTrack();
-                        // newLog.logDataInput = 'Deactivated user ' + this.f.username.value + ' due to too many invalid attempts';
-                    }
                 });
     }
 }
-
-
