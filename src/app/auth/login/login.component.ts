@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { LogTrack, User } from '../../_models';
 
-import { AlertService, AuthenticationService } from '../../_services';
+import { AlertService, AuthenticationService, UserService } from '../../_services';
 import { MatSnackBar } from '@angular/material';
 import { UserAccountsComponent } from 'src/app/users/user-accounts/user-accounts.component';
 
@@ -62,7 +62,10 @@ export class LoginComponent implements OnInit {
                     });
                     this.alertService.error(error);
                     this.loading = false;
-                    accountSuspend(this.f.username.value);
+
+                    //Account Suspend
+                    var username = this.f.username.value;
+                    accountSuspend(username);
 
 
                 });
@@ -70,22 +73,26 @@ export class LoginComponent implements OnInit {
 
 }
 
+
+//Account Suspensionc
 var invalidLoginCount = 1;
 var previousUserName;
 
-function accountSuspend(user){
+function accountSuspend(username){
+    var returnAsObject: UserService;
     var userAccount: UserAccountsComponent;
-    if(previousUserName == user){
-    invalidLoginCount++;
+    //var user = returnAsObject.getByName(username);
+    
+    if(previousUserName == username){
+        invalidLoginCount++;
     }
     else{
         invalidLoginCount = 1;
     }
         
     if (invalidLoginCount > 3){
-        invalidLoginCount++;
-        userAccount.deactivateUser(user, user);
+       userAccount.suspendUser(username); //FIX ME
         }
-    previousUserName = user;
-    console.log(invalidLoginCount + '  ' + user + previousUserName);
+    previousUserName = username;
+    console.log(invalidLoginCount + ' ' + username)
 }
