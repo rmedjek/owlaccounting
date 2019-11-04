@@ -40,6 +40,7 @@
     "mongoose": "^5.6.13",
     "mongoose-paginate": "^5.0.3",
     "mongoose-unique-validator": "^2.0.3",
+    "ng-circle-progress": "^1.5.1",
     "ng4-loading-spinner": "^1.2.3",
     "ngx-toast-notifications": "^1.2.0",
     "ngx-toastr": "^11.1.2",
