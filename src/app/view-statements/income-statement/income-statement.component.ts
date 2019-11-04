@@ -142,7 +142,7 @@ export class IncomeStatementComponent implements OnInit {
     return account[0].accountType;
   }
 
-  setTTableSortEntry(tTableSortAccount: string, accountNumber: number) {
+  setLedgerSortEntry(tTableSortAccount: string, accountNumber: number) {
     localStorage.setItem('accountSortBy', JSON.stringify(tTableSortAccount));
     localStorage.setItem('accountNumber', JSON.stringify(accountNumber));
     this.router.navigate(['/ttable']);

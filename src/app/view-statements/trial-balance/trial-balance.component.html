@@ -1,11 +1,10 @@
 <div class="row">
-  <div class="col-sm-12 offset-sm-0">
+  <div class="col-sm-8 offset-sm-2">
     <app-sidebar-menu></app-sidebar-menu>
     <div class="title-container-header">
       <div class="center">Owl Accounting</div>
-      <br>
-      <div class="center">Adjusted Trial Balance</div>
-      <div class="center">As of {{ date | date:'MMMM dd'}}</div>
+      <div class="center">Trial Balance</div>
+      <div class="center">As of {{ date | date:'MMMM dd yyyy'}}</div>
     </div>
     <br>
     <button mat-raised-button color="primary" type="button" value="Download" (click)="captureScreen()">Download</button>
@@ -21,19 +20,21 @@
       <tbody>
       <tr class="hoverStyle" *ngFor="let account of adjustAccount()">
         <td *ngIf="(account.accountType === 'Asset' && account.accountName !== 'Accumulated Depreciation') && account.accountActive === true">
-          <a style="color: blue" (click)="setLedgerSortEntry(account.accountName, account.accountNumber)">{{account.accountName}}</a></td>
+          <a style="color: blue" (click)="setLedgerSortEntry(account.accountName, account.accountNumber)">{{account.accountName}}</a>
+        </td>
         <td class="align-right" *ngIf="(account.accountType === 'Asset' && account.accountName !== 'Accumulated Depreciation') && account.accountActive === true">
-          <span *ngIf="account.accountName === sortAssets()">
-        </span>{{account.accountBalance | currency: 'USD': "symbol": '1.2-2'}} &nbsp; &nbsp; &nbsp;</td>
-        <td *ngIf="(account.accountType === 'Asset' && account.accountName !== 'Accumulated Depreciation')&& account.accountActive === true"></td>
+          <span style="float: right" *ngIf="account.accountName === sortAssets()"></span>
+          {{account.accountBalance | number:'1.2'}} &nbsp; &nbsp; &nbsp;
+        </td>
+        <td *ngIf="(account.accountType === 'Asset' && account.accountName !== 'Accumulated Depreciation') && account.accountActive === true"></td>
       </tr>
 
       <tr class="hoverStyle" *ngFor="let account of adjustAccount()">
         <td *ngIf="(account.accountName === 'Accumulated Depreciation') && account.accountActive === true">
-          <a style="color: blue" (click)="setLedgerSortEntry(account.accountName, account.accountNumber)">Accumulated Depreciation</a></td>
+          <a style="color: blue" (click)="setLedgerSortEntry(account.accountName, account.accountNumber)">{{account.accountName}}</a></td>
         <td *ngIf="(account.accountName === 'Accumulated Depreciation') && account.accountActive === true"></td>
         <td class="align-right" *ngIf="(account.accountName === 'Accumulated Depreciation') && account.accountActive === true">
-          <span *ngIf="account.accountName === sortAssets()"></span>${{account.accountBalance | currency: 'USD': "symbol": '1.2-2'}} &nbsp; &nbsp; &nbsp;</td>
+          <span *ngIf="account.accountName === sortAssets()"></span>$&nbsp; &nbsp; &nbsp;({{account.accountBalance | number:'1.2'}}) &nbsp; &nbsp; &nbsp;</td>
       </tr>
 
       <tr class="hoverStyle" *ngFor="let account of adjustAccount()">
@@ -41,7 +42,8 @@
           <a style="color: blue" (click)="setLedgerSortEntry(account.accountName, account.accountNumber)">{{account.accountName}}</a></td>
         <td *ngIf="(account.accountType === 'Liability')&& account.accountActive === true"></td>
         <td class="align-right" *ngIf="(account.accountType === 'Liability') && account.accountActive === true">
-          <span *ngIf="account.accountName === sortLiability()"></span>{{account.accountBalance | currency: 'USD': "symbol": '1.2-2'}} &nbsp; &nbsp; &nbsp;</td>
+          <span *ngIf="account.accountName === sortLiability()"></span>
+          {{account.accountBalance | number:'1.2'}} &nbsp; &nbsp; &nbsp;</td>
       </tr>
 
       <tr class="hoverStyle" *ngFor="let account of adjustAccount()">
@@ -49,30 +51,31 @@
           <a style="color: blue" (click)="setLedgerSortEntry(account.accountName, account.accountNumber)">{{account.accountName}}</a></td>
         <td *ngIf="(account.accountType === 'Equity')&& account.accountActive === true "></td>
         <td class="align-right" *ngIf="(account.accountType === 'Equity') && account.accountActive === true ">
-          {{account.accountBalance | currency: 'USD': "symbol": '1.2-2'}} &nbsp; &nbsp; &nbsp;</td>
+          {{account.accountBalance | number:'1.2'}} &nbsp; &nbsp; &nbsp;</td>
       </tr>
 
       <tr class="hoverStyle" *ngFor="let account of adjustAccount()">
         <td *ngIf="(account.accountType === 'Revenue' ) && account.accountActive === true">
           <a style="color: blue" (click)="setLedgerSortEntry(account.accountName, account.accountNumber)">{{account.accountName}}</a></td>
         <td *ngIf="(account.accountType === 'Revenue')&& account.accountActive === true"></td>
-        <td class="align-right" *ngIf="(account.accountType === 'Revenue') && account.accountActive === true">{{account.accountBalance | currency: 'USD': "symbol": '1.2-2'}} &nbsp; &nbsp; &nbsp;</td>
+        <td class="align-right" *ngIf="(account.accountType === 'Revenue') && account.accountActive === true">
+          {{account.accountBalance | number:'1.2'}} &nbsp; &nbsp; &nbsp;</td>
       </tr>
 
       <tr class="hoverStyle" *ngFor="let account of adjustAccount()">
         <td *ngIf="(account.accountType === 'Expense' ) && account.accountActive === true">
           <a style="color: blue" (click)="setLedgerSortEntry(account.accountName, account.accountNumber)">{{account.accountName}}</a></td>
-        <td class="align-right" *ngIf="(account.accountType === 'Expense') && account.accountActive === true">{{account.accountBalance | currency: 'USD': "symbol": '1.2-2'}} &nbsp; &nbsp; &nbsp;</td>
+        <td class="align-right" *ngIf="(account.accountType === 'Expense') && account.accountActive === true">
+          {{account.accountBalance | number:'1.2'}} &nbsp; &nbsp; &nbsp;</td>
         <td *ngIf="(account.accountType === 'Expense')&& account.accountActive === true"></td>
       </tr>
 
       <tr class="hoverStyle" >
         <td><b>Total:</b></td>
-          <td ><span class="doubleUnderline"><b>{{ totalDebits() | currency: 'USD': "symbol": '1.2-2'}} </b></span></td>
-          <td ><span class="doubleUnderline"><b>{{ totalCredits() | currency: 'USD': "symbol": '1.2-2'}} </b></span></td>
-
-<!--        <td ><span class="doubleUnderline"><b>${{(totalDebits() + getSpecificAccountBalance('Accumulated Depreciation')) - getRetainedEarnings()  | currency: 'USD': "symbol": '1.2-2'}} </b></span></td>-->
-<!--        <td ><span class="doubleUnderline"><b>${{(totalCredits() + getSpecificAccountBalance('Accumulated Depreciation')) - getRetainedEarnings() | currency: 'USD': "symbol": '1.2-2'}}</b></span></td>-->
+          <td><span class="doubleUnderline"><b>{{ totalDebits() - getSpecificAccountBalance('Accumulated Depreciation')
+                  | currency: 'USD': "symbol": '1.2-2'}}</b></span></td>
+          <td><span class="doubleUnderline"><b>{{ totalCredits() -  getSpecificAccountBalance('Accumulated Depreciation')
+                  | currency: 'USD': "symbol": '1.2-2'}} </b></span></td>
       </tr>
       </tbody>
     </table>

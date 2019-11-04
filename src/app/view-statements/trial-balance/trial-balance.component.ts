@@ -13,8 +13,7 @@ import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 @Component({
   selector: 'app-trial-balance',
   templateUrl: './trial-balance.component.html',
-  styleUrls: ['./trial-balance.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./trial-balance.component.css']
 })
 export class TrialBalanceComponent implements OnInit {
   accountList: ChartOfAccounts[] = [];
@@ -26,8 +25,7 @@ export class TrialBalanceComponent implements OnInit {
   constructor( private accountsService: ChartOfAccountsService,
                private router: Router,
                private ledgerService: LedgerService,
-               private spinnerService: Ng4LoadingSpinnerService,
-               private cdRef: ChangeDetectorRef) {}
+               private spinnerService: Ng4LoadingSpinnerService) {}
 
   ngOnInit() {
     this.loadAllAccounts();
@@ -102,7 +100,6 @@ export class TrialBalanceComponent implements OnInit {
         result.push(account);
       }
     });
-    console.log('Results' + JSON.stringify(result));
     return result[0].accountName;
   }
 
@@ -121,7 +118,9 @@ export class TrialBalanceComponent implements OnInit {
 
   getRetainedEarnings() {
     const retainedAccount = this.allAccounts.filter((account) => account.accountName === 'Retained Earnings');
-    return retainedAccount[0].accountBalance;
+    if (retainedAccount[0]) {
+      return retainedAccount[0].accountBalance;
+    }
   }
 
   public captureScreen() {

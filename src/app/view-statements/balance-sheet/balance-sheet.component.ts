@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 import {first} from 'rxjs/operators';
 import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -72,15 +72,23 @@ export class BalanceSheetComponent implements OnInit {
     return total;
   }
 
+  sortAssets() {
+    const result = [];
+    this.accountList.forEach( (account) => {
+      if (account.accountType === 'Asset') {
+        result.push(account);
+      }
+    });
+    return result[0].accountName;
+  }
+
+
   totalOtherAssets() {
     let total = 0;
     const accounts = this.accountList.filter(account => account.accountTerm !== 'Current Asset');
     accounts.forEach((account) => {
       if (account.accountType === 'Asset' && account.accountActive === true) {
         total = total + account.accountBalance;
-        if (account.accountName === 'Accumulated Depreciation') {
-          total = total - (2 * account.accountBalance);
-        }
       }
     });
     return total;

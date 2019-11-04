@@ -4,8 +4,9 @@ import { Router } from '@angular/router';
 import { LogTrack, User } from '../_models';
 import { ChartOfAccounts } from '../_models/chartOfAccounts';
 import { ChartOfAccountsService } from '../_services/chart-of-accounts.service';
-import { MatSnackBar } from '@angular/material';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
+import { ToasterService } from '../_services/toast.service';
+import { ToasterPosition } from '../_models/toaster-enum.position';
 
 @Component({
   selector: 'app-chart-of-accounts',
@@ -22,8 +23,8 @@ export class ChartOfAccountsComponent implements OnInit {
 
   constructor(private accountsService: ChartOfAccountsService,
               private router: Router,
-              public snackBar: MatSnackBar,
-              private spinnerService: Ng4LoadingSpinnerService) {
+              private spinnerService: Ng4LoadingSpinnerService,
+              private toaster: ToasterService) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
@@ -71,9 +72,7 @@ export class ChartOfAccountsComponent implements OnInit {
         });
       } else {
         this.accountBalanceError = true;
-        this.snackBar.open('Account Balance must be zero', 'Failure', {
-          duration: 6000
-        });
+        this.toaster.error('Account Balance must be zero', 'Error!', ToasterPosition.bottomRight);
         this.accountBalanceError = false;
         // setTimeout(() => {
         //   this.accountBalanceError = false;
@@ -99,14 +98,6 @@ export class ChartOfAccountsComponent implements OnInit {
 
   public resetInput() {
     this.loadAllAccounts();
-  }
-
-  public accountActiveStatus(status: boolean) {
-    if (status) {
-      return 'True';
-    } else {
-      return 'False';
-    }
   }
 
   changeValue(accountId: ChartOfAccounts, property: string, event: any) {

@@ -10,7 +10,7 @@
       <a [routerLink]="['/accounts']" mat-button>Chart of accounts</a>
       <a *ngIf="currentUser?.role === '1'" [routerLink]="['/userAccounts']" mat-button>User Accounts</a>
       <a *ngIf="currentUser?.role !== '1'" [routerLink]="['/journalize']" mat-button>Journalize</a>
-      <a [routerLink]="['/logsPage']" mat-button>Event Logs</a>
+      <a *ngIf="currentUser?.role === '1'" [routerLink]="['/logsPage']" mat-button>Event Logs</a>
 
       <span class="dropdown-item" *ngIf="currentUser?.role !== '1'" dropdown (onShown)="onShown()" (onHidden)="onHidden()" (isOpenChange)="isOpenChange()" class="open-show">
         <a href id="basic-link" dropdownToggle (click)="false" >View statements</a>
@@ -24,7 +24,6 @@
           </li>
         </ul>
       </span>
-
       <a mat-button color="warn" [routerLink]="['/login']">Logout</a>
       <a style="font-size: 16px; margin-left: 20px"> {{currentUser?.username}}</a>
       <a style="font-size: 14px" *ngIf="currentUser?.role === '1'"> (Admin)</a>
