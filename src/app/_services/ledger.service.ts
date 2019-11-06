@@ -21,6 +21,7 @@ export class LedgerService {
     ledger.createdDate = entry.createdDate;
     ledger.description = entry.description;
     ledger.journalId = entry.id;
+    ledger.prId = entry.journalId;
 
     return this.http.post(`${environment.apiUrl}/ledger/newEntry`, ledger);
   }

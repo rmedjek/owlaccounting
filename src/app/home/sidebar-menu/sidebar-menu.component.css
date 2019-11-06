@@ -2,10 +2,13 @@
   position: relative;
 }
 
+a {
+  font-size: 20px;
+}
 .open-show a {
   color: white;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  font-size: 15px;
+  font-size: 20px;
 }
 
   .open-show li > a {

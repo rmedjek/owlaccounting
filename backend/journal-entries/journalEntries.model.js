@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const schema = new Schema({
     type: { type: String, required: true },
@@ -16,8 +17,11 @@ const schema = new Schema({
     imageType: { type: String, required: false},
     image: { data: Buffer, contentType: String},
     status: { type: String, default: 'pending'},
+    journalId:  { type: Number, required: false},
+
 });
 
 schema.set('toJSON', { virtuals: true });
+schema.plugin(AutoIncrement, {inc_field: 'journalId'});
 
 module.exports = mongoose.model('JournalEntries', schema);

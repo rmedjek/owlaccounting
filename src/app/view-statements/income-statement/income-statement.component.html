@@ -1,13 +1,11 @@
 <div class="row">
-    <div class="col-sm-12 offset-sm-0">
+    <div class="col-sm-6 offset-sm-3">
       <app-sidebar-menu></app-sidebar-menu>
       <div class="title-container-header">
         <div class="center">Owl Accounting</div>
-        <br>
         <div class="center">Income Statement</div>
-        <div class="center">As of {{date | date:'MMMM dd'}}</div>
+        <div class="center">As of {{date | date:'MMMM dd yyyy'}}</div>
       </div>
-      <br>
       <span>Sort by Date: </span>
       <div class="input-group">
       <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
@@ -19,8 +17,7 @@
         <thead>
         <tr>
           <th></th>
-          <th>Amount</th>
-          <th>Total</th>
+          <th style="float: right">Amount</th>
         </tr>
         </thead>
         <tbody>
@@ -28,33 +25,31 @@
           <td></td><td></td></tr>
         <tr class="hoverStyle" *ngFor="let account of adjustAccount()">
           <td *ngIf="(account.accountType === 'Revenue') && account.accountActive === true">
-            <a style="color: blue" (click)="setTTableSortEntry(account.accountName, account.accountNumber)"> &nbsp; &nbsp;{{account.accountName}}</a></td>
-          <td *ngIf="(account.accountType === 'Revenue') && account.accountActive === true">
+            <a style="color: blue" (click)="setLedgerSortEntry(account.accountName, account.accountNumber)"> &nbsp; &nbsp;{{account.accountName}}</a></td>
+          <td style="float: right" *ngIf="(account.accountType === 'Revenue') && account.accountActive === true">
             {{account.accountBalance | currency: 'USD': "symbol": '1.2-2'}}</td>
           <td *ngIf="(account.accountType === 'Revenue') && account.accountActive === true"></td>
         </tr>
         <tr>
-          <td><b> &nbsp; &nbsp;Total</b></td>
-          <td></td>
-          <td><span class="singleUnderline"><b>{{totalRevenue() | currency: 'USD': "symbol": '1.2-2'}}</b></span></td>
+          <td> &nbsp; &nbsp;Total</td>
+          <td><span style="float: right" class="singleUnderline">{{ totalRevenue() | number:'1.2'}}</span></td>
         </tr>
         <tr class="header-color"><td><div class="table-heading">Expense</div></td>
           <td></td><td></td></tr>
 
         <tr class="hoverStyle" *ngFor="let account of adjustAccount()">
           <td *ngIf="(account.accountType === 'Expense') && account.accountActive === true">
-            <a style="color: blue" (click)="setTTableSortEntry(account.accountName, account.accountNumber)"> &nbsp; &nbsp;{{account.accountName}}</a></td>
-          <td *ngIf="(account.accountType === 'Expense') && account.accountActive === true">
-            {{account.accountBalance | currency: 'USD': "symbol": '1.2-2'}}</td>
+            <a style="color: blue" (click)="setLedgerSortEntry(account.accountName, account.accountNumber)"> &nbsp; &nbsp;{{account.accountName}}</a></td>
+          <td style="float: right" *ngIf="(account.accountType === 'Expense') && account.accountActive === true">
+            {{account.accountBalance | number:'1.2'}}</td>
           <td *ngIf="(account.accountType === 'Expense') && account.accountActive === true"></td>
         </tr>
         <tr>
           <td><b> &nbsp; &nbsp;Total</b></td>
-          <td></td>
-          <td><span class="singleUnderline"><b>{{totalExpense() | currency: 'USD': "symbol": '1.2-2'}}</b></span></td>
+          <td><span style="float: right" class="singleUnderline"><b>{{totalExpense() | number:'1.2'}}</b></span></td>
         </tr>
         <tr class="header-color"><td><div class="table-heading">Net Income (Net Loss)</div></td>
-          <td></td><td><span class="doubleUnderline"><b>{{totalRevenue() - totalExpense() | currency: 'USD': "symbol": '1.2-2'}}
+          <td><span style="float: right" class="doubleUnderline"><b>{{totalRevenue() - totalExpense() | currency: 'USD': "symbol": '1.2-2'}}
           </b></span></td></tr>
         </tbody>
       </table>
@@ -65,7 +60,6 @@
         <tr>
           <th></th>
           <th>Amount</th>
-          <th>Total</th>
         </tr>
         </thead>
         <tbody>
@@ -73,33 +67,31 @@
           <td></td><td></td></tr>
         <tr class="hoverStyle" *ngFor="let account of accountList">
           <td *ngIf="(account.accountType === 'Revenue') && account.accountActive === true">
-            <a style="color: blue" (click)="setTTableSortEntry(account.accountName, account.accountNumber)"> &nbsp; &nbsp;{{account.accountName}}</a></td>
-          <td *ngIf="(account.accountType === 'Revenue') && account.accountActive === true">
-            {{account.accountBalance | currency: 'USD': "symbol": '1.2-2'}}</td>
+            <a style="color: blue" (click)="setLedgerSortEntry(account.accountName, account.accountNumber)"> &nbsp; &nbsp;{{account.accountName}}</a></td>
+          <td style="float: right" *ngIf="(account.accountType === 'Revenue') && account.accountActive === true">
+            {{account.accountBalance | number:'1.2'}}</td>
           <td *ngIf="(account.accountType === 'Revenue') && account.accountActive === true"></td>
         </tr>
         <tr>
           <td><b> &nbsp; &nbsp;Total</b></td>
-          <td></td>
-          <td><span class="singleUnderline"><b>{{revenueAdjustment() | currency: 'USD': "symbol": '1.2-2'}}</b></span></td>
+          <td><span style="float: right" class="singleUnderline"><b>{{revenueAdjustment() | number:'1.2'}}</b></span></td>
         </tr>
         <tr class="header-color"><td><div class="table-heading">Expense</div></td>
           <td></td><td></td></tr>
 
         <tr class="hoverStyle" *ngFor="let account of accountList">
           <td *ngIf="(account.accountType === 'Expense') && account.accountActive === true">
-            <a style="color: blue" (click)="setTTableSortEntry(account.accountName, account.accountNumber)"> &nbsp; &nbsp;{{account.accountName}}</a></td>
-          <td *ngIf="(account.accountType === 'Expense') && account.accountActive === true">
-            {{account.accountBalance | currency: 'USD': "symbol": '1.2-2'}}</td>
+            <a style="color: blue" (click)="setLedgerSortEntry(account.accountName, account.accountNumber)"> &nbsp; &nbsp;{{account.accountName}}</a></td>
+          <td style="float: right" *ngIf="(account.accountType === 'Expense') && account.accountActive === true">
+            {{account.accountBalance | number:'1.2'}}</td>
           <td *ngIf="(account.accountType === 'Expense') && account.accountActive === true"></td>
         </tr>
         <tr>
           <td><b> &nbsp; &nbsp;Total</b></td>
-          <td></td>
-          <td><span class="singleUnderline"><b>{{expenseAdjustment() | currency: 'USD': "symbol": '1.2-2'}}</b></span></td>
+          <td><span style="float: right" class="singleUnderline"><b>{{expenseAdjustment() | currency: 'USD': "symbol": '1.2-2'}}</b></span></td>
         </tr>
         <tr class="header-color"><td><div class="table-heading">Net Income (Net Loss)</div></td>
-          <td></td><td><span class="doubleUnderline"><b>{{revenueAdjustment() - expenseAdjustment() | currency: 'USD': "symbol": '1.2-2'}}</b></span></tr>
+          <td><span style="float: right" class="doubleUnderline"><b>{{revenueAdjustment() - expenseAdjustment() | currency: 'USD': "symbol": '1.2-2'}}</b></span></tr>
         </tbody>
       </table>
       <br>

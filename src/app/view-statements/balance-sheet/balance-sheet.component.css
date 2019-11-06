@@ -3,6 +3,12 @@
   font-weight: bold;
 }
 
+.table tr:nth-child(23) td:nth-child(2):before {
+  content: '$';
+  right: 20px;
+  position: relative;
+}
+
 .table td {
   padding: 0.25rem;
 }

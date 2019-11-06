@@ -13,4 +13,5 @@ export class JournalEntry {
     imageData: string;
     imageName: string;
     imageType: string;
+    journalId: number;
 }

@@ -5,7 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../_services';
 import { ChartOfAccountsService } from '../../_services/chart-of-accounts.service';
 import { ChartOfAccounts } from '../../_models/chartOfAccounts';
-import { MatSnackBar } from '@angular/material';
+import { ToasterService } from '../../_services/toast.service';
+import { ToasterPosition } from '../../_models/toaster-enum.position';
 
 @Component({
   selector: 'app-create-new-account',
@@ -24,11 +25,11 @@ export class UpdateAccountComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    public snackBar: MatSnackBar,
     private router: Router,
     private route: ActivatedRoute,
     private userService: UserService,
-    private chartOfAccountsService: ChartOfAccountsService) {
+    private chartOfAccountsService: ChartOfAccountsService,
+    private toaster: ToasterService) {
     this.accountForm = formBuilder.group({
       hideRequired: false,
       floatLabel: 'auto'
@@ -113,36 +114,9 @@ export class UpdateAccountComponent implements OnInit {
         newLog.logInitial = this.account.accountName;
         newLog.logFinal = this.accountForm.controls.accountName.value.toString();
 
-        // newLog.logDataInput = 'account order updated ' + this.account.accountOrder;
-        // newLog.logInitial = this.account.accountOrder + '';
-        // newLog.logFinal =   this.accountForm.controls.accountOrder.value.toString();
-
-        // newLog.logDataInput = 'account number updated ' + this.account.accountNumber;
-        // newLog.logInitial = this.account.accountNumber + '';
-        // newLog.logFinal =   this.accountForm.controls.accountNumber.value.toString();
-        //
-        // newLog.logDataInput = 'account desc updated ' + this.account.accountDesc;
-        // newLog.logInitial = this.account.accountDesc;
-        // newLog.logFinal =   this.accountForm.controls.accountDesc.value.toString();
-        //
-        // newLog.logDataInput = 'account type updated ' + this.account.accountType;
-        // newLog.logInitial = this.account.accountType;
-        // newLog.logFinal =   this.accountForm.controls.accountType.value.toString();
-        //
-        // newLog.logDataInput = 'account accountSubType updated ' + this.account.accountSubType;
-        // newLog.logInitial = this.account.accountSubType;
-        // newLog.logFinal =   this.accountForm.controls.accountSubType.value.toString();
-        //
-        // newLog.logDataInput = 'account normalSide updated ' + this.account.normalSide;
-        // newLog.logInitial = this.account.normalSide;
-        // newLog.logFinal =   this.accountForm.controls.normalSide.value.toString();
-
-
         this.chartOfAccountsService.updateAccountById(this.account.id, this.accountForm.value, newLog)
             .subscribe(data => {
-              this.snackBar.open('Account updated', 'Success', {
-                duration: 2000
-              });
+              this.toaster.success('Account updated', 'success', ToasterPosition.bottomRight);
               this.router.navigate(['accounts']);
               },
                     err => this.errorHandler(err, 'Failed to update account'));
@@ -156,10 +130,7 @@ export class UpdateAccountComponent implements OnInit {
     }
   }
   private errorHandler(error, message) {
-    console.error(error);
-    this.snackBar.open(message, 'Error', {
-      duration: 2000
-    });
+    this.toaster.error(message, 'Error', ToasterPosition.bottomRight);
   }
 }
 
