@@ -8,4 +8,5 @@ export class Ledger {
     description: string;
     createdDate: Date;
     accountType: string;
+    prId: number;
 }

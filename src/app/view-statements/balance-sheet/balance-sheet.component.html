@@ -14,13 +14,6 @@
     </div>
     <button mat-raised-button color="primary" type="button" value="Download" (click)="captureScreen()">Download</button>
     <table style="border: 1px solid #ddd;" class="table table-striped" id="balance-sheet-table" *ngIf="!dateSelectorEnabled">
-      <thead>
-<!--      <tr>-->
-<!--        <th></th>-->
-<!--        <th>Amount</th>-->
-<!--        <th>Total</th>-->
-<!--      </tr>-->
-      </thead>
       <tbody>
       <tr class="header-color"><td><h5 style="color: blue">Assets</h5></td>
         <td></td><td></td></tr>
@@ -35,11 +28,6 @@
         <td *ngIf="(account.accountType === 'Asset' && account.accountTerm ==='Current Asset') && account.accountActive === true"></td>
       </tr>
 
-<!--      <tr>-->
-<!--        <td><b class="table-heading">Total Current Asset</b></td>-->
-<!--        <td></td>-->
-<!--        <td><u><b>{{totalCurrentAssets() | currency: 'USD': "symbol": '1.2-2'}}</b></u></td>-->
-<!--      </tr>-->
 
       <tr class="hoverStyle" *ngFor="let account of accountList">
         <td *ngIf="(account.accountType === 'Asset' && account.accountTerm !=='Current Asset') && account.accountActive === true">
@@ -52,19 +40,22 @@
         <td *ngIf="(account.accountType === 'Asset' && account.accountTerm !=='Current Asset') && account.accountActive === true"></td>
       </tr>
 
-<!--      <tr class="header-color"><td><div class="table-heading">Property, Plant & Equipment</div></td>-->
-<!--        <td></td><td></td></tr>-->
+      <tr>
+          <td><b class="table-heading">Total Current Asset</b></td>
+          <td></td>
+          <td><u><b>{{totalCurrentAssets() | currency: 'USD': "symbol": '1.2-2'}}</b></u></td>
+      </tr>
 
-<!--      <tr class="hoverStyle" *ngFor="let account of accountList">-->
-<!--        <td *ngIf="account.accountName ==='Accumulated Depreciation' && account.accountActive === true">-->
-<!--          <a style="color: blue" (click)="setLedgerSortEntry(account.accountName, account.accountNumber)"> &nbsp; &nbsp;{{account.accountName}}</a>-->
-<!--        </td>-->
-<!--        <td style="float: right" *ngIf="(account.accountType === 'Asset' && account.accountTerm !=='Current Asset' && account.accountName === 'Accumulated Depreciation')-->
-<!--        && account.accountActive === true">{{account.accountBalance | currency: 'USD': "symbol": '1.2-2'}}</td>-->
-<!--        <td *ngIf="(account.accountType === 'Asset' && account.accountTerm !=='Current Asset') && account.accountActive === true"></td>-->
-<!--      </tr>-->
+      <tr class="header-color"><td><div class="table-heading">Non-current Assets</div></td></tr>
 
-
+      <tr class="hoverStyle" *ngFor="let account of accountList">
+          <td *ngIf="(account.accountType === 'Asset' && account.accountSubType !=='Current Asset') && account.accountActive === true">
+              <a style="color: blue" (click)="setLedgerSortEntry(account.accountName, account.accountNumber)"> &nbsp; &nbsp;{{account.accountName}}</a>
+          </td>
+          <td style="float: right" *ngIf="(account.accountType === 'Asset' && account.accountSubType !=='Current Asset' && account.accountName !== 'Accumulated Depreciation') &&
+        account.accountActive === true">{{account.accountBalance | number:'1.2'}}
+          </td>
+      </tr>
 
       <tr>
         <td><div class="table-heading">Total Asset</div></td>

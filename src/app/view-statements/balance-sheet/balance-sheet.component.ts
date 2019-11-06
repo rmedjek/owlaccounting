@@ -63,6 +63,28 @@ export class BalanceSheetComponent implements OnInit {
 
   totalCurrentAssets() {
     let total = 0;
+    const accounts = this.accountList.filter(account => account.accountSubType === 'Current Asset');
+    accounts.forEach((account) => {
+      if (account.accountType === 'Asset' && account.accountActive === true) {
+        total = total + account.accountBalance;
+      }
+    });
+    return total;
+  }
+
+  totalNonCurrentAssets() {
+    let total = 0;
+    const accounts = this.accountList.filter(account => account.accountSubType === 'Non-current Asset');
+    accounts.forEach((account) => {
+      if (account.accountType === 'Asset' && account.accountActive === true) {
+        total = total + account.accountBalance;
+      }
+    });
+    return total;
+  }
+
+  totalCurrentAssetsWithTerm() {
+    let total = 0;
     const accounts = this.accountList.filter(account => account.accountTerm === 'Current Asset');
     accounts.forEach((account) => {
       if (account.accountType === 'Asset' && account.accountActive === true) {
@@ -85,7 +107,7 @@ export class BalanceSheetComponent implements OnInit {
 
   totalOtherAssets() {
     let total = 0;
-    const accounts = this.accountList.filter(account => account.accountTerm !== 'Current Asset');
+    const accounts = this.accountList.filter(account => account.accountSubType !== 'Current Asset');
     accounts.forEach((account) => {
       if (account.accountType === 'Asset' && account.accountActive === true) {
         total = total + account.accountBalance;
