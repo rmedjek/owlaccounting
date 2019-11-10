@@ -27,28 +27,26 @@ export class HomeComponent implements OnInit, AfterViewInit {
   chart: number[] = [];
   showBarGraph = false;
 
-  @ViewChild('pieChart', {static: false}) pieChart: ElementRef;
-
-  drawChart = () => {
-
-    const data = google.visualization.arrayToDataTable([
-      ['Task', 'Hours per Day'],
-      ['Work', 11],
-      ['Eat', 2],
-      ['Commute', 2],
-      ['Watch TV', 2],
-      ['Sleep', 7]
-    ]);
-
-    const options = {
-      title: 'My Daily Activities',
-      legend: {position: 'top'}
-    };
-
-    const chart = new google.visualization.PieChart(document.getElementById('pieChart'));
-
-    chart.draw(data, options);
-  }
+  // drawChart = () => {
+  //
+  //   const data = google.visualization.arrayToDataTable([
+  //     ['Task', 'Hours per Day'],
+  //     ['Work', 11],
+  //     ['Eat', 2],
+  //     ['Commute', 2],
+  //     ['Watch TV', 2],
+  //     ['Sleep', 7]
+  //   ]);
+  //
+  //   const options = {
+  //     title: 'My Daily Activities',
+  //     legend: {position: 'top'}
+  //   };
+  //
+  //   const chart = new google.visualization.PieChart(document.getElementById('pieChart'));
+  //
+  //   chart.draw(data, options);
+  // }
 
   constructor(private alertsForUsersService: SystemAlertsForUsersService,
               private ledgerService: LedgerService,
@@ -58,9 +56,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    google.charts.load('current', { packages: ['corechart'] });
-    google.charts.setOnLoadCallback(this.drawChart);
+    // google.charts.load('current', { packages: ['corechart'] });
+    // google.charts.setOnLoadCallback(this.drawChart);
   }
+
+
   ngOnInit() {
     this.getAllAlerts();
     this.loadAllAccounts();
@@ -110,7 +110,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   returnAllEntries() {
-    return this.allJournalEntries[0];
+    return this.allJournalEntries.length;
   }
 
 
