@@ -4,7 +4,7 @@
     <div class="title-container-header">
       <div class="center">Owl Accounting</div>
       <div class="center">Balance Sheet</div>
-      <div class="center">As of {{date | date:'MMMM dd yyyy'}}</div>
+      <div class="center">As of {{date | date:'MMMM dd, yyyy'}}</div>
     </div>
     <br>
     <span>Sort by Date: </span>
@@ -30,10 +30,10 @@
 
 
       <tr class="hoverStyle" *ngFor="let account of accountList">
-        <td *ngIf="(account.accountType === 'Asset' && account.accountTerm !=='Current Asset') && account.accountActive === true">
+        <td *ngIf="(account.accountType === 'Asset' && account.accountSubType ==='Current Asset') && account.accountActive === true">
           <a style="color: blue" (click)="setLedgerSortEntry(account.accountName, account.accountNumber)"> &nbsp; &nbsp;{{account.accountName}}</a>
         </td>
-        <td style="float: right" *ngIf="(account.accountType === 'Asset' && account.accountTerm !=='Current Asset' && account.accountName !== 'Accumulated Depreciation') &&
+        <td style="float: right" *ngIf="(account.accountType === 'Asset' && account.accountSubType ==='Current Asset') &&
         account.accountActive === true">{{account.accountBalance | number:'1.2'}}
         </td>
         <span *ngIf="account.accountName === sortAssets()"></span>
@@ -49,13 +49,20 @@
       <tr class="header-color"><td><div class="table-heading">Non-current Assets</div></td></tr>
 
       <tr class="hoverStyle" *ngFor="let account of accountList">
-          <td *ngIf="(account.accountType === 'Asset' && account.accountSubType !=='Current Asset') && account.accountActive === true">
+          <td *ngIf="(account.accountType === 'Asset' && account.accountSubType ==='Non-current Asset') && account.accountActive === true">
               <a style="color: blue" (click)="setLedgerSortEntry(account.accountName, account.accountNumber)"> &nbsp; &nbsp;{{account.accountName}}</a>
           </td>
-          <td style="float: right" *ngIf="(account.accountType === 'Asset' && account.accountSubType !=='Current Asset' && account.accountName !== 'Accumulated Depreciation') &&
-        account.accountActive === true">{{account.accountBalance | number:'1.2'}}
+          <td style="float: right" *ngIf="(account.accountType === 'Asset' && account.accountSubType ==='Non-current Asset')
+          && account.accountActive === true">{{account.accountBalance | number:'1.2'}}
           </td>
       </tr>
+
+      <tr>
+        <td><b class="table-heading">Total Non Current Asset</b></td>
+        <td></td>
+        <td><u><b>{{ totalNonCurrentAssets() | currency: 'USD': "symbol": '1.2-2'}}</b></u></td>
+      </tr>
+
 
       <tr>
         <td><div class="table-heading">Total Asset</div></td>

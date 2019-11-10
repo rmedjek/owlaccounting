@@ -24,16 +24,18 @@
       <th><a class="sort-by" >Account Name</a></th>
       <th><a class="sort-by">Debit</a></th>
       <th><a class="sort-by">Credit</a></th>
+      <th><a class="sort-by">Total</a></th>
     </tr>
     </thead>
     <tbody>
     <tr *ngFor="let ledgerEntry of mf.data">
       <td>{{ledgerEntry.createdDate | date:'MM/dd/yyyy h:mma'}}</td>
       <td><a matTooltip="go to ledger detail" style="color: #126178" (click)="referenceJournal(ledgerEntry.journalId)">J{{ ledgerEntry.prId }}</a></td>
-      <td><a matTooltip="back to journalizing" [routerLink]="['/journalize']">{{ledgerEntry.accountName}}</a></td>
+      <td><a matTooltip="back to journalizing" [routerLink]="['/accounts']">{{ ledgerEntry.accountName }}</a></td>
       <td *ngIf="!ledgerEntry.accountDebit"></td>
       <td>{{ledgerEntry.amount | currency: 'USD': "symbol": '1.2-2'}}</td>
       <td *ngIf="ledgerEntry.accountDebit"></td>
+      <td></td>
     </tr>
     </tbody>
   </table>

@@ -83,17 +83,6 @@ export class BalanceSheetComponent implements OnInit {
     return total;
   }
 
-  totalCurrentAssetsWithTerm() {
-    let total = 0;
-    const accounts = this.accountList.filter(account => account.accountTerm === 'Current Asset');
-    accounts.forEach((account) => {
-      if (account.accountType === 'Asset' && account.accountActive === true) {
-        total = total + account.accountBalance;
-      }
-    });
-    return total;
-  }
-
   sortAssets() {
     const result = [];
     this.accountList.forEach( (account) => {
@@ -268,23 +257,6 @@ export class BalanceSheetComponent implements OnInit {
     return total;
   }
 
-  adjustAccount() {
-    const closingEntries = this.entries.filter((entry) => entry.entryType === 'closing');
-
-    this.allAccounts.forEach((account) => {
-      closingEntries.forEach((entry) => {
-        if (account.accountName === entry.accountName) {
-          if ((account.accountType === 'Expense' || account.accountType === 'Asset') && entry.entryType === 'closing') {
-            account.accountBalance =  entry.amount;
-          } else {
-            account.accountBalance =  entry.amount;
-          }
-        }
-      });
-    });
-    return this.allAccounts;
-  }
-
   incomeEstimation() {
     return this.totalRevenue() - this.totalExpense();
   }
@@ -310,6 +282,4 @@ export class BalanceSheetComponent implements OnInit {
       pdf.save('Balance-Sheet.pdf'); // Generated PDF
     });
   }
-
-
 }
