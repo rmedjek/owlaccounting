@@ -15,12 +15,29 @@ export class HomeComponent implements OnInit {
   totalCurrentLiabilities = 0;
   totalInventory = 0;
   totalSales = 0;
+  
+  //currentRatio dot color booleans
+  crGreen = false;
+  crYellow = false;
+  crRed = false;
+
+  //quickRatio dot color booleans
+  qrGreen = false;
+  qrYellow = false;
+  qrRed = false;
+
+  //AssetTurnover dot color booleans
+  atGreen = false;
+  atYellow = false;
+  atRed = false;
 
   //ratio amounts
   currentRatio = 0;
   quickRatio = 0;
   assetsTurnover = 0;
   accountList: ChartOfAccounts[] = [];
+
+  
   
 
   constructor(private accountsService: ChartOfAccountsService) 
@@ -29,40 +46,37 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.addAccountsToList(); //adding accounts to a list
-    this.getCurrentAssetsAndLiabilities(); //setting assets and liabilities
-    this.getInventory();             //setting inventory
-    this.getSales();
-
-    this.calculateCurrentRatio();
-    this.calculateQuickRatio();
-    this.calculateTotalAssetsTurnover();
+    this.addAccountsToList();
+   
   }
 
   private addAccountsToList(){  
-    
-    this.accountsService.getAll().pipe(first()).subscribe(account => { //is this method not correct?
+
+    this.accountsService.getAll().pipe(first()).subscribe(account => {
+      
       this.accountList = account;
+      
     });
   }
 
   public getCurrentAssetsAndLiabilities(){        //retrieves total current assets and liabilities
-
-    console.log(this.accountList[0].accountType);     //undefined?
-    this.accountList.forEach((item) => {
-      if (item.accountType === 'Asset' && item.accountSubType != 'Non-current Asset') {
-        this.totalCurrentAssets += item.accountBalance;
-      }
-      else if (item.accountType === 'Liability') {
-        this.totalCurrentLiabilities += item.accountBalance;
-      }
-    });
-    return this.totalCurrentAssets && this.totalCurrentLiabilities;
+    this.totalCurrentAssets = 0;
+    this.totalCurrentLiabilities = 0;
+      this.accountList.forEach((item) => {
+        if (item.accountType === 'Asset' && item.accountSubType == 'Current Asset') {
+          this.totalCurrentAssets += item.accountBalance;
+        }
+        else if (item.accountType === 'Liability' && item.accountSubType === 'Current Liability') {
+          this.totalCurrentLiabilities += item.accountBalance;
+        }
+        
+      });
   }
 
   public getSales(){
+    this.totalSales = 0;
     this.accountList.forEach((item) => {
-      if (item.accountType === 'Asset' && item.accountSubType === 'Service Revenue') {
+      if (item.accountType === 'Revenue') {
         this.totalSales += item.accountBalance;
       }
   });
@@ -70,6 +84,7 @@ export class HomeComponent implements OnInit {
   }
 
   public getInventory(){   //retrieves inventory balance
+    this.totalInventory = 0;
     this.accountList.forEach((item) => {
       if (item.accountType === 'Asset' && item.accountSubType === 'Inventory') {
         this.totalInventory += item.accountBalance;
@@ -78,32 +93,57 @@ export class HomeComponent implements OnInit {
   return this.totalInventory;
 }
 
-
-
-
   ////////////////////////////////////////////////////////functions for calculating ratios////////////////////////////////////////////////////////////////////////////
 
 
   public calculateCurrentRatio(){     //calculates the current ratio which is currentAssets/currentLiabilities 
     
-    console.log(this.totalCurrentAssets);
-    console.log(this.totalCurrentLiabilities);
+    this.getCurrentAssetsAndLiabilities();
     this.currentRatio = (this.totalCurrentAssets/this.totalCurrentLiabilities);
+
+    if(this.currentRatio > 1.5 && this.currentRatio < 3)
+      this.crGreen = true;
+    else if(this.currentRatio > 4 || this.currentRatio < 1)
+      this.crRed = true;
+    else  
+      this.crYellow = true;
+
     return this.currentRatio;
   }
 
   public calculateQuickRatio(){  //calculates the Quick Ratio which is (currentAssets - Inventory)/currentLiablities
     
+    this.getCurrentAssetsAndLiabilities();
+    this.getInventory();
     this.quickRatio = (this.totalCurrentAssets - this.totalInventory)/this.totalCurrentLiabilities;
+
+    if(this.quickRatio === 1 || this.quickRatio > 1)
+      this.qrGreen = true;
+    else if(this.quickRatio < 1 && this.quickRatio > .8)
+      this.qrYellow = true;
+    else 
+      this.qrRed = true;
+
     return this.quickRatio;
   }
 
-  public calculateTotalAssetsTurnover(){
+  public calculateTotalAssetsTurnover(){ //calculates Total Assets Turnover which is totalSales/totalCurrentAssets
+    
+    this.getSales();
+    this.getCurrentAssetsAndLiabilities();
     this.assetsTurnover = this.totalSales/this.totalCurrentAssets;
+
+    if(this.assetsTurnover > 1.5)
+      this.atGreen = true;
+    else if(this.assetsTurnover < 1.5 && this.assetsTurnover > 1)
+      this.atYellow = true;
+    else
+      this.atRed = true;
+      
     return this.assetsTurnover;
   }
 
-  
+
 
 
 }
