@@ -108,7 +108,7 @@ export class BalanceSheetComponent implements OnInit {
 
   totalCurrentLiability() {
     let total = 0;
-    const accounts = this.accountList.filter(account => account.accountTerm === 'Current Liability');
+    const accounts = this.accountList.filter(account => account.accountSubType === 'Current Liability');
     accounts.forEach((account) => {
       if (account.accountType === 'Liability' && account.accountActive === true) {
         total = total + account.accountBalance;
@@ -264,7 +264,7 @@ export class BalanceSheetComponent implements OnInit {
   setLedgerSortEntry(tTableSortAccount: string, accountNumber: number) {
     localStorage.setItem('accountSortBy', JSON.stringify(tTableSortAccount));
     localStorage.setItem('accountNumber', JSON.stringify(accountNumber));
-    this.router.navigate(['/ttable']);
+    this.router.navigate(['/ledger']);
   }
 
 

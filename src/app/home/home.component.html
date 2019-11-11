@@ -25,96 +25,96 @@
 <!--    <div id="pieChart" style="width: 100vw; height: 100vh;"></div>-->
 
 <!--<br *ngIf="currentUser.role === '1'">-->
-<!--    <div class="row">-->
-<!--        <div class="col-xs-6 col-md-3">-->
-<!--            <div class="panel panel-primary">-->
-<!--                <div class="panel-heading">-->
-<!--                    <h6>Current Ratio</h6>-->
-<!--                </div>-->
-<!--                <div class="panel-body">-->
-<!--                    <div class="flex-row flex-v-center flex-h-center"> {{ currentRatio() | number:'1.2' }}%-->
-<!--                        <div class="ratio bad" *ngIf="currentRatio() <= 0"></div>-->
-<!--                        <div class="ratio warning" *ngIf="currentRatio() > 0 && currentRatio() <=1"></div>-->
-<!--                        <div class="ratio good" *ngIf="currentRatio() > 1"></div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
+    <div class="row">
+        <div class="col-xs-6 col-md-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h6>Current Ratio</h6>
+                </div>
+                <div class="panel-body">
+                    <div class="flex-row flex-v-center flex-h-center"> {{ currentRatio() | number:'1.2' }}%
+                        <div class="ratio bad" *ngIf="currentRatio() <= 0"></div>
+                        <div class="ratio warning" *ngIf="currentRatio() > 0 && currentRatio() <=1"></div>
+                        <div class="ratio good" *ngIf="currentRatio() > 1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<!--        <div class="col-xs-6 col-md-3">-->
-<!--            <div class="panel panel-primary">-->
-<!--                <div class="panel-heading">-->
-<!--                    <h6>Return On Assets</h6>-->
-<!--                </div>-->
-<!--                <div class="panel-body">-->
-<!--                    <div class="flex-row flex-v-center flex-h-center"> {{returnOnAssetsRatio() | number:'1.2'}}%-->
-<!--                        <div class="ratio bad" *ngIf="returnOnAssetsRatio() <= 0"></div>-->
-<!--                        <div class="ratio warning" *ngIf="returnOnAssetsRatio() > 0 && returnOnAssetsRatio() <=1"></div>-->
-<!--                        <div class="ratio good" *ngIf="returnOnAssetsRatio() > 1"></div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="col-xs-6 col-md-3">-->
-<!--            <div class="panel panel-primary">-->
-<!--                <div class="panel-heading">-->
-<!--                    <h6>Return On Equity</h6>-->
-<!--                </div>-->
-<!--                <div class="panel-body">-->
-<!--                    <div class="flex-row flex-v-center flex-h-center"> {{ returnOnEquityRatio() | number:'1.2' }}%-->
-<!--                        <div class="ratio bad" *ngIf="returnOnEquityRatio() <= 0"></div>-->
-<!--                        <div class="ratio warning"-->
-<!--                             *ngIf="returnOnEquityRatio() > 0 && returnOnEquityRatio() <= 1"></div>-->
-<!--                        <div class="ratio good" *ngIf="returnOnEquityRatio() > 1"></div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
+        <div class="col-xs-6 col-md-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h6>Return On Assets</h6>
+                </div>
+                <div class="panel-body">
+                    <div class="flex-row flex-v-center flex-h-center"> {{returnOnAssetsRatio() | number:'1.2'}}%
+                        <div class="ratio bad" *ngIf="returnOnAssetsRatio() <= 0"></div>
+                        <div class="ratio warning" *ngIf="returnOnAssetsRatio() > 0 && returnOnAssetsRatio() <=1"></div>
+                        <div class="ratio good" *ngIf="returnOnAssetsRatio() > 1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6 col-md-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h6>Return On Equity</h6>
+                </div>
+                <div class="panel-body">
+                    <div class="flex-row flex-v-center flex-h-center"> {{ returnOnEquityRatio() | number:'1.2' }}%
+                        <div class="ratio bad" *ngIf="returnOnEquityRatio() <= 0"></div>
+                        <div class="ratio warning"
+                             *ngIf="returnOnEquityRatio() > 0 && returnOnEquityRatio() <= 1"></div>
+                        <div class="ratio good" *ngIf="returnOnEquityRatio() > 1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<!--        <div class="col-xs-6 col-md-3">-->
-<!--            <div class="panel panel-primary">-->
-<!--                <div class="panel-heading">-->
-<!--                    <h6>Asset Turnover</h6>-->
-<!--                </div>-->
-<!--                <div class="panel-body">-->
-<!--                    <div class="flex-row flex-v-center flex-h-center"> {{ assetTurnoverRatio() | number:'1.2' }}%-->
-<!--                        <div class="ratio bad" *ngIf="assetTurnoverRatio() <= 0"></div>-->
-<!--                        <div class="ratio warning" *ngIf="assetTurnoverRatio() > 0 && assetTurnoverRatio() <=1"></div>-->
-<!--                        <div class="ratio good" *ngIf="assetTurnoverRatio() > 1"></div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
+        <div class="col-xs-6 col-md-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h6>Asset Turnover</h6>
+                </div>
+                <div class="panel-body">
+                    <div class="flex-row flex-v-center flex-h-center"> {{ assetTurnoverRatio() | number:'1.2' }}%
+                        <div class="ratio bad" *ngIf="assetTurnoverRatio() <= 0"></div>
+                        <div class="ratio warning" *ngIf="assetTurnoverRatio() > 0 && assetTurnoverRatio() <=1"></div>
+                        <div class="ratio good" *ngIf="assetTurnoverRatio() > 1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<!--        <div class="col-xs-6 col-md-3">-->
-<!--            <div class="panel panel-primary">-->
-<!--                <div class="panel-heading">-->
-<!--                    <h6>Quick Ratio</h6>-->
-<!--                </div>-->
-<!--                <div class="panel-body">-->
-<!--                    <div class="flex-row flex-v-center flex-h-center"> {{ quickRatio() | number:'1.2' }}%-->
-<!--                        <div class="ratio bad" *ngIf="quickRatio() <= 0"></div>-->
-<!--                        <div class="ratio warning" *ngIf="quickRatio() > 0 && quickRatio() <=1"></div>-->
-<!--                        <div class="ratio good" *ngIf="quickRatio() > 1"></div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
+        <div class="col-xs-6 col-md-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h6>Quick Ratio</h6>
+                </div>
+                <div class="panel-body">
+                    <div class="flex-row flex-v-center flex-h-center"> {{ quickRatio() | number:'1.2' }}%
+                        <div class="ratio bad" *ngIf="quickRatio() <= 0"></div>
+                        <div class="ratio warning" *ngIf="quickRatio() > 0 && quickRatio() <=1"></div>
+                        <div class="ratio good" *ngIf="quickRatio() > 1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<!--        <div class="col-xs-6 col-md-3">-->
-<!--            <div class="panel panel-primary">-->
-<!--                <div class="panel-heading">-->
-<!--                    <h6>Net Profit Margin</h6>-->
-<!--                </div>-->
-<!--                <div class="panel-body">-->
-<!--                    <div class="flex-row flex-v-center flex-h-center"> {{ netProfitMargin() | number:'1.2' }}%-->
-<!--                        <div class="ratio bad" *ngIf="netProfitMargin() <= 0"></div>-->
-<!--                        <div class="ratio warning" *ngIf="netProfitMargin() > 0 && netProfitMargin() <=1"></div>-->
-<!--                        <div class="ratio good" *ngIf="netProfitMargin() > 1"></div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!-- </div>-->
+        <div class="col-xs-6 col-md-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h6>Net Profit Margin</h6>
+                </div>
+                <div class="panel-body">
+                    <div class="flex-row flex-v-center flex-h-center"> {{ netProfitMargin() | number:'1.2' }}%
+                        <div class="ratio bad" *ngIf="netProfitMargin() <= 0"></div>
+                        <div class="ratio warning" *ngIf="netProfitMargin() > 0 && netProfitMargin() <=1"></div>
+                        <div class="ratio good" *ngIf="netProfitMargin() > 1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+ </div>
 </span>
 <img *ngIf="chart.length < 5" src="/assets/loading.gif"/>

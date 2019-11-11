@@ -169,12 +169,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
     return total;
   }
 
+  // currentRatio() {
+  //   let quotient = 0;
+  //   let remainder = 0;
+  //   quotient = Math.floor(this.filterAccountTypeTotal('Asset') / this.filterAccountTypeTotal('Liability'));
+  //   remainder = (this.filterAccountTypeTotal('Asset') / this.filterAccountTypeTotal('Liability')) % 1 ;
+  //   return quotient + remainder;
+  // }
+
   currentRatio() {
-    let quotient = 0;
-    let remainder = 0;
-    quotient = Math.floor(this.filterAccountTypeTotal('Asset') / this.filterAccountTypeTotal('Liability'));
-    remainder = (this.filterAccountTypeTotal('Asset') / this.filterAccountTypeTotal('Liability')) % 1 ;
-    return quotient + remainder;
+    return this.returnSubtype('Current Asset') / this.returnSubtype('Current Liability') * 100;
   }
 
   totalRevenue() {
@@ -198,34 +202,42 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   returnOnAssetsRatio() {
-    let assetQuotient = 0;
-    let assetRemainder = 0;
-    let quotient = 0;
-    let remainder = 0;
-    assetQuotient = Math.floor(this.filterAccountTypeTotal('Asset') / this.filterByNumberOfAccounts('Asset'));
-    assetRemainder = (this.filterAccountTypeTotal('Asset') / this.filterByNumberOfAccounts('Asset')) % 1 ;
-    const totalIncome = this.totalRevenue() - this.totalExpense();
-    const averageAssets = assetQuotient + assetRemainder;
-    quotient = Math.floor(totalIncome / averageAssets);
-    remainder =  ((totalIncome / averageAssets) % 1 );
-    return quotient + remainder;
+    return ((this.totalRevenue() - this.totalExpense()) / this.filterAccountTypeTotal('Asset')) * 100;
   }
+
+  // returnOnAssetsRatio() {
+  //   let assetQuotient = 0;
+  //   let assetRemainder = 0;
+  //   let quotient = 0;
+  //   let remainder = 0;
+  //   assetQuotient = Math.floor(this.filterAccountTypeTotal('Asset') / this.filterByNumberOfAccounts('Asset'));
+  //   assetRemainder = (this.filterAccountTypeTotal('Asset') / this.filterByNumberOfAccounts('Asset')) % 1 ;
+  //   const totalIncome = this.totalRevenue() - this.totalExpense();
+  //   const averageAssets = assetQuotient + assetRemainder;
+  //   quotient = Math.floor(totalIncome / averageAssets);
+  //   remainder =  ((totalIncome / averageAssets) % 1 );
+  //   return quotient + remainder;
+  // }
+
+  // returnOnEquityRatio() {
+  //   let equityQuotient = 0;
+  //   let equityRemainder = 0;
+  //   let quotient = 0;
+  //   let remainder = 0;
+  //   equityQuotient = Math.floor(this.filterAccountTypeTotal('Equity') / this.filterByNumberOfAccounts('Equity'));
+  //   equityRemainder = (this.filterAccountTypeTotal('Equity') / this.filterByNumberOfAccounts('Equity')) % 1 ;
+  //   const totalIncome = this.totalRevenue() - this.totalExpense();
+  //   const averageAssets = equityQuotient + equityRemainder;
+  //   quotient = Math.floor(totalIncome / averageAssets);
+  //   remainder =  ((totalIncome / averageAssets) % 1 );
+  //   return quotient + remainder;
+  // }
 
   returnOnEquityRatio() {
-    let equityQuotient = 0;
-    let equityRemainder = 0;
-    let quotient = 0;
-    let remainder = 0;
-    equityQuotient = Math.floor(this.filterAccountTypeTotal('Equity') / this.filterByNumberOfAccounts('Equity'));
-    equityRemainder = (this.filterAccountTypeTotal('Equity') / this.filterByNumberOfAccounts('Equity')) % 1 ;
-    const totalIncome = this.totalRevenue() - this.totalExpense();
-    const averageAssets = equityQuotient + equityRemainder;
-    quotient = Math.floor(totalIncome / averageAssets);
-    remainder =  ((totalIncome / averageAssets) % 1 );
-    return quotient + remainder;
+    return ((this.totalRevenue() - this.totalExpense()) / this.filterAccountTypeTotal('Equity')) * 100;
   }
 
-  assetTurnoverRatio() {
+    assetTurnoverRatio() {
     let assetQuotient = 0;
     let assetRemainder = 0;
     let quotient = 0;
@@ -255,14 +267,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
     return total;
   }
 
-  returnTerm(compared: string) {
-    let total = 0;
-    const account = this.adjustAccount().filter(entry => entry.accountTerm === compared);
-    account.forEach((account1) => {
-      total = total + account1.accountBalance;
-    });
-    return total;
-  }
+  // filterAccountSubTypeTotal(accountSubType: string) {
+  //   let total = 0;
+  //   const account = this.allAccounts.filter(entry => entry.accountSubType === accountSubType);
+  //   account.forEach((account) => {
+  //     total = total + account.accountBalance;
+  //   });
+  //   return total;
+  // }
 
   quickRatio() {
     const numerator = ((this.totalCurrentAssets() + this.totalOtherAssets()) - this.returnSubtype('Inventories'));
@@ -301,9 +313,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
       closingEntries.forEach((entry) => {
         if (account.accountName === entry.accountName) {
           if ((account.accountType === 'Expense' || account.accountType === 'Asset') && entry.entryType === 'closing') {
-            account.accountBalance =  entry.amount;
+            account.accountBalance = entry.amount;
           } else {
-            account.accountBalance =  entry.amount;
+            account.accountBalance = entry.amount;
           }
         }
       });

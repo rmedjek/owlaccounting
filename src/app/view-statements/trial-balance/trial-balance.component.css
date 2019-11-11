@@ -34,6 +34,10 @@ tr:hover, .hoverStyle:hover {
   text-align: right;
 }
 
+.align-right1{
+  text-align: center;
+}
+
 .title-container-header{
   padding-right: 50px;
   padding-left: 50px;
