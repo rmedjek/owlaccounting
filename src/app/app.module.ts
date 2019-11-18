@@ -12,7 +12,7 @@ import { HomeComponent } from './home';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard } from './_guards';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgCircleProgressModule } from 'ng-circle-progress';
+import { ChartsModule } from 'ng2-charts';
 import {
     MatButtonModule,
     MatButtonToggleModule,
@@ -103,15 +103,7 @@ import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
         DataTableModule,
         FlexLayoutModule,
         MatDialogModule,
-        NgCircleProgressModule.forRoot({
-          // set defaults here
-          radius: 100,
-          outerStrokeWidth: 16,
-          innerStrokeWidth: 8,
-          outerStrokeColor: "#78C000",
-          innerStrokeColor: "#C7E596",
-          animationDuration: 300
-        }),
+        ChartsModule,
         Ng4LoadingSpinnerModule.forRoot(),
         ToastrModule.forRoot()
     ],

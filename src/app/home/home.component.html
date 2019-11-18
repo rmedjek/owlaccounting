@@ -1,15 +1,24 @@
 ﻿<app-sidebar-menu></app-sidebar-menu>
+
+<div style="display: block;">
+    <canvas baseChart 
+      [data]="pieChartData" *ngIf="pieChartData"
+      [labels]="pieChartLabels" 
+      [chartType]="pieChartType"
+      [options]="pieChartOptions"
+      [plugins]="pieChartPlugins"
+      [colors]="pieChartColors"
+      [legend]="pieChartLegend">
+    </canvas>
+  </div>
+
 <br>
 <div id="netIncomeDiv">
 <h2>
     <h2>Current Ratio</h2>
     <br>
 <p>
-    <span 
-    [class.dot-red]="crRed"
-    [class.dot-green]="crGreen"
-    [class.dot-yellow]="crYellow"
-    ></span>
+    
     {{this.calculateCurrentRatio() | number : '1.2-2' }}
 </p>
 
@@ -22,7 +31,7 @@
     <h2>Quick Ratio</h2>
     <br>
     <h2>
-        <span class="dot"></span>
+        
       {{this.calculateQuickRatio() | number : '1.2-2' }}
     </h2>
 
@@ -33,7 +42,7 @@
     <h2>Assets Turnover</h2>
     <br>
     <h2>
-        <span class="dot"></span>
+        
       {{this.calculateTotalAssetsTurnover() | number : '1.2-2'}}
     </h2>
 

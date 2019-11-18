@@ -4,6 +4,10 @@ import { User } from '../_models';
 import { ChartOfAccounts } from '../_models/chartOfAccounts';
 import { ChartOfAccountsService } from '../_services/chart-of-accounts.service';
 import { first } from 'rxjs/operators';
+import { ChartType, ChartOptions } from 'chart.js';
+import { JournalEntry } from '../_models/journal-entries';
+import { JournalEntryService } from '../_services/journal-entry.service';
+import { SingleDataSet, Label, Colors, monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip } from 'ng2-charts';
 
 
 @Component({styleUrls: ['home.component.css'],
@@ -16,45 +20,84 @@ export class HomeComponent implements OnInit {
   totalInventory = 0;
   totalSales = 0;
   
-  //currentRatio dot color booleans
-  crGreen = false;
-  crYellow = false;
-  crRed = false;
-
-  //quickRatio dot color booleans
-  qrGreen = false;
-  qrYellow = false;
-  qrRed = false;
-
-  //AssetTurnover dot color booleans
-  atGreen = false;
-  atYellow = false;
-  atRed = false;
 
   //ratio amounts
   currentRatio = 0;
   quickRatio = 0;
   assetsTurnover = 0;
   accountList: ChartOfAccounts[] = [];
-
-  
   
 
-  constructor(private accountsService: ChartOfAccountsService) 
+  //transactions
+  pendingTransactions = 0;
+  approvedTransactions = 0;
+  deniedTransactions = 0;
+  allJournalEntries: JournalEntry[] = [];
+
+  public pieChartOptions: ChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false
+  };
+
+  public pieChartLabels: Label[] = [['Pending'], ['Approved'], 'Denied'];
+  public pieChartData: SingleDataSet = [];
+  public pieChartType: ChartType = 'pie';
+  public pieChartLegend = true;
+  public pieChartPlugins = [];
+  public pieChartColors: Colors[] = [{backgroundColor: ['#e2da3c', '#20d52f', '#d52020']}]
+
+
+
+  constructor(private accountsService: ChartOfAccountsService, private journalEntryService: JournalEntryService) 
   {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    monkeyPatchChartJsTooltip();
+    monkeyPatchChartJsLegend();
   }
+
+
 
   ngOnInit() {
     this.addAccountsToList();
+    this.loadAllJournalEntries();
    
   }
 
-  private addAccountsToList(){  
-
-    this.accountsService.getAll().pipe(first()).subscribe(account => {
+  private loadAllJournalEntries() {
+    this.journalEntryService.getAll().pipe(first()).subscribe(entry => {
+      this.allJournalEntries = entry;
+      this.allJournalEntries.forEach((item) => {
+        if (item.status === 'pending') {
+          this.pendingTransactions++;
+        }
+        else if (item.status === 'approved') {
+          this.approvedTransactions++;
+        }
+        else
+          this.deniedTransactions++;
+        
+      });
+      this.pieChartData = [this.pendingTransactions, this.approvedTransactions, this.deniedTransactions]
       
+    });
+  }
+
+  private addAccountsToList(){  
+    this.accountsService.getAll().pipe(first()).subscribe(account => {
       this.accountList = account;
+    });
+  }
+
+  public setTransactions(){
+    this.allJournalEntries.forEach((item) => {
+      if (item.status === 'pending') {
+        this.pendingTransactions++;
+      }
+      else if (item.status === 'approved') {
+        this.approvedTransactions++;
+      }
+      else
+        this.deniedTransactions++;
       
     });
   }
@@ -101,13 +144,6 @@ export class HomeComponent implements OnInit {
     this.getCurrentAssetsAndLiabilities();
     this.currentRatio = (this.totalCurrentAssets/this.totalCurrentLiabilities);
 
-    if(this.currentRatio > 1.5 && this.currentRatio < 3)
-      this.crGreen = true;
-    else if(this.currentRatio > 4 || this.currentRatio < 1)
-      this.crRed = true;
-    else  
-      this.crYellow = true;
-
     return this.currentRatio;
   }
 
@@ -116,14 +152,6 @@ export class HomeComponent implements OnInit {
     this.getCurrentAssetsAndLiabilities();
     this.getInventory();
     this.quickRatio = (this.totalCurrentAssets - this.totalInventory)/this.totalCurrentLiabilities;
-
-    if(this.quickRatio === 1 || this.quickRatio > 1)
-      this.qrGreen = true;
-    else if(this.quickRatio < 1 && this.quickRatio > .8)
-      this.qrYellow = true;
-    else 
-      this.qrRed = true;
-
     return this.quickRatio;
   }
 
@@ -132,14 +160,6 @@ export class HomeComponent implements OnInit {
     this.getSales();
     this.getCurrentAssetsAndLiabilities();
     this.assetsTurnover = this.totalSales/this.totalCurrentAssets;
-
-    if(this.assetsTurnover > 1.5)
-      this.atGreen = true;
-    else if(this.assetsTurnover < 1.5 && this.assetsTurnover > 1)
-      this.atYellow = true;
-    else
-      this.atRed = true;
-      
     return this.assetsTurnover;
   }
 

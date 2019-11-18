@@ -12,27 +12,8 @@ h3{
     border-radius: 10px;
 }
 
-.dot-green {
-    height: 25px;
-    width: 25px;
-    background-color: green;
-    border-radius: 50%;
-    display: inline-block;
+canvas{
+    height: 300px;
+    width: 300px;
 
-  }
-
-  .dot-yellow {
-    height: 25px;
-    width: 25px;
-    background-color: yellow;
-    border-radius: 50%;
-    display: inline-block;
-  }
-
-  .dot-red {
-    height: 25px;
-    width: 25px;
-    background-color: red;
-    border-radius: 50%;
-    display: inline-block;
-  }
+}
