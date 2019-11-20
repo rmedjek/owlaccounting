@@ -70,9 +70,8 @@ import { BsDropdownModule } from 'ngx-bootstrap';
 import { RetainedEarningsComponent } from './view-statements/retained-earnings/retained-earnings.component';
 import { IncomeStatementComponent } from './view-statements/income-statement/income-statement.component';
 import { BalanceSheetComponent } from './view-statements/balance-sheet/balance-sheet.component';
+import { ChartsModule } from 'ng2-charts';
 
-
-// @ts-ignore
 @NgModule({
     imports: [
         BrowserModule,
@@ -108,6 +107,7 @@ import { BalanceSheetComponent } from './view-statements/balance-sheet/balance-s
         DataTableModule,
         FlexLayoutModule,
         MatDialogModule,
+        ChartsModule,
         Ng4LoadingSpinnerModule.forRoot(),
         ToastrModule.forRoot(),
         BsDropdownModule.forRoot()

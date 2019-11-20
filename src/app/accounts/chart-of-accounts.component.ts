@@ -43,12 +43,11 @@ export class ChartOfAccountsComponent implements OnInit {
 
   public loadUsersBySearch() {
     this.accountList = this.allAccounts;
-    const search: string = (document.getElementById('myInput') as HTMLInputElement).value.toLowerCase();
+    const search: string = (document.getElementById('myInput') as HTMLInputElement).value;
     if (search.length === 0 || search.length === null) {
       this.accountList = this.allAccounts;
     } else {
-      this.accountList = this.accountList.filter(users => users.accountName.includes(search)
-          || users.accountSubType.includes(search) ||
+      this.accountList = this.accountList.filter(users => users.accountName.includes(search) || users.accountSubType.includes(search) ||
           users.accountType.includes(search));
     }
   }
@@ -74,9 +73,6 @@ export class ChartOfAccountsComponent implements OnInit {
         this.accountBalanceError = true;
         this.toaster.error('Account Balance must be zero', 'Error!', ToasterPosition.bottomRight);
         this.accountBalanceError = false;
-        // setTimeout(() => {
-        //   this.accountBalanceError = false;
-        // }, 6000);
       }
     }
   }
@@ -168,7 +164,7 @@ export class ChartOfAccountsComponent implements OnInit {
     }
   }
 
-  public sortByAccountnumber() {
+  public sortByAccountNumber() {
     if (this.sortTracker === 0) {
       this.accountList.sort((x, y) => {
         if (x.accountNumber < y.accountNumber) {
@@ -342,32 +338,6 @@ export class ChartOfAccountsComponent implements OnInit {
           return -1;
         }
         if (x.accountBalance < y.accountBalance) {
-          return 1;
-        }
-        return 0;
-      });
-      this.sortTracker = 0;
-    }
-  }
-
-  public sortByInitBalance() {
-    if (this.sortTracker === 0) {
-      this.accountList.sort((x, y) => {
-        if (x.accountInitBalance < y.accountInitBalance) {
-          return -1;
-        }
-        if (x.accountInitBalance > y.accountInitBalance) {
-          return 1;
-        }
-        return 0;
-      });
-      this.sortTracker = 1;
-    } else {
-      this.accountList.sort((x, y) => {
-        if (x.accountInitBalance > y.accountInitBalance) {
-          return -1;
-        }
-        if (x.accountInitBalance < y.accountInitBalance) {
           return 1;
         }
         return 0;

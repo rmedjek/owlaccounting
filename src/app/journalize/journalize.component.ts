@@ -263,7 +263,6 @@ export class JournalizeComponent implements OnInit {
         newJournal.accountCredit = this.listOfCreditAccountNames;
         newJournal.amountCredit = this.listOfCreditAccountAmounts;
         newJournal.amountDebit = this.listOfDebitAccountAmounts;
-        // newJournal.createdDate = (dateInputted);
         newJournal.createdDate = new Date();
         newJournal.description = (document.getElementById('journalDescription') as HTMLInputElement).value;
 
@@ -341,7 +340,8 @@ export class JournalizeComponent implements OnInit {
 
       entry.declineReason = prompt('Enter Reason (if applicable):');
       const newLog = new LogTrack();
-      newLog.logDataInput = 'Declines a journal entry with ' + 'debit account name: ' + entry.accountDebit + ' credit account name: '
+      newLog.logDataInput = 'Declines a journal entry with ' + 'debit accountBalance name: ' +
+          entry.accountDebit + ' credit accountBalance name: '
           + entry.accountCredit;
       newLog.logInitial =  entry.description + 'Status: Pending';
       newLog.logFinal =  entry.description + 'Status: Declined';
@@ -356,7 +356,7 @@ export class JournalizeComponent implements OnInit {
   updateAccountBalance(journal: JournalEntry) {
     journal.accountDebit.forEach((account, index) => {
       this.spinnerService.show();
-      this.ledgerService.createLedgerEntry(journal, account, journal.amountDebit[index], true )
+      this.ledgerService.createLedgerEntry(journal, account, journal.amountDebit[index], true, )
           .pipe(first()).subscribe(() => {
             this.spinnerService.hide();
           });
@@ -366,7 +366,8 @@ export class JournalizeComponent implements OnInit {
     });
 
     journal.accountCredit.forEach((account, index) => {
-      this.ledgerService.createLedgerEntry(journal, account, journal.amountCredit[index], false ).pipe(first()).subscribe(() => {});
+      this.ledgerService.createLedgerEntry(journal, account, journal.amountCredit[index], false)
+          .pipe(first()).subscribe(() => {});
       const creditAccount = this.allAccounts.filter(
           dataAccount => dataAccount.accountName.includes(journal.accountCredit[index]));
       this.updateCreditBalance(creditAccount[0], journal, index);
@@ -457,21 +458,6 @@ export class JournalizeComponent implements OnInit {
     this.newJournalEntryHidden = !this.newJournalEntryHidden;
   }
 
-  onUpdateFormClick() {
-    this.updateAccountForm = false;
-    const accountNumber = ((document.getElementById('accountNumberField') as HTMLInputElement).value);
-    const details = ((document.getElementById('ReasonForUpdate') as HTMLInputElement).value);
-    this.spinnerService.show();
-    this.alertsForUsersService.logAlertWithAccountNumber(details, this.currentUser.username, Number(accountNumber))
-        .pipe(first()).subscribe(() => {
-      this.spinnerService.hide();
-    });
-  }
-
-  updateAccountButton() {
-    this.updateAccountForm = !this.updateAccountForm;
-  }
-
   setLedgerSortEntry(ledgerSortAccount: string, accountNumber: number) {
     this.specificAccountForReroute = this.accountList.filter(account => account.accountName === ledgerSortAccount);
     localStorage.setItem('accountSortBy', JSON.stringify(ledgerSortAccount));
@@ -480,6 +466,7 @@ export class JournalizeComponent implements OnInit {
   }
 
   allAccountsSorted() {
+
     this.accountList.sort((x, y) => {
       if (x.accountName < y.accountName) {
         return -1;
@@ -518,7 +505,6 @@ export class JournalizeComponent implements OnInit {
     this.allEntries = this.allEntriesBackup;
     this.entriesList = this.entriesListBackup;
   }
-
 
   deleteFieldValue(index) {
     this.creditAccountsLists.splice(index, 1);

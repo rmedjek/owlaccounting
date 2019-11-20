@@ -4,7 +4,7 @@
     <div class="title-container-header">
       <div class="center">Owl Accounting</div>
       <div class="center">Trial Balance</div>
-      <div class="center">As of {{ date | date:'MMMM dd yyyy'}}</div>
+      <div class="center">As of {{ date | date:'MMMM dd, yyyy'}}</div>
     </div>
     <br>
     <button mat-raised-button color="primary" type="button" value="Download" (click)="captureScreen()">Download</button>
@@ -24,7 +24,7 @@
         </td>
         <td class="align-right" *ngIf="(account.accountType === 'Asset' && account.accountName !== 'Accumulated Depreciation') && account.accountActive === true">
           <span style="float: right" *ngIf="account.accountName === sortAssets()"></span>
-          {{account.accountBalance | number:'1.2'}} &nbsp; &nbsp; &nbsp;
+            {{account.accountBalance | number:'1.2'}} &nbsp; &nbsp; &nbsp;
         </td>
         <td *ngIf="(account.accountType === 'Asset' && account.accountName !== 'Accumulated Depreciation') && account.accountActive === true"></td>
       </tr>
@@ -32,9 +32,8 @@
       <tr class="hoverStyle" *ngFor="let account of adjustAccount()">
         <td *ngIf="(account.accountName === 'Accumulated Depreciation') && account.accountActive === true">
           <a style="color: blue" (click)="setLedgerSortEntry(account.accountName, account.accountNumber)">{{account.accountName}}</a></td>
-        <td *ngIf="(account.accountName === 'Accumulated Depreciation') && account.accountActive === true"></td>
-        <td class="align-right" *ngIf="(account.accountName === 'Accumulated Depreciation') && account.accountActive === true">
-          <span *ngIf="account.accountName === sortAssets()"></span>$&nbsp; &nbsp; &nbsp;({{account.accountBalance | number:'1.2'}}) &nbsp; &nbsp; &nbsp;</td>
+        <td class="align-right1" *ngIf="(account.accountName === 'Accumulated Depreciation') && account.accountActive === true">
+          <span *ngIf="account.accountName === sortAssets()"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{account.accountBalance | number:'1.2'}}</td>
       </tr>
 
       <tr class="hoverStyle" *ngFor="let account of adjustAccount()">
