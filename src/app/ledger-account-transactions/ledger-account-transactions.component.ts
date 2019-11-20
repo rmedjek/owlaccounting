@@ -8,6 +8,7 @@ import { LedgerService } from '../_services/ledger.service';
 import { JournalEntryService } from '../_services/journal-entry.service';
 import { ChartOfAccounts } from '../_models/chartOfAccounts';
 import { ChartOfAccountsService } from '../_services/chart-of-accounts.service';
+import { MatDatepickerInputEvent } from '@angular/material';
 
 
 @Component({
@@ -67,12 +68,22 @@ export class LedgerAccountTransactionsComponent implements OnInit {
   }
 
   referenceJournal(reference: string) {
-  this.journalEntryDisplay = true;
-  this.specificJournalEntry = this.allJournalEntries.filter(entry => entry.id === reference);
-  return this.specificJournalEntry;
+    this.journalEntryDisplay = true;
+    this.specificJournalEntry = this.allJournalEntries.filter(entry => entry.id === reference);
+    return this.specificJournalEntry;
   }
 
   onBackClick() {
     this.journalEntryDisplay = false;
+  }
+
+  filterDates(event: MatDatepickerInputEvent<Date>) {
+    this.ledgerService.getAll().pipe(first()).subscribe(entry => {
+      this.allEntries = entry;
+      this.allEntries = this.allEntries.filter(entry => entry.createdDate.toString().slice(8, 10)  ===
+          `${event.value.toString().slice(8, 10)}`);
+
+      return this.allEntries;
+    });
   }
 }

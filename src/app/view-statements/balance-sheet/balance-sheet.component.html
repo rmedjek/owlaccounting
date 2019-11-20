@@ -48,26 +48,36 @@
       <tr class="header-color"><td><div class="table-heading">Non-current Assets</div></td></tr>
 
       <tr class="hoverStyle" *ngFor="let account of accountList">
-          <td *ngIf="(account.accountType === 'Asset' && account.accountSubType ==='Non-current Asset') && account.accountActive === true">
+          <td *ngIf="(account.accountType === 'Asset' && account.accountSubType ==='Non-current Asset') &&  account.accountName !== 'Accumulated Depreciation' && account.accountActive === true">
               <a style="color: blue" (click)="setLedgerSortEntry(account.accountName, account.accountNumber)"> &nbsp; &nbsp;{{account.accountName}}</a>
           </td>
-          <td style="float: right" *ngIf="(account.accountType === 'Asset' && account.accountSubType ==='Non-current Asset')
+          <td style="float: right" *ngIf="(account.accountType === 'Asset' && account.accountSubType ==='Non-current Asset' && account.accountName !== 'Accumulated Depreciation')
           && account.accountActive === true">{{account.accountBalance | number:'1.2'}}</td>
-        <td *ngIf="(account.accountType === 'Asset' && account.accountSubType ==='Non-current Asset') && account.accountActive === true">
+<!--        <td *ngIf="(account.accountType === 'Asset' && account.accountSubType ==='Non-current Asset') && account.accountActive === true">-->
+<!--        </td>-->
+      </tr>
+
+      <tr class="hoverStyle" *ngFor="let account of accountList">
+        <td *ngIf="(account.accountType === 'Asset' && account.accountSubType ==='Non-current Asset') &&  account.accountName === 'Accumulated Depreciation' && account.accountActive === true">
+          <a style="color: blue" (click)="setLedgerSortEntry(account.accountName, account.accountNumber)"> &nbsp; &nbsp;{{account.accountName}}</a>
         </td>
+        <td style="float: right" *ngIf="(account.accountType === 'Asset' && account.accountSubType ==='Non-current Asset' && account.accountName === 'Accumulated Depreciation')
+          && account.accountActive === true">({{account.accountBalance | number:'1.2'}})</td>
+<!--        <td *ngIf="(account.accountType === 'Asset' && account.accountSubType ==='Non-current Asset') && account.accountActive === true">-->
+<!--        </td>-->
       </tr>
 
       <tr>
         <td><b class="table-heading">Total Non Current Asset</b></td>
         <td></td>
-        <td style="float: right"><u><b>{{ totalNonCurrentAssets() | number:'1.2'}}</b></u></td>
+        <td style="float: right"><u><b>{{ totalNonCurrentAssets() | currency: 'USD': "symbol": '1.2-2'}}</b></u></td>
       </tr>
 
 
       <tr>
         <td><div class="table-heading">Total Asset</div></td>
         <td></td>
-        <td style="float: right"><u><span class="doubleUnderline"><b>{{totalCurrentAssets() + totalOtherAssets() | number:'1.2'}}</b></span></u></td>
+        <td style="float: right"><u><span class="doubleUnderline"><b>{{totalCurrentAssets() + totalOtherAssets() | currency: 'USD': "symbol": '1.2-2'}}</b></span></u></td>
       </tr>
       <tr class="header-color"><td><h5 style="color: blue">Liability & Equity</h5></td>
         <td></td><td></td></tr>
@@ -85,7 +95,7 @@
 <!--        <td *ngIf="(account.accountType === 'Liability' && account.accountTerm === 'Current Liability') && account.accountActive === true"></td>-->
 <!--      </tr>-->
 
-      <tr class="hoverStyle" *ngFor="let account of accountList.reverse()">
+      <tr class="hoverStyle" *ngFor="let account of accountList">
         <td *ngIf="(account.accountType === 'Liability' && account.accountSubType === 'Current Liability') && account.accountActive === true">
           <a style="color: blue" (click)="setLedgerSortEntry(account.accountName, account.accountNumber)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             {{account.accountName}}</a></td>
@@ -97,7 +107,7 @@
       <tr>
         <td><div> &nbsp; &nbsp;Total Current Liability</div></td>
         <td></td>
-        <td style="float: right"><u><b>{{totalCurrentLiability() | number:'1.2'}}</b></u></td>
+        <td style="float: right"><u><b>{{totalCurrentLiability() | currency: 'USD': "symbol": '1.2-2'}}</b></u></td>
       </tr>
 
       <tr class="hoverStyle" *ngFor="let account of accountList.reverse()">
@@ -111,7 +121,7 @@
 
       <tr>
         <td><b>Total Liability</b></td><td></td>
-        <td style="float: right"><b><u>{{ totalLiability() | number:'1.2' }}</u></b></td>
+        <td style="float: right"><b><u>{{ totalLiability() | currency: 'USD': "symbol": '1.2-2'}}</u></b></td>
       </tr>
       <tr class="header-color"><td><div class="table-heading">&nbsp;Owners Equity</div></td>
         <td></td><td></td></tr>
@@ -123,9 +133,9 @@
         <td *ngIf="(account.accountType === 'Equity') && account.accountActive === true"></td>
       </tr>
       <tr><td><div class="table-heading">Total Equity</div></td>
-        <td></td><td style="float: right"><b><u>{{ totalEquity() + incomeEstimation() | number:'1.2'}}</u></b></td></tr>
+        <td></td><td style="float: right"><b><u>{{ totalEquity() + incomeEstimation() | currency: 'USD': "symbol": '1.2-2'}}</u></b></td></tr>
       <tr>
-        <td>  &nbsp; &nbsp; &nbsp; &nbsp;Retained Earnings Ending Balance</td>
+        <td>  &nbsp; &nbsp; &nbsp; &nbsp;Retained Earnings Ending</td>
         <td style="float: right">{{ incomeEstimation() | number:'1.2' }}</td>
         <td></td>
       </tr>

@@ -1,4 +1,4 @@
-﻿import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
 
 import { User } from '../_models';
@@ -10,12 +10,13 @@ import { LedgerService } from '../_services/ledger.service';
 import { ChartOfAccountsService } from '../_services/chart-of-accounts.service';
 import { JournalEntryService } from '../_services/journal-entry.service';
 import { JournalEntry } from '../_models/journal-entries';
-
-declare var google: any;
+import { ChartOptions, ChartType } from 'chart.js';
+import { Colors, Label, monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip, SingleDataSet } from 'ng2-charts';
+import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 
 @Component({styleUrls: ['home.component.css'],
   templateUrl: 'home.component.html'})
-export class HomeComponent implements OnInit, AfterViewInit {
+export class HomeComponent implements OnInit {
   currentUser: User;
   alerts: SystemAlertsForUsers[] = [];
   accountSpecificEntries: SystemAlertsForUsers[] = [];
@@ -26,40 +27,49 @@ export class HomeComponent implements OnInit, AfterViewInit {
   entriesList: Ledger[] = [];
   chart: number[] = [];
   showBarGraph = false;
+  pendingTransactions = 0;
+  approvedTransactions = 0;
+  deniedTransactions = 0;
+  allTransactions = 0;
 
-  // drawChart = () => {
-  //
-  //   const data = google.visualization.arrayToDataTable([
-  //     ['Task', 'Hours per Day'],
-  //     ['Work', 11],
-  //     ['Eat', 2],
-  //     ['Commute', 2],
-  //     ['Watch TV', 2],
-  //     ['Sleep', 7]
-  //   ]);
-  //
-  //   const options = {
-  //     title: 'My Daily Activities',
-  //     legend: {position: 'top'}
-  //   };
-  //
-  //   const chart = new google.visualization.PieChart(document.getElementById('pieChart'));
-  //
-  //   chart.draw(data, options);
-  // }
+  public pieChartOptions: ChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    legend: {
+      display: true,
+      labels: {
+        fontSize: 16
+      },
+      position: 'top',
+    },
+    plugins: {
+      datalabels: {
+        color: '#5d5d5d',
+        formatter: (value, ctx) => {
+          return ctx.chart.data.labels[ctx.dataIndex];
+        },
+        font: {
+          size: 18,
+        }
+      },
+    }
+  };
+
+  public pieChartLabels: Label[] = [['Pending'], ['Approved'], 'Denied', ['Total Entries']];
+  public pieChartData: SingleDataSet = [];
+  public pieChartType: ChartType = 'pie';
+  public pieChartLegend = true;
+  public pieChartPlugins = [pluginDataLabels];
+  public pieChartColors: Colors[] = [{backgroundColor: ['#e2da3c', '#20d52f', '#d52020']}];
 
   constructor(private alertsForUsersService: SystemAlertsForUsersService,
               private ledgerService: LedgerService,
               private accountsService: ChartOfAccountsService,
               private journalService: JournalEntryService) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    monkeyPatchChartJsTooltip();
+    monkeyPatchChartJsLegend();
   }
-
-  ngAfterViewInit() {
-    // google.charts.load('current', { packages: ['corechart'] });
-    // google.charts.setOnLoadCallback(this.drawChart);
-  }
-
 
   ngOnInit() {
     this.getAllAlerts();
@@ -89,8 +99,20 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   private loadAllJournalEntries() {
-    this.journalService.getAll().pipe(first()).subscribe(entry => {
-      this.allJournalEntries = entry;
+    this.journalService.getAll().pipe(first()).subscribe(journalEntry => {
+      this.allJournalEntries = journalEntry;
+      this.allJournalEntries.forEach((entry) => {
+        if (entry.status === 'pending') {
+          this.pendingTransactions++;
+        } else if (entry.status === 'approved') {
+          this.approvedTransactions++;
+        } else if (entry.status === 'declined') {
+          this.deniedTransactions++;
+        } else {
+          return this.allTransactions++;
+        }
+      });
+      this.pieChartData = [this.pendingTransactions, this.approvedTransactions, this.deniedTransactions, this.returnAllEntries()];
     });
   }
 
@@ -113,6 +135,24 @@ export class HomeComponent implements OnInit, AfterViewInit {
     return this.allJournalEntries.length;
   }
 
+  getAllAlerts() {
+    this.alertsForUsersService.getAll().pipe(first()).subscribe(data => {
+      this.alerts = data;
+    });
+  }
+
+  toggleCheckbox(alert: SystemAlertsForUsers) {
+    alert.performed = true;
+    this.alertsForUsersService.updateEntry(alert).pipe(first()).subscribe(() => {
+      this.getAllAlerts();
+    });
+  }
+
+  filterItemList(entries: Ledger[]) {
+    this.accountSpecificEntries  = this.alerts.filter(entry => entry.performed === false);
+
+    return this.accountSpecificEntries;
+  }
 
   setGraphData() {
     this.chart.push(this.currentRatio());
@@ -134,24 +174,31 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.chart = final.reverse();
   }
 
-  getAllAlerts() {
-    this.alertsForUsersService.getAll().pipe(first()).subscribe(data => {
-      this.alerts = data;
-    });
+  returnOnAssetsRatio() {
+    return ((this.totalRevenue() - this.totalExpense()) / this.filterAccountTypeTotal('Asset'));
   }
 
-  toggleCheckbox(alert: SystemAlertsForUsers) {
-    alert.performed = true;
-    this.alertsForUsersService.updateEntry(alert).pipe(first()).subscribe(() => {
-      this.getAllAlerts();
-    });
+  returnOnEquityRatio() {
+    return ((this.totalRevenue() - this.totalExpense()) / this.filterAccountTypeTotal('Equity'));
   }
 
-  filterItemList(entries: Ledger[]) {
-    this.accountSpecificEntries  = this.alerts.filter(entry => entry.performed === false);
-
-    return this.accountSpecificEntries;
+  assetTurnoverRatio() {
+    return (this.totalRevenue() / this.filterAccountTypeTotal('Asset'));
   }
+
+  netProfitMargin() {
+    return ((this.totalRevenue() - this.totalExpense()) / this.totalRevenue());
+  }
+
+  quickRatio() {
+    return ((this.returnSubtype('Current Asset') - this.returnSubtype('Inventory')) /
+        this.returnSubtype('Current Liability'));
+  }
+
+  currentRatio() {
+    return this.returnSubtype('Current Asset') / this.returnSubtype('Current Liability');
+  }
+
 
   filterAccountTypeTotal(accountType: string) {
     let total = 0;
@@ -169,16 +216,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
     return total;
   }
 
-  // currentRatio() {
-  //   let quotient = 0;
-  //   let remainder = 0;
-  //   quotient = Math.floor(this.filterAccountTypeTotal('Asset') / this.filterAccountTypeTotal('Liability'));
-  //   remainder = (this.filterAccountTypeTotal('Asset') / this.filterAccountTypeTotal('Liability')) % 1 ;
-  //   return quotient + remainder;
-  // }
-
-  currentRatio() {
-    return this.returnSubtype('Current Asset') / this.returnSubtype('Current Liability') * 100;
+  totalExpense() {
+    let total = 0;
+    this.adjustAccount().forEach((account) => {
+      if (account.accountType === 'Expense' && account.accountActive === true) {
+        total = total + account.accountBalance;
+      }
+    });
+    return total;
   }
 
   totalRevenue() {
@@ -191,73 +236,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     return total;
   }
 
-  totalExpense() {
-    let total = 0;
-    this.adjustAccount().forEach((account) => {
-      if (account.accountType === 'Expense' && account.accountActive === true) {
-        total = total + account.accountBalance;
-      }
-    });
-    return total;
-  }
-
-  returnOnAssetsRatio() {
-    return ((this.totalRevenue() - this.totalExpense()) / this.filterAccountTypeTotal('Asset')) * 100;
-  }
-
-  // returnOnAssetsRatio() {
-  //   let assetQuotient = 0;
-  //   let assetRemainder = 0;
-  //   let quotient = 0;
-  //   let remainder = 0;
-  //   assetQuotient = Math.floor(this.filterAccountTypeTotal('Asset') / this.filterByNumberOfAccounts('Asset'));
-  //   assetRemainder = (this.filterAccountTypeTotal('Asset') / this.filterByNumberOfAccounts('Asset')) % 1 ;
-  //   const totalIncome = this.totalRevenue() - this.totalExpense();
-  //   const averageAssets = assetQuotient + assetRemainder;
-  //   quotient = Math.floor(totalIncome / averageAssets);
-  //   remainder =  ((totalIncome / averageAssets) % 1 );
-  //   return quotient + remainder;
-  // }
-
-  // returnOnEquityRatio() {
-  //   let equityQuotient = 0;
-  //   let equityRemainder = 0;
-  //   let quotient = 0;
-  //   let remainder = 0;
-  //   equityQuotient = Math.floor(this.filterAccountTypeTotal('Equity') / this.filterByNumberOfAccounts('Equity'));
-  //   equityRemainder = (this.filterAccountTypeTotal('Equity') / this.filterByNumberOfAccounts('Equity')) % 1 ;
-  //   const totalIncome = this.totalRevenue() - this.totalExpense();
-  //   const averageAssets = equityQuotient + equityRemainder;
-  //   quotient = Math.floor(totalIncome / averageAssets);
-  //   remainder =  ((totalIncome / averageAssets) % 1 );
-  //   return quotient + remainder;
-  // }
-
-  returnOnEquityRatio() {
-    return ((this.totalRevenue() - this.totalExpense()) / this.filterAccountTypeTotal('Equity')) * 100;
-  }
-
-    assetTurnoverRatio() {
-    let assetQuotient = 0;
-    let assetRemainder = 0;
-    let quotient = 0;
-    let remainder = 0;
-    assetQuotient = Math.floor(this.filterAccountTypeTotal('Asset') / this.filterByNumberOfAccounts('Asset'));
-    assetRemainder = (this.filterAccountTypeTotal('Asset') / this.filterByNumberOfAccounts('Asset')) % 1 ;
-    const NetRevenue = this.totalRevenue();
-    const averageAssets = assetQuotient + assetRemainder;
-    quotient = Math.floor(NetRevenue / averageAssets);
-    remainder =  ((NetRevenue / averageAssets) % 1 );
-    return quotient + remainder;
-  }
-
-  netProfitMargin() {
-    const income = this.totalRevenue() - this.totalExpense();
-    const quotient = Math.floor(income / this.totalRevenue());
-    const remainder =  ((income / this.totalRevenue()) % 1 );
-    return quotient + remainder;
-  }
-
   returnSubtype(compared: string) {
     let total = 0;
     const account = this.adjustAccount().filter(entry => entry.accountSubType === compared);
@@ -266,28 +244,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
     return total;
   }
-
-  // filterAccountSubTypeTotal(accountSubType: string) {
-  //   let total = 0;
-  //   const account = this.allAccounts.filter(entry => entry.accountSubType === accountSubType);
-  //   account.forEach((account) => {
-  //     total = total + account.accountBalance;
-  //   });
-  //   return total;
-  // }
-
-  quickRatio() {
-    const numerator = ((this.totalCurrentAssets() + this.totalOtherAssets()) - this.returnSubtype('Inventories'));
-    const liability = this.filterAccountTypeTotal('Liability');
-    const quotient = Math.floor(numerator / liability);
-
-    const remainder =  ((numerator / liability) % 1 );
-    return quotient + remainder;
-  }
-
   totalOtherAssets() {
     let total = 0;
-    const accounts = this.accountList.filter(account => account.accountTerm !== 'Current Asset');
+    const accounts = this.accountList.filter(account => account.accountSubType !== 'Current Asset');
     accounts.forEach((account) => {
       if (account.accountType === 'Asset' && account.accountActive === true) {
         total = total + account.accountBalance;
@@ -298,7 +257,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   totalCurrentAssets() {
     let total = 0;
-    const accounts = this.accountList.filter(account => account.accountTerm === 'Current Asset');
+    const accounts = this.accountList.filter(account => account.accountSubType === 'Current Asset');
     accounts.forEach((account) => {
       if (account.accountType === 'Asset' && account.accountActive === true) {
         total = total + account.accountBalance;
@@ -321,5 +280,28 @@ export class HomeComponent implements OnInit, AfterViewInit {
       });
     });
     return this.allAccounts;
+  }
+
+  isPending() {
+   const pendents = this.allJournalEntries.filter(entry => entry.status === 'pending');
+   return pendents.length >= 1;
+  }
+
+  isEntrySingular() {
+    const pendents = this.allJournalEntries.filter(entry => entry.status === 'pending');
+    if (pendents.length === 1) {
+      return 'entry';
+    } else {
+      return 'entries';
+    }
+  }
+
+  isSingular() {
+    const pendents = this.allJournalEntries.filter(entry => entry.status === 'pending');
+    if (pendents.length === 1) {
+      return 'is';
+    } else {
+      return 'are';
+    }
   }
 }

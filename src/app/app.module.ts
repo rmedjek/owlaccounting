@@ -72,8 +72,6 @@ import { IncomeStatementComponent } from './view-statements/income-statement/inc
 import { BalanceSheetComponent } from './view-statements/balance-sheet/balance-sheet.component';
 import { ChartsModule } from 'ng2-charts';
 
-
-// @ts-ignore
 @NgModule({
     imports: [
         BrowserModule,

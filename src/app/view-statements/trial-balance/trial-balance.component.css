@@ -30,6 +30,13 @@ tr:hover, .hoverStyle:hover {
   right: 20px;
 }
 
+.table tr:nth-child(48) td:nth-child(2):before {
+  content: '$';
+  position: relative;
+  left: 235px;
+}
+
+
 .align-right{
   text-align: right;
 }

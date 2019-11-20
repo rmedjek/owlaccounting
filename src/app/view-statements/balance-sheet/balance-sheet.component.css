@@ -9,6 +9,25 @@
   position: relative;
 }
 
+.table tr:nth-child(71) td:nth-child(2):before {
+  content: '$';
+  right: 40px;
+  position: relative;
+}
+
+.table tr:nth-child(126) td:nth-child(2):before {
+  content: '$';
+  right: 10px;
+  position: relative;
+}
+
+.table tr:nth-child(134) td:nth-child(2):before {
+  content: '$';
+  right: 20px;
+  position: relative;
+}
+
+
 .table td {
   padding: 0.25rem;
 }

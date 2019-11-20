@@ -1,3 +1,9 @@
+canvas {
+    height: 600px;
+    width: 1600px;
+}
+
+
 .header-title{
     text-align: center;
     /*color: #126178;*/
@@ -183,6 +189,16 @@ h1{
     padding: 10px;
 }
 
+.panel-body2 {
+    padding: 10px;
+    background: rgb(0, 151, 19, 0.2);
+}
+
+.panel-body3 {
+    padding: 10px;
+    background: rgb(238, 0, 14, 0.3);
+}
+
 .panel-heading {
     padding: 10px 15px;
     border-bottom: 1px solid transparent;
@@ -251,6 +267,19 @@ h1{
 
 .row {
     position: relative;
-    right: 45%;
+    right: 30%;
     flex-wrap: nowrap;
+}
+
+.alert-primary {
+    position: relative;
+    float: left;
+    right: 30%;
+}
+
+h4 {
+    position: relative;
+    right: 30%;
+    flex-wrap: nowrap;
+    color: rgba(0, 0, 238, 0.7);
 }

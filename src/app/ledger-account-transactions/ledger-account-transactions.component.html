@@ -7,6 +7,12 @@
 <!--    <button class="back-button" mat-raised-button color="primary"-->
 <!--            matTooltip="back to journalizing"-->
 <!--            [routerLink]="['/journalize']">Back</button>-->
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker" placeholder="Choose a date" (dateInput)="filterDates($event)" (dateChange)="filterDates($event)">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <br>
     <div *ngIf="!journalEntryDisplay" class="my-header">
 
       <h5 style="float: left">Name: {{accountName}}</h5>
@@ -35,7 +41,8 @@
       <td *ngIf="!ledgerEntry.accountDebit"></td>
       <td>{{ledgerEntry.amount | currency: 'USD': "symbol": '1.2-2'}}</td>
       <td *ngIf="ledgerEntry.accountDebit"></td>
-      <td></td>
+<!--      <td>{{ ledgerEntry.accountBalance }}</td>-->
+
     </tr>
     </tbody>
   </table>

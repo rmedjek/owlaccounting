@@ -340,7 +340,8 @@ export class JournalizeComponent implements OnInit {
 
       entry.declineReason = prompt('Enter Reason (if applicable):');
       const newLog = new LogTrack();
-      newLog.logDataInput = 'Declines a journal entry with ' + 'debit account name: ' + entry.accountDebit + ' credit account name: '
+      newLog.logDataInput = 'Declines a journal entry with ' + 'debit accountBalance name: ' +
+          entry.accountDebit + ' credit accountBalance name: '
           + entry.accountCredit;
       newLog.logInitial =  entry.description + 'Status: Pending';
       newLog.logFinal =  entry.description + 'Status: Declined';
@@ -355,7 +356,7 @@ export class JournalizeComponent implements OnInit {
   updateAccountBalance(journal: JournalEntry) {
     journal.accountDebit.forEach((account, index) => {
       this.spinnerService.show();
-      this.ledgerService.createLedgerEntry(journal, account, journal.amountDebit[index], true )
+      this.ledgerService.createLedgerEntry(journal, account, journal.amountDebit[index], true, )
           .pipe(first()).subscribe(() => {
             this.spinnerService.hide();
           });
@@ -365,7 +366,8 @@ export class JournalizeComponent implements OnInit {
     });
 
     journal.accountCredit.forEach((account, index) => {
-      this.ledgerService.createLedgerEntry(journal, account, journal.amountCredit[index], false ).pipe(first()).subscribe(() => {});
+      this.ledgerService.createLedgerEntry(journal, account, journal.amountCredit[index], false)
+          .pipe(first()).subscribe(() => {});
       const creditAccount = this.allAccounts.filter(
           dataAccount => dataAccount.accountName.includes(journal.accountCredit[index]));
       this.updateCreditBalance(creditAccount[0], journal, index);

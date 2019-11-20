@@ -25,7 +25,7 @@
       <tbody>
 
       <tr class="hoverStyle">
-        <td>Begining Balance</td>
+        <td>Retained Earning Begining</td>
         <td></td>
         <td style="text-align: right">$0.00</td>
       </tr>
@@ -36,6 +36,12 @@
         <td class="align-right">{{totalRevenue() - totalExpense() | number:'1.2'}}</td>
       </tr>
 
+      <tr>
+        <td>Total</td>
+        <td></td>
+        <td class="align-right singleUnderline">{{(totalRevenue() - totalExpense()) | number:'1.2'}}</td>
+      </tr>
+
       <tr class="hoverStyle">
         <td>Less Drawings</td>
         <td></td>
@@ -43,7 +49,7 @@
       </tr>
 
       <tr class="hoverStyle">
-        <td>Ending Balance</td>
+        <td>Retained Earning Ending</td>
         <td></td>
         <td style="text-align: right"><span class="doubleUnderline"><b>{{totalRevenue() - totalExpense() | currency: 'USD': "symbol": '1.2-2'}}</b></span></td>
       </tr>

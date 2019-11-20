@@ -27,7 +27,7 @@ export class AccountTypeSelectorComponent implements OnInit {
       newLog.logDataInput = 'Changed the account Type of account ' +
           account.accountName + ' to ' + selected + ' from ' + account.accountType;
       newLog.logInitial =  account.accountName + ' type: ' + account.accountType;
-      newLog.logFinal =  account.accountName + 'type: ' + selected;
+      newLog.logFinal =  account.accountName + ' type: ' + selected;
 
       account.accountType = selected;
       this.chartofAccountsService.updateAccount(account, newLog).pipe(first()).subscribe(() => {
