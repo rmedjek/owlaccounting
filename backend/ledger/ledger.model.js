@@ -8,7 +8,6 @@ const schema = new Schema({
     accountName: { type: String, unique: false, required: true },
     entryType: { type: String, required: true },
     amount: { type: Number, required: true},
-    accountBalance: { type: Number, required: true},
     description: { type: String, required: false},
     createdDate: { type: Date, required: true},
     accountType:  { type: String, required: false},
