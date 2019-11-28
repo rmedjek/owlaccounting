@@ -21,6 +21,7 @@ export class LedgerAccountTransactionsComponent implements OnInit {
   journalEntryDisplay = false;
   accountName = JSON.parse(localStorage.getItem('accountSortBy'));
   accountNumber = JSON.parse(localStorage.getItem('accountNumber'));
+  index = 0;
 
   constructor( private ledgerService: LedgerService,
                private router: Router,
@@ -42,6 +43,17 @@ export class LedgerAccountTransactionsComponent implements OnInit {
     this.journalEntryService.getAll().pipe(first()).subscribe(entry => {
       this.allJournalEntries = entry;
     });
+  }
+
+  calculateRunningTotals(index){
+    this.index = index;
+    var sum = 0;
+    for(var i = 0; i < this.allEntries.length; i++){
+      sum += this.allEntries[i].amount;
+    }
+
+    index++;
+    return sum;
   }
 
   filterItemList(entries: Ledger[]) {

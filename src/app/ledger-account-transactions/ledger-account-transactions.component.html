@@ -24,6 +24,7 @@
       <th><a class="sort-by" >Account Name</a></th>
       <th><a class="sort-by">Debit</a></th>
       <th><a class="sort-by">Credit</a></th>
+      <th><a class="sort-by">Running Total</a></th>
     </tr>
     </thead>
     <tbody>
@@ -34,6 +35,7 @@
       <td *ngIf="!ledgerEntry.accountDebit"></td>
       <td>{{ledgerEntry.amount | currency: 'USD': "symbol": '1.2-2'}}</td>
       <td *ngIf="ledgerEntry.accountDebit"></td>
+      <td>{{calculateRunningTotals(0)}}</td>
     </tr>
     </tbody>
   </table>
