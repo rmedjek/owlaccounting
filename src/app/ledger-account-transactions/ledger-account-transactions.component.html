@@ -35,7 +35,7 @@
       <td *ngIf="!ledgerEntry.accountDebit"></td>
       <td>{{ledgerEntry.amount | currency: 'USD': "symbol": '1.2-2'}}</td>
       <td *ngIf="ledgerEntry.accountDebit"></td>
-      <td>{{calculateRunningTotals(0)}}</td>
+      <td>{{calculateRunningTotals() | currency: 'USD': "symbol": '1.2-2'}}</td>
     </tr>
     </tbody>
   </table>
