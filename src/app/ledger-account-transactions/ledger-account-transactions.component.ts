@@ -6,6 +6,7 @@ import { Ledger } from '../_models/ledger';
 import { JournalEntry } from '../_models/journal-entries';
 import { LedgerService } from '../_services/ledger.service';
 import { JournalEntryService } from '../_services/journal-entry.service';
+import { trigger } from '@angular/animations';
 
 
 @Component({
@@ -49,7 +50,10 @@ export class LedgerAccountTransactionsComponent implements OnInit {
     
     var sum = 0;
     for(var i = 0; i < this.index + 1; i++){
-      sum += this.accountSpecificEntries[i].amount;
+      if(this.accountSpecificEntries[i].accountDebit)
+        sum += this.accountSpecificEntries[i].amount;
+      else
+        sum -= this.accountSpecificEntries[i].amount;
     }
 
     this.index++;
