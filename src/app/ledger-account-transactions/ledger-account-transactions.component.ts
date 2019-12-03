@@ -1,13 +1,14 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {AlertService} from '../_services';
-import {first} from 'rxjs/operators';
+import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AlertService } from '../_services';
+import { first } from 'rxjs/operators';
 import { Ledger } from '../_models/ledger';
 import { JournalEntry } from '../_models/journal-entries';
 import { LedgerService } from '../_services/ledger.service';
 import { JournalEntryService } from '../_services/journal-entry.service';
 import { trigger } from '@angular/animations';
-
+import { ChartOfAccounts } from '../_models/chartOfAccounts';
+import { ChartOfAccountsService } from '../_services/chart-of-accounts.service';
 
 @Component({
   selector: 'app-account-specific-transactions',
@@ -23,11 +24,15 @@ export class LedgerAccountTransactionsComponent implements OnInit {
   accountName = JSON.parse(localStorage.getItem('accountSortBy'));
   accountNumber = JSON.parse(localStorage.getItem('accountNumber'));
   index = 0;
+  totalBalance = 0;
+  totalBalanceIndex = 0;
 
-  constructor( private ledgerService: LedgerService,
-               private router: Router,
-               private alertService: AlertService,
-               private journalEntryService: JournalEntryService) { }
+
+  constructor(private ledgerService: LedgerService,
+    private router: Router,
+    private alertService: AlertService,
+    private journalEntryService: JournalEntryService,
+    private chartOfAccountsService: ChartOfAccountsService) { }
 
   ngOnInit() {
     this.loadAllSpecificEntries();
@@ -46,22 +51,42 @@ export class LedgerAccountTransactionsComponent implements OnInit {
     });
   }
 
-  calculateRunningTotals(){
-    
+  calculateTotalBalance() {
     var sum = 0;
-    for(var i = 0; i < this.index + 1; i++){
-      if(this.accountSpecificEntries[i].accountDebit)
+
+    for (var i = 0; i < this.accountSpecificEntries.length; i++) {
+      if (this.accountSpecificEntries[i].accountDebit)
         sum += this.accountSpecificEntries[i].amount;
       else
         sum -= this.accountSpecificEntries[i].amount;
     }
 
+    return sum;
+
+  }
+
+  calculateRunningTotals() {
+
+    var sum = 0;
+    for (var i = 0; i < this.index + 1; i++) {
+
+
+
+      if (this.accountSpecificEntries[i].accountDebit)
+        sum += this.accountSpecificEntries[i].amount;
+      else
+        sum -= this.accountSpecificEntries[i].amount;
+
+
+
+    }
     this.index++;
     return sum;
+
   }
 
   filterItemList(entries: Ledger[]) {
-    this.accountSpecificEntries  = this.allEntries.filter(entry => entry.accountName === JSON.parse(localStorage.getItem('accountSortBy')));
+    this.accountSpecificEntries = this.allEntries.filter(entry => entry.accountName === JSON.parse(localStorage.getItem('accountSortBy')));
     this.accountSpecificEntries.sort((x, y) => {
       // true values first
       return (x === y) ? 0 : x ? -1 : 1;
@@ -72,9 +97,9 @@ export class LedgerAccountTransactionsComponent implements OnInit {
   }
 
   referenceJournal(reference: string) {
-  this.journalEntryDisplay = true;
-  this.specificJournalEntry = this.allJournalEntries.filter(entry => entry.id === reference);
-  return this.specificJournalEntry;
+    this.journalEntryDisplay = true;
+    this.specificJournalEntry = this.allJournalEntries.filter(entry => entry.id === reference);
+    return this.specificJournalEntry;
   }
 
   onBackClick() {
