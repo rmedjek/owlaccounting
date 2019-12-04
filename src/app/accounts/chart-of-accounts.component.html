@@ -3,8 +3,7 @@
         <app-sidebar-menu></app-sidebar-menu>
         <div *ngIf="accountBalanceError" class="alert-danger">Account Balance must be zero</div>
         <form>
-            <input type="search" id="myInput" required class="search-box"
-                   (keypress)="loadUsersBySearch()" placeholder="Search by name or username" title="Type in a name">
+            <input type="search" id="myInput" required class="search-box" (keyup)="loadUsersBySearch()" (keypress)="loadUsersBySearch()" placeholder="Search by name or username" title="Type in a name">
             <button class="close-icon" (click)="resetInput()" type="reset"></button>
             <button mat-raised-button color="primary"
                         matTooltip="Create a new account record"
@@ -62,7 +61,7 @@
                 </button>
             </td>
             <td>
-                <button matTooltip="edit the account" mat-menu-item [routerLink]="[chartOfAccounts.id, 'view']">
+                <button matTooltip="view the account" mat-menu-item [routerLink]="[chartOfAccounts.id, 'view']">
                     <span>View</span>
                 </button>
             </td>
@@ -79,7 +78,7 @@
             <td >{{chartOfAccounts.accountType}} </td>
             <td >{{chartOfAccounts.accountSubType}} </td>
             <td style="text-align: center">{{chartOfAccounts.normalSide}}</td>
-            <td>{{chartOfAccounts.accountBalance | currency: 'USD': "symbol": '1.2-2'}} </td>
+            <td>{{chartOfAccounts.accountBalance | currency: 'USD': "symbol": '1.2-2' | minusSignToParens}} </td>
 <!--            <td >{{chartOfAccounts.accountInitBalance | currency: 'USD': "symbol": '1.2-2'}} </td>-->
             <td >{{chartOfAccounts.createdBy}} </td>
             <td >{{chartOfAccounts.createdDate |date:'MM/dd/yyyy h:mma'}} </td>

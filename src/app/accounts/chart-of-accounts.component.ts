@@ -11,7 +11,7 @@ import { ToasterPosition } from '../_models/toaster-enum.position';
 @Component({
   selector: 'app-chart-of-accounts',
   templateUrl: './chart-of-accounts.component.html',
-  styleUrls: ['./chart-of-accounts.component.css']
+  styleUrls: ['./chart-of-accounts.component.css'],
 })
 export class ChartOfAccountsComponent implements OnInit {
   currentUser: User;
@@ -47,8 +47,11 @@ export class ChartOfAccountsComponent implements OnInit {
     if (search.length === 0 || search.length === null) {
       this.accountList = this.allAccounts;
     } else {
-      this.accountList = this.accountList.filter(users => users.accountName.includes(search) || users.accountSubType.includes(search) ||
-          users.accountType.includes(search));
+      this.accountList = this.accountList.filter(account =>
+          account.accountNumber.toString().includes(search) ||
+          account.accountName.toLowerCase().includes(search) ||
+          account.accountSubType.includes(search) ||
+          account.accountType.includes(search));
     }
   }
 
@@ -429,4 +432,5 @@ export class ChartOfAccountsComponent implements OnInit {
     localStorage.setItem('accountNumber', JSON.stringify(accountNumber));
     this.router.navigate(['/ledger']);
   }
+
 }

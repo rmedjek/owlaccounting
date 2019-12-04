@@ -34,20 +34,19 @@ export class HomeComponent implements OnInit {
 
   public pieChartOptions: ChartOptions = {
     responsive: true,
+
     maintainAspectRatio: false,
     legend: {
       display: true,
       labels: {
-        fontSize: 16
+        fontSize: 16,
+        usePointStyle: true
       },
       position: 'top',
     },
     plugins: {
       datalabels: {
         color: '#5d5d5d',
-        formatter: (value, ctx) => {
-          return ctx.chart.data.labels[ctx.dataIndex];
-        },
         font: {
           size: 18,
         }
@@ -191,7 +190,7 @@ export class HomeComponent implements OnInit {
   }
 
   quickRatio() {
-    return ((this.returnSubtype('Current Asset') - this.returnSubtype('Inventory')) /
+    return ((this.returnSubtype('Current Asset') - this.returnSubtype('Inventories')) /
         this.returnSubtype('Current Liability'));
   }
 
@@ -203,6 +202,15 @@ export class HomeComponent implements OnInit {
   filterAccountTypeTotal(accountType: string) {
     let total = 0;
     const account = this.allAccounts.filter(entry => entry.accountType === accountType);
+    account.forEach((account) => {
+      total = total + account.accountBalance;
+    });
+    return total;
+  }
+
+  filterByName(accountName: string) {
+    let total = 0;
+    const account = this.allAccounts.filter(entry => entry.accountName === accountName);
     account.forEach((account) => {
       total = total + account.accountBalance;
     });
@@ -280,28 +288,5 @@ export class HomeComponent implements OnInit {
       });
     });
     return this.allAccounts;
-  }
-
-  isPending() {
-   const pendents = this.allJournalEntries.filter(entry => entry.status === 'pending');
-   return pendents.length >= 1;
-  }
-
-  isEntrySingular() {
-    const pendents = this.allJournalEntries.filter(entry => entry.status === 'pending');
-    if (pendents.length === 1) {
-      return 'entry';
-    } else {
-      return 'entries';
-    }
-  }
-
-  isSingular() {
-    const pendents = this.allJournalEntries.filter(entry => entry.status === 'pending');
-    if (pendents.length === 1) {
-      return 'is';
-    } else {
-      return 'are';
-    }
   }
 }

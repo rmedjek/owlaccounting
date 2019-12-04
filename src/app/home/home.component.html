@@ -192,11 +192,59 @@
         </div>
     </div>
 
-    <h4>Entries Stats</h4>
+    <div class="row">
+        <div class="col-xs-8 col-md-3 offset-sm-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h6 style="text-align: center">Total Cash</h6>
+                </div>
+                <div class="panel-body2">
+                    <div class="flex-row flex-v-center flex-h-center"> {{ filterByName('Cash') | currency: 'USD': "symbol": '1.2-2'}}
+                    </div>
+                </div>
+            </div>
+        </div>
+         <div class="col-xs-8 col-md-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h6 style="text-align: center">Total Equity</h6>
+                </div>
+                <div class="panel-body2">
+                    <div class="flex-row flex-v-center flex-h-center"> {{ filterAccountTypeTotal('Equity') | currency: 'USD': "symbol": '1.2-2' }}
+                    </div>
+                </div>
+            </div>
+        </div>
+         <div class="col-xs-8 col-md-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h6 style="text-align: center">Total Current Liability</h6>
+                </div>
+                <div class="panel-body2">
+                    <div class="flex-row flex-v-center flex-h-center">{{ returnSubtype('Current Liability') | currency: 'USD': "symbol": '1.2-2' }}
+                    </div>
+                </div>
+            </div>
+        </div>
+         <div class="col-xs-8 col-md-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h6 style="text-align: center">Net Profit</h6>
+                </div>
+                <div class="panel-body2">
+                    <div class="flex-row flex-v-center flex-h-center"> {{ totalRevenue() - totalExpense() | currency: 'USD': "symbol": '1.2-2'}}
+                    </div>
+                </div>
+            </div>
+        </div>
+     </div>
+
+
+<!--    <h4>Entries Stats</h4>-->
 
      <div class="row">
-         <div class="col-xs-8 col-md-3" style="display: block; height: 600px; width: 450px;">
-                <canvas baseChart
+         <div class="col-xs-8 col-md-3" >
+                <canvas baseChart style="display: block; height: 400px; position: relative; bottom: 30%"
                         [data]="pieChartData" *ngIf="pieChartData"
                         [labels]="pieChartLabels"
                         [chartType]="pieChartType"

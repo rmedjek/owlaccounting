@@ -269,14 +269,14 @@ export class JournalizeComponent implements OnInit {
         const files = (document.getElementById('myFile') as HTMLInputElement).files[0];
 
         if (files) {
-          const x = await this.getBase64(files).then((data) => newJournal.imageData = data.toString());
+          await this.getBase64(files).then((data) => newJournal.imageData = data.toString());
           newJournal.imageName = files.name;
           newJournal.imageType = files.type;
         }
         this.spinnerService.show();
         this.journalEntryService.createNewEntry(newJournal).pipe(first())
             .subscribe(
-                data => {
+                () => {
                   this.debitAccountsLists = [];
                   this.creditAccountsLists = [];
                   this.loadAllJournalEntries();
@@ -480,13 +480,15 @@ export class JournalizeComponent implements OnInit {
   }
 
   approvedOrPendingSearch() {
+    this.accountList = this.allAccounts;
     const search: string = (document.getElementById('myInput') as HTMLInputElement).value;
     if (search.length === 0 || search.length === null) {
       this.entriesList = this.entriesListBackup;
+      this.accountList = this.allAccounts;
     } else {
       this.entriesList = this.entriesListBackup.filter(entry => entry.status.includes(search) ||
           entry.createdBy.includes(search) || entry.description.includes(search) || entry.type.includes(search));
-      this.accountList.filter(account => account.accountName.includes(search));
+      this.accountList.filter(account => account.accountName.toLowerCase().includes(search));
     }
   }
 
@@ -497,7 +499,7 @@ export class JournalizeComponent implements OnInit {
     } else {
       this.allEntries = this.allEntries.filter(entry => entry.status.includes(search) ||
           entry.createdBy.includes(search) || entry.description.includes(search) || entry.type.includes(search));
-      this.accountList.filter(account => account.accountName.includes(search));
+      this.accountList.filter(account => account.accountName.toLowerCase().includes(search));
     }
   }
 

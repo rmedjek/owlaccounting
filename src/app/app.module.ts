@@ -71,6 +71,7 @@ import { RetainedEarningsComponent } from './view-statements/retained-earnings/r
 import { IncomeStatementComponent } from './view-statements/income-statement/income-statement.component';
 import { BalanceSheetComponent } from './view-statements/balance-sheet/balance-sheet.component';
 import { ChartsModule } from 'ng2-charts';
+import { MinusSignToParens } from './_helpers/minus.sign.to.parens';
 
 @NgModule({
     imports: [
@@ -112,6 +113,9 @@ import { ChartsModule } from 'ng2-charts';
         ToastrModule.forRoot(),
         BsDropdownModule.forRoot()
     ],
+    // exports: [
+    //   MinusSignToParens,
+    // ],
   declarations: [
     AppComponent,
     AlertComponent,
@@ -134,7 +138,8 @@ import { ChartsModule } from 'ng2-charts';
     TrialBalanceComponent,
     RetainedEarningsComponent,
     IncomeStatementComponent,
-    BalanceSheetComponent
+    BalanceSheetComponent,
+    MinusSignToParens
   ],
   providers: [
     AuthGuard,
@@ -150,6 +155,7 @@ import { ChartsModule } from 'ng2-charts';
     SystemAlertsForUsersService,
     LedgerService,
     ToasterService,
+      MinusSignToParens,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],

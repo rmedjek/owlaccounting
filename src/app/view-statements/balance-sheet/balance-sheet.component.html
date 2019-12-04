@@ -62,7 +62,7 @@
           <a style="color: blue" (click)="setLedgerSortEntry(account.accountName, account.accountNumber)"> &nbsp; &nbsp;{{account.accountName}}</a>
         </td>
         <td style="float: right" *ngIf="(account.accountType === 'Asset' && account.accountSubType ==='Non-current Asset' && account.accountName === 'Accumulated Depreciation')
-          && account.accountActive === true">({{account.accountBalance | number:'1.2'}})</td>
+          && account.accountActive === true">{{account.accountBalance | number:'1.2' | minusSignToParens}}</td>
 <!--        <td *ngIf="(account.accountType === 'Asset' && account.accountSubType ==='Non-current Asset') && account.accountActive === true">-->
 <!--        </td>-->
       </tr>
