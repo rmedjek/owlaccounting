@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 import {first} from 'rxjs/operators';
 import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -63,7 +63,7 @@ export class BalanceSheetComponent implements OnInit {
 
   totalCurrentAssets() {
     let total = 0;
-    const accounts = this.accountList.filter(account => account.accountTerm === 'Current Asset');
+    const accounts = this.accountList.filter(account => account.accountSubType === 'Current Asset');
     accounts.forEach((account) => {
       if (account.accountType === 'Asset' && account.accountActive === true) {
         total = total + account.accountBalance;
@@ -72,15 +72,34 @@ export class BalanceSheetComponent implements OnInit {
     return total;
   }
 
-  totalOtherAssets() {
+  totalNonCurrentAssets() {
     let total = 0;
-    const accounts = this.accountList.filter(account => account.accountTerm !== 'Current Asset');
+    const accounts = this.accountList.filter(account => account.accountSubType === 'Non-current Asset');
     accounts.forEach((account) => {
       if (account.accountType === 'Asset' && account.accountActive === true) {
         total = total + account.accountBalance;
-        if (account.accountName === 'Accumulated Depreciation') {
-          total = total - (2 * account.accountBalance);
-        }
+      }
+    });
+    return total;
+  }
+
+  sortAssets() {
+    const result = [];
+    this.accountList.forEach( (account) => {
+      if (account.accountType === 'Asset') {
+        result.push(account);
+      }
+    });
+    return result[0].accountName;
+  }
+
+
+  totalOtherAssets() {
+    let total = 0;
+    const accounts = this.accountList.filter(account => account.accountSubType !== 'Current Asset');
+    accounts.forEach((account) => {
+      if (account.accountType === 'Asset' && account.accountActive === true) {
+        total = total + account.accountBalance;
       }
     });
     return total;
@@ -89,7 +108,7 @@ export class BalanceSheetComponent implements OnInit {
 
   totalCurrentLiability() {
     let total = 0;
-    const accounts = this.accountList.filter(account => account.accountTerm === 'Current Liability');
+    const accounts = this.accountList.filter(account => account.accountSubType === 'Current Liability');
     accounts.forEach((account) => {
       if (account.accountType === 'Liability' && account.accountActive === true) {
         total = total + account.accountBalance;
@@ -238,23 +257,6 @@ export class BalanceSheetComponent implements OnInit {
     return total;
   }
 
-  adjustAccount() {
-    const closingEntries = this.entries.filter((entry) => entry.entryType === 'closing');
-
-    this.allAccounts.forEach((account) => {
-      closingEntries.forEach((entry) => {
-        if (account.accountName === entry.accountName) {
-          if ((account.accountType === 'Expense' || account.accountType === 'Asset') && entry.entryType === 'closing') {
-            account.accountBalance =  entry.amount;
-          } else {
-            account.accountBalance =  entry.amount;
-          }
-        }
-      });
-    });
-    return this.allAccounts;
-  }
-
   incomeEstimation() {
     return this.totalRevenue() - this.totalExpense();
   }
@@ -262,7 +264,7 @@ export class BalanceSheetComponent implements OnInit {
   setLedgerSortEntry(tTableSortAccount: string, accountNumber: number) {
     localStorage.setItem('accountSortBy', JSON.stringify(tTableSortAccount));
     localStorage.setItem('accountNumber', JSON.stringify(accountNumber));
-    this.router.navigate(['/ttable']);
+    this.router.navigate(['/ledger']);
   }
 
 
@@ -280,6 +282,4 @@ export class BalanceSheetComponent implements OnInit {
       pdf.save('Balance-Sheet.pdf'); // Generated PDF
     });
   }
-
-
 }

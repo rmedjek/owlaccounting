@@ -1,11 +1,10 @@
 <div class="row">
-  <div class="col-sm-10 offset-sm-0">
+  <div class="col-sm-6 offset-sm-2">
     <app-sidebar-menu></app-sidebar-menu>
     <div class="title-container-header">
       <div class="center">Owl Occounting</div>
-      <br>
       <div class="center">Statement of Retained Earnings</div>
-      <div class="center">As of {{date | date:'MMMM dd'}}</div>
+      <div class="center">Period ended in {{date | date:'MMMM dd, yyyy'}}</div>
     </div>
     <span>Sort by Date: </span>
     <div class="input-group">
@@ -26,7 +25,7 @@
       <tbody>
 
       <tr class="hoverStyle">
-        <td>Begining Balance</td>
+        <td>Retained Earning Begining</td>
         <td></td>
         <td style="text-align: right">$0.00</td>
       </tr>
@@ -34,17 +33,23 @@
       <tr>
         <td>Net Income</td>
         <td></td>
-        <td class="align-right">{{totalRevenue() - totalExpense() | currency: 'USD': "symbol": '1.2-2'}}</td>
+        <td class="align-right">{{totalRevenue() - totalExpense() | number:'1.2'}}</td>
+      </tr>
+
+      <tr>
+        <td>Total</td>
+        <td></td>
+        <td class="align-right singleUnderline">{{(totalRevenue() - totalExpense()) | number:'1.2'}}</td>
       </tr>
 
       <tr class="hoverStyle">
         <td>Less Drawings</td>
         <td></td>
-        <td style="text-align: right">$0.00</td>
+        <td style="text-align: right">0.00</td>
       </tr>
 
       <tr class="hoverStyle">
-        <td>Ending Balance</td>
+        <td>Retained Earning Ending</td>
         <td></td>
         <td style="text-align: right"><span class="doubleUnderline"><b>{{totalRevenue() - totalExpense() | currency: 'USD': "symbol": '1.2-2'}}</b></span></td>
       </tr>

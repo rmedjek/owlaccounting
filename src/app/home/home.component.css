@@ -1,0 +1,285 @@
+canvas {
+    height: 600px;
+    width: 1600px;
+}
+
+
+.header-title{
+    text-align: center;
+    /*color: #126178;*/
+}
+.info-main{
+    margin: auto;
+    width: 100%;
+    padding: 10px;
+    border: 3px solid #126178;
+
+}
+.info-field{
+    background-color: #126178;
+    border-radius: 10px;
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
+
+th{
+    padding: 15px;
+    text-align: center;
+    background-color: #1496bc;
+    border: 1px solid #1496bc;
+}
+
+td{
+    text-align: center;
+    border: 1px solid #1496bc;
+}
+
+/*---------------------verticle bar graph ----------------------------------*/
+
+.bar-graph {
+    padding: 0;
+    width: 100%;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: flex-end;
+    -ms-flex-align: end;
+    align-items: flex-end;
+    height: 425px;
+    margin: 0;
+}
+
+.bar-graph li {
+    display: block;
+    padding: 1.5625rem 0;
+    position: relative;
+    text-align: center;
+    vertical-align: bottom;
+    border-radius: 4px 4px 0 0;
+    max-width: 20%;
+    height: 100%;
+    margin: 0 1.8% 0 0;
+    -webkit-flex: 1 1 15%;
+    -ms-flex: 1 1 15%;
+    flex: 1 1 15%;
+}
+
+.bar-graph .bar-graph-axis {
+    -webkit-flex: 1 1 8%;
+    -ms-flex: 1 1 8%;
+    flex: 1 1 8%;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+}
+
+.bar-graph .bar-graph-label {
+    margin: 0;
+    /*background-color: none;*/
+    color: #8a8a8a;
+    position: relative;
+}
+
+@media print, screen and (min-width: 40em) {
+    .bar-graph .bar-graph-label:before, .bar-graph .bar-graph-label:after {
+        content: "";
+        position: absolute;
+        border-bottom: 1px dashed #8a8a8a;
+        top: 0;
+        left: 0;
+        height: 50%;
+        width: 20%;
+    }
+}
+
+@media print, screen and (min-width: 40em) and (min-width: 64em) {
+    .bar-graph .bar-graph-label:before, .bar-graph .bar-graph-label:after {
+        width: 30%;
+    }
+}
+
+@media print, screen and (min-width: 40em) {
+    .bar-graph .bar-graph-label:after {
+        left: auto;
+        right: 0;
+    }
+}
+
+.bar-graph .percent {
+    letter-spacing: -3px;
+    opacity: 0.7;
+    width: 100%;
+    font-size: 1.875rem;
+    position: absolute;
+}
+
+@media print, screen and (min-width: 40em) {
+    .bar-graph .percent {
+    }
+}
+
+.bar-graph .percent span {
+    font-size: 1.875rem;
+}
+
+.bar-graph .description {
+    font-weight: 800;
+    opacity: 0.5;
+    text-transform: uppercase;
+    width: 100%;
+    font-size: 14px;
+    bottom: 20px;
+    position: absolute;
+    overflow: hidden;
+}
+
+.bar-graph .bar.primary {
+    border: 1px solid #1779ba;
+    background: linear-gradient(#2196e3, #1779ba 70%);
+}
+
+.bar-graph .bar.secondary {
+    border: 1px solid #767676;
+    background: linear-gradient(#909090, #767676 70%);
+}
+
+.bar-graph .bar.success {
+    border: 1px solid #3adb76;
+    background: linear-gradient(#65e394, #3adb76 70%);
+}
+
+.bar-graph .bar.warning {
+    border: 1px solid #ffae00;
+    background: linear-gradient(#ffbe33, #ffae00 70%);
+}
+
+.bar-graph .bar.alert {
+    border: 1px solid #cc4b37;
+    background: linear-gradient(#d67060, #cc4b37 70%);
+}
+
+.table-setter{
+    left:40%;
+    margin-left: 100px;
+    display: inline-block;
+    margin-right: auto;
+    width: 50%;
+}
+
+h2{
+    text-align: center;
+    padding-bottom: 4px;
+}
+
+h1{
+    text-align: center;
+    color: #126178;
+    padding-bottom: 4px;
+}
+
+/*---------------------ratio analysis ----------------------------------*/
+.panel-body {
+    padding: 10px;
+}
+
+.panel-body2 {
+    padding: 10px;
+    background: rgb(0, 151, 19, 0.2);
+}
+
+.panel-body3 {
+    padding: 10px;
+    background: rgb(238, 0, 14, 0.3);
+}
+
+.panel-heading {
+    padding: 10px 15px;
+    border-bottom: 1px solid transparent;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.panel-primary {
+    border-color: #337ab7;
+}
+
+.panel {
+    margin-bottom: 20px;
+    background-color: #fff;
+    border: 1px solid #337AB7;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+
+.panel-heading {
+    color: white;
+    background-color: #3f52b5;
+    border-color: #3f52b5;
+}
+.ratio-analysis{
+    float: right;
+    padding: 20px;
+}
+
+.ratio {
+    margin-left: 1rem;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+}
+
+.ratio.good {
+    background-color: green;
+}
+
+.ratio.warning {
+    background-color: yellow;
+}
+
+.ratio.bad {
+    background-color: red;
+}
+
+.ratio-value {
+    width:20px;
+    height:20px;
+}
+
+.flex-h-center {
+    justify-content: center;
+}
+
+.flex-v-center {
+    align-items: center;
+}
+
+.flex-row {
+    display: flex;
+}
+
+.row {
+    position: relative;
+    right: 30%;
+    flex-wrap: nowrap;
+}
+
+.alert-primary {
+    position: relative;
+    float: left;
+    right: 30%;
+}
+
+h4 {
+    position: relative;
+    right: 30%;
+    flex-wrap: nowrap;
+    color: rgba(0, 0, 238, 0.7);
+}

@@ -9,6 +9,10 @@ import { JournalEntryService } from '../_services/journal-entry.service';
 import { trigger } from '@angular/animations';
 import { ChartOfAccounts } from '../_models/chartOfAccounts';
 import { ChartOfAccountsService } from '../_services/chart-of-accounts.service';
+=======
+import { ChartOfAccounts } from '../_models/chartOfAccounts';
+import { ChartOfAccountsService } from '../_services/chart-of-accounts.service';
+import { MatDatepickerInputEvent } from '@angular/material';
 
 @Component({
   selector: 'app-account-specific-transactions',
@@ -20,6 +24,7 @@ export class LedgerAccountTransactionsComponent implements OnInit {
   accountSpecificEntries: Ledger[] = [];
   allJournalEntries: JournalEntry[] = [];
   specificJournalEntry: JournalEntry[] = [];
+  accountList: ChartOfAccounts[] = [];
   journalEntryDisplay = false;
   accountName = JSON.parse(localStorage.getItem('accountSortBy'));
   accountNumber = JSON.parse(localStorage.getItem('accountNumber'));
@@ -33,10 +38,16 @@ export class LedgerAccountTransactionsComponent implements OnInit {
     private alertService: AlertService,
     private journalEntryService: JournalEntryService,
     private chartOfAccountsService: ChartOfAccountsService) { }
-
+  constructor( private ledgerService: LedgerService,
+               private router: Router,
+               private alertService: AlertService,
+               private journalEntryService: JournalEntryService,
+               private  accountService: ChartOfAccountsService) { }
+  
   ngOnInit() {
     this.loadAllSpecificEntries();
     this.loadAllJournalEntries();
+    this.loadAllAccounts();
   }
 
   private loadAllSpecificEntries() {
@@ -83,6 +94,10 @@ export class LedgerAccountTransactionsComponent implements OnInit {
     this.index++;
     return sum;
 
+    private loadAllAccounts() {
+    this.accountService.getAll().pipe(first()).subscribe(account => {
+      this.accountList = account;
+    });
   }
 
   filterItemList(entries: Ledger[]) {
@@ -104,5 +119,15 @@ export class LedgerAccountTransactionsComponent implements OnInit {
 
   onBackClick() {
     this.journalEntryDisplay = false;
+  }
+
+  filterDates(event: MatDatepickerInputEvent<Date>) {
+    this.ledgerService.getAll().pipe(first()).subscribe(entry => {
+      this.allEntries = entry;
+      this.allEntries = this.allEntries.filter(entry => entry.createdDate.toString().slice(8, 10)  ===
+          `${event.value.toString().slice(8, 10)}`);
+
+      return this.allEntries;
+    });
   }
 }

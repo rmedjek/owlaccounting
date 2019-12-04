@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Ledger } from '../_models/ledger';
 import { JournalEntry } from '../_models/journal-entries';
+import { ChartOfAccounts } from '../_models/chartOfAccounts';
 
 @Injectable()
 export class LedgerService {
@@ -21,7 +22,7 @@ export class LedgerService {
     ledger.createdDate = entry.createdDate;
     ledger.description = entry.description;
     ledger.journalId = entry.id;
-
+    ledger.prId = entry.journalId;
     return this.http.post(`${environment.apiUrl}/ledger/newEntry`, ledger);
   }
 }

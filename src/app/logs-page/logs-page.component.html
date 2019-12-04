@@ -18,8 +18,8 @@
         <td>{{logTrack.createdBy}}</td>
         <td>
           <div style="min-width: 100px">{{logTrack.logDataInput}}</div>
-          <div *ngIf="logTrack.logInitial" class="sub-row"><b>Before: </b>{{logTrack.logInitial}}</div>
-          <div *ngIf="logTrack.logFinal" class="sub-row"><b>After: </b>{{logTrack.logFinal}}</div>
+          <div style="word-break: break-word" *ngIf="logTrack.logInitial" class="sub-row"><b>Before: </b>{{logTrack.logInitial}}</div>
+          <div style="word-break: break-word" *ngIf="logTrack.logFinal" class="sub-row"><b>After: </b>{{logTrack.logFinal}}</div>
         </td>
         <td>{{logTrack.dateTimeOfEvent | date : "M/d/yy h:mm a"}} &nbsp;&nbsp;&nbsp;
           <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>

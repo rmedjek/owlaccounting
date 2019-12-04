@@ -143,7 +143,7 @@
 <!--        <br *ngIf="emptyInput">-->
 <!--        <div *ngIf="negativeBalanceError" class="alert-danger">Credit and Debit amounts must not be negative</div>-->
 <!--        <br *ngIf="negativeBalanceError">-->
-        <div *ngIf="creditDebitAccountNamesMatchError" class="alert-danger">Credit and Debit accounts names must not match</div>
+<!--        <div *ngIf="creditDebitAccountNamesMatchError" class="alert-danger">Credit and Debit accounts names must not match</div>-->
     </div>
 </div>
 
@@ -195,7 +195,7 @@
             <td *ngIf="journalEntry.status === 'pending'"></td>
             <td *ngIf="journalEntry.status === 'pending'"><a href="{{journalEntry.imageData}}" download="{{journalEntry.imageName}}">
                 {{journalEntry.imageName}}</a></td>
-            <td colspan="2" *ngIf="(p === journalEntry.accountCredit.length-1) && journalEntry.status === 'pending'">
+            <td style="word-break: break-word" colspan="2" *ngIf="(p === journalEntry.accountCredit.length-1) && journalEntry.status === 'pending'">
                 {{journalEntry.description}}</td>
             <td colspan="2" *ngIf="(p !== journalEntry.accountCredit.length-1) && journalEntry.status === 'pending'"> </td>
             <td  *ngIf="journalEntry.status === 'pending'"><a style="color: #126178"
@@ -230,7 +230,7 @@
         <tr *ngFor="let account of journalEntry.accountCredit ; let p = index;">
 <!--            <td></td>-->
             <td><a href="{{journalEntry.imageData}}" download="{{journalEntry.imageName}}">{{journalEntry.imageName}}</a></td>
-            <td colspan="2"  *ngIf="(p === journalEntry.accountCredit.length-1)"> {{journalEntry.description}}</td>
+            <td  style="word-break: break-word" colspan="2"  *ngIf="(p === journalEntry.accountCredit.length-1)"> {{journalEntry.description}}</td>
             <td colspan="2"  *ngIf="(p !== journalEntry.accountCredit.length-1)"> </td>
             <td colspan="2" style="padding-left: 150px; "><a style="color: #126178;" (click)="setLedgerSortEntry(journalEntry.accountCredit[p], journalEntry.id)">{{journalEntry.accountCredit[p]}}</a></td>
             <td ></td>

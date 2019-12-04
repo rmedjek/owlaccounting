@@ -3,7 +3,7 @@
         <app-sidebar-menu></app-sidebar-menu>
         <div *ngIf="accountBalanceError" class="alert-danger">Account Balance must be zero</div>
         <form>
-            <input type="search" id="myInput" required class="search-box" (keyup)="loadUsersBySearch()"
+            <input type="search" id="myInput" required class="search-box"
                    (keypress)="loadUsersBySearch()" placeholder="Search by name or username" title="Type in a name">
             <button class="close-icon" (click)="resetInput()" type="reset"></button>
             <button mat-raised-button color="primary"
@@ -17,7 +17,7 @@
     <table class="table table-striped" [mfData]="accountList" #mf="mfDataTable" [mfRowsOnPage]="10">
         <thead>
         <tr>
-            <th (click)="sortByAccountnumber()"><a>Number</a> <a class="sort-by"></a></th>
+            <th (click)="sortByAccountNumber()"><a>Number</a> <a class="sort-by"></a></th>
             <th (click)="sortByOrder()"><a>Order</a> <a class="sort-by"></a></th>
             <th (click)="sortByAccountName()"><a>Account Name</a> <a class="sort-by"></a></th>
             <th (click)="sortByAccountType()"><a>Account Type</a> <a class="sort-by"></a></th>
@@ -34,7 +34,7 @@
 <!--            <th><a>Description</a><a class="sort-by"></a></th>-->
             <th *ngIf="isAdmin(currentUser)" (click)="sortByAccountStatus()"><a>Deactivate/Activate</a> <a class="sort-by"></a></th>
             <th style="text-align: center"  *ngIf="isAdmin(currentUser)" (click)="sortByAccountStatus()"><a>Edit</a><a class="sort-by"></a></th>
-            <th style="text-align: center"  *ngIf="isAdmin(currentUser)" (click)="sortByAccountStatus()"><a>View</a><a class="sort-by"></a></th>
+            <th style="text-align: center" (click)="sortByAccountStatus()"><a>View</a><a class="sort-by"></a></th>
         </tr>
         </thead>
         <tbody>
@@ -79,7 +79,7 @@
             <td >{{chartOfAccounts.accountType}} </td>
             <td >{{chartOfAccounts.accountSubType}} </td>
             <td style="text-align: center">{{chartOfAccounts.normalSide}}</td>
-            <td >{{chartOfAccounts.accountBalance | currency: 'USD': "symbol": '1.2-2'}} </td>
+            <td>{{chartOfAccounts.accountBalance | currency: 'USD': "symbol": '1.2-2'}} </td>
 <!--            <td >{{chartOfAccounts.accountInitBalance | currency: 'USD': "symbol": '1.2-2'}} </td>-->
             <td >{{chartOfAccounts.createdBy}} </td>
             <td >{{chartOfAccounts.createdDate |date:'MM/dd/yyyy h:mma'}} </td>
@@ -88,6 +88,11 @@
             <td >{{chartOfAccounts.statement}} </td>
 <!--            <td >{{chartOfAccounts.accountDesc}} </td>-->
 <!--            <td >{{chartOfAccounts.comment}} </td>-->
+            <td>
+                <button matTooltip="edit the account" mat-menu-item [routerLink]="[chartOfAccounts.id, 'view']">
+                    <span>View</span>
+                </button>
+            </td>
         </tr>
         </tbody>
         <tfoot>

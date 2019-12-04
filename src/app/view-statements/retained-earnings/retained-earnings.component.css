@@ -11,6 +11,11 @@
   border-top: 1px solid #000;
 }
 
+.singleUnderline{
+  text-align: right;
+  text-decoration:underline;
+}
+
 .align-right{
   text-align: right;
 }
