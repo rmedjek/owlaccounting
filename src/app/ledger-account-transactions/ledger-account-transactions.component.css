@@ -132,3 +132,7 @@ a.sort-by:after {
 .search-box:not(:valid) ~ .close-icon {
   display: none;
 }
+
+#totalBalance{
+  font-weight: bold;
+}
