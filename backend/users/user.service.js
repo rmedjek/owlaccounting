@@ -1,131 +1,192 @@
-﻿const config = require('../config.json');
+const LocalStorage = require('node-localstorage').LocalStorage;
+const localStorage = new LocalStorage('./scratch');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const db = require('../_helpers/db');
-const User = db.User;
+const config = require('../config.json');
+const User = require('./user.model');
 
 module.exports = {
-    authenticate,
-    getAll,
-    getById,
+    registerAdmin,
     create,
-    update,
-    delete: _delete,
-    // passwordExpired
+    login
 };
 
-async function authenticate({ username, password }) {
-    const user = await User.findOne({username});
-    // passwordExpired = passwordExpired(user); //returns number of days that password is still valid
-    // if (passwordExpired <= 0){
-    //     user.passwordExpired = true;
-//         user.save();
-// }
 
-    if (user && bcrypt.compareSync(password, user.hash)) {
-        // if(user.passwordExpired === false) {
-        if (user.accountActive === true) {
-            const {hash, ...userWithoutHash} = user.toObject();
-            const token = jwt.sign({sub: user.id}, config.secret, {expiresIn: '1h'});
-            return {
-                ...userWithoutHash, token
-            };
-        } else {
-            throw 'Your account is pending approval.'
-        }
-        // } else {
-        //     throw 'Your password has expired.'
-        // }
-        // }
+async function registerAdmin(userParam) {
+    if (await User.findOne({username: userParam.username})) {
+        throw 'Username "' + userParam.username + '" is already taken';
     }
+    let htmlMsg;
+    User.findOne({ email: userParam.body.email }, async (err, user) => {
+        if (!user) { //add new user
+            const hashedPassword = bcrypt.hashSync(userParam.body.password, 8);
+            const user = User.create({
+                name: userParam.body.name,
+                email: userParam.body.email,
+                password: hashedPassword,
+                role: userParam.body.role
+            }, (err, user) => {
+                htmlMsg = encodeURIComponent('Registered OK, disable after first admin created!');
+            })
+            await user.save();
+        } else { //duplicate
+            htmlMsg = encodeURIComponent('Email existing, please enter a new one ...');
+        }
+    });
 }
-    async function getAll() {
-        return await User.find().select('-hash');
-    }
 
-    async function getById(id) {
-        return await User.findById(id).select('-hash');
+async function create(userParam,) {
+    if (await User.findOne({username: userParam.username})) {
+        throw 'Username "' + userParam.username + '" is already taken';
     }
-
-    async function create(userParam,) {
-        // validate
-        if (await User.findOne({username: userParam.username})) {
-            throw 'Username "' + userParam.username + '" is already taken';
+    let htmlMsg;
+    User.findOne({ email: userParam.body.email }, async (err, user) => {
+        if (!user) { //add new user
+            const hashedPassword = bcrypt.hashSync(userParam.body.password, 8);
+            const user = User.create({
+                name: userParam.body.name,
+                email: userParam.body.email,
+                password: hashedPassword,
+                role: "normal"
+            }, (err, user) => {
+                htmlMsg = encodeURIComponent('Registered OK, disable after first admin created!');
+            })
+            await user.save();
+        } else { //duplicate
+            htmlMsg = encodeURIComponent('Email existing, please enter a new one ...');
         }
+    });
+}
 
-        const user = new User(userParam);
-        user.role = "3";
-        user.accountActive = false;
-        // user.passwordExpired = false;
-        // hash password
-        if (userParam.password) {
-            user.hash = await hashPassword(userParam);
+async function login({ email, password }) {
+    User.findOne({ email: email }, (err, user) => {
+        if (!user) {
+            encodeURIComponent('Email not found, try again ...');
+        } else {
+           if (user && bcrypt.compareSync(password, user.password)) {
+                const {hash, ...userWithoutHash} = user.toObject();
+                const token = jwt.sign({ id: user.id }, config.secret, {
+                    expiresIn: 86400 // expires in 24 hours
+                });
+                console.log('token: ', token)
+                localStorage.setItem('authtoken', token)
+                return {
+                    ...userWithoutHash, token
+                }
+            }
         }
-        // save user
-        await user.save();
-    }
+    });
+}
 
-    async function hashPassword(User) {
-        const {password} = User;
-        return await new Promise((resolve, reject) => {
-            bcrypt.hash(password, 10)
-                .then((res) => resolve(res))
-                .catch((err) => reject(err))
-        });
-    }
-
-    async function update(id, userParam) {
-
-        const user = await User.findById(id);
-
-        // validate
-        if (!user) throw 'User not found';
-        if (user.username !== userParam.username && await User.findOne({username: userParam.username})) {
-            throw 'Username "' + userParam.username + '" is already taken';
-        }
-
-        // if (user.email !== userParam.email && await User.findOne({ email: userParam.email})) {
-        //     throw 'Email "' + userParam.email + '" is already in the system'
-        // }
-
-        // hash password if it was entered
-        if (userParam.password) {
-            userParam.hash = bcrypt.hashSync(userParam.password, 10);
-        }
-
-        // copy userParam properties to user
-        Object.assign(user, userParam);
-        await user.save();
-    }
-
-    async function _delete(id) {
-        await User.findByIdAndRemove(id);
-    }
-
-
-// function passwordExpired(user) {
-//     var duration = 180; //In Days
-//     var creationDate = user.passwordCreationDate;
-//     var date = new Date();
-//     var epoch = Math.floor(date.getTime() / 1000);
-//     var expire =  Math.floor(creationDate.getTime() / 1000) + (duration * 24 * 60 * 60); //time in milliseconds
-//     var daysTillExpire = Math.floor(expire / 60 / 60 / 24) - Math.floor(epoch / 60 / 60 / 24); //days till expiration
+// async function loggedUser(req, res) {
+//     const token = localStorage.getItem('authtoken');
+//     jwt.verify(token, config.secret, function(err, decoded) {
+//         if (err) return res.status(500).send({ users: false, message: 'Failed to authenticate token.' });
 //
-//     return daysTillExpire;
-//     }
-
-// async function passwordExpired(user) {
-//   let duration = 180; //In Days
-//   let creationDate = user.passwordCreationDate;
-//   let date = new Date();
-//   let expire =  creationDate + (duration * 24 * 60 * 60 * 1000); //time in milliseconds
-//     console.log('expire date: ' + expire);
-//     console.log('date: ' + date);
-//   if (expire < date) {
-//        user.passwordExpired = true;
-//       console.log('user: ' + user.passwordExpired);
-//        throw "Your password has expired, please contact your system administrator ";
-//     }
+//         // res.status(200).send(decoded);
+//         User.findById(decoded.id, { password: 0 }, function (err, user) {
+//             if (err) return res.status(500).send("There was a problem finding the user.");
+//             if (!user) return res.status(404).send("No user found.");
+//
+//             res.status(200).send(user);
+//         });
+//     });
 // }
 
+// Register 1st Admin without JWT validation
+// router.post('/registerAdmin', (req,res) => {
+//     User.findOne({ email: req.body.email }, (err, user) => {
+//         if (err) return res.status(500).send('Error on the server.');
+//         let htmlMsg
+//         if (!user) { //add new user
+//             const hashedPassword = bcrypt.hashSync(req.body.password, 8);
+//             User.create({
+//                 name: req.body.name,
+//                 email: req.body.email,
+//                 password: hashedPassword,
+//                 role: req.body.role
+//             }, (err, user) => {
+//                 if(err) return res.status(500).send('There was a problem registering user')
+//                 htmlMsg = encodeURIComponent('Registered OK, disable after first admin created!');
+//                 res.redirect('/admin?msg=' + htmlMsg)
+//             })
+//         } else { //duplicate
+//             htmlMsg = encodeURIComponent('Email existing, please enter a new one ...');
+//             res.redirect('/admin?msg=' + htmlMsg);
+//         }
+//     })
+//
+// })
+
+// Register a User
+// router.post('/register', (req, res) => {
+//     User.findOne({ email: req.body.email }, (err, user) => {
+//         if (err) return res.status(500).send('Error on the server.');
+//         let htmlMsg
+//         if (!user) { //add new user
+//             const hashedPassword = bcrypt.hashSync(req.body.password, 8);
+//             User.create({
+//                 name: req.body.name,
+//                 email: req.body.email,
+//                 password: hashedPassword,
+//                 role: "normal"
+//             }, (err, user) => {
+//                 if(err) return res.status(500).send('There was a problem registering user')
+//                 htmlMsg = encodeURIComponent('Registered OK !');
+//                 res.redirect('/?msg=' + htmlMsg)
+//             })
+//         } else { //duplicate
+//             htmlMsg = encodeURIComponent('Email existing, please enter a new one ...');
+//             res.redirect('/?msg=' + htmlMsg);
+//         }
+//     })
+// });
+
+// Login User
+// router.post('/login', (req, res) => {
+//     User.findOne({ email: req.body.email }, (err, user) => {
+//         if (err) return res.status(500).send('Error on the server.');
+//         let htmlMsg
+//         if (!user) {
+//             htmlMsg = encodeURIComponent('Email not found, try again ...');
+//             res.redirect('/?invalid=' + htmlMsg);
+//         } else {
+//             const passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
+//             if (!passwordIsValid) {
+//                 return res.status(401).send({ users: false, token: null });
+//             }
+//
+//             var token = jwt.sign({ id: user._id }, config.secret, {
+//                 expiresIn: 86400 // expires in 24 hours
+//             });
+//             localStorage.setItem('authtoken', token)
+//
+//             console.log('user Here: ', user);
+//
+//             if(user.role === 'admin'){
+//                 res.redirect(`/admin/userDashboard`)
+//             }else{
+//                 res.redirect(`/users/view_shopping_list`);
+//             }
+//         }
+//     });
+// });
+
+// Info of logged User
+// router.get('/loggedUser', function(req, res) {
+//     var token = req.headers['x-access-token'];
+//     if (!token) return res.status(401).send({ users: false, message: 'No token provided.' });
+//
+//     jwt.verify(token, config.SECRET_KEY, function(err, decoded) {
+//         if (err) return res.status(500).send({ users: false, message: 'Failed to authenticate token.' });
+//
+//         // res.status(200).send(decoded);
+//         User.findById(decoded.id, { password: 0 }, function (err, user) {
+//             if (err) return res.status(500).send("There was a problem finding the user.");
+//             if (!user) return res.status(404).send("No user found.");
+//
+//             res.status(200).send(user);
+//         });
+//     });
+// });
 

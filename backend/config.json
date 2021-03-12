@@ -1,4 +1,4 @@
 ﻿{
-    "connectionString": "mongodb+srv://red:YIFnUECnXEyTMOCF@cluster0-ubxvj.mongodb.net/owlaccounting",
-    "secret": "OwlAccountingSecret09072019"
+    "connectionString": "mongodb://127.0.0.1:27017/weather_news",
+    "secret": "mysecret"
 }
